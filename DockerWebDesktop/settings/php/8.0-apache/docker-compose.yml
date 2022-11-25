@@ -1,0 +1,21 @@
+﻿version: '3'
+
+services:
+  php-apache-environment:
+    image: php:8.0-apache
+    deploy:
+      restart_policy:
+        condition: none
+    volumes:
+      - /mnt/c/Users/cneves/source/repos/Client-PHP:/var/www/html/
+    ports:
+      - "8000:80"
+    environment:
+      - ELASTIC_SEARCH=http://192.168.227.120:9200/
+    networks:
+      - bridge
+
+networks:
+  bridge:
+    external:
+      name: bridge

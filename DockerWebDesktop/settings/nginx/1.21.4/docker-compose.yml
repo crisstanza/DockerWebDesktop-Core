@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  web:
+    image: "nginx:1.21.4"
+    hostname: nginx_1-21-4_localhost
+    deploy:
+      restart_policy:
+        condition: none
+    ports:
+      - "8888:80"

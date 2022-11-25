@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  elasticsearch_6-8-8:
+    image: elasticsearch:6.8.8
+    hostname: elasticsearch_6-8-8_localhost
+    deploy:
+      restart_policy:
+        condition: none
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - cluster.routing.allocation.disk.threshold_enabled=false

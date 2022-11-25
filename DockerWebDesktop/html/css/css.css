@@ -1,0 +1,113 @@
+﻿html, body, button {
+	font-family: Arial, sans-serif;
+}
+
+html {
+	background-color: aliceblue;
+}
+
+body {
+	display: flex;
+	gap: 20px;
+	flex-wrap: wrap;
+}
+
+body > * {
+	flex: 100%;
+}
+
+.left { float: left; }
+.right { float: right; }
+
+.disabled { opacity: 0.5; }
+
+button {
+	border-width: 1px;
+	padding: 3px 9px 3px 9px;
+	box-shadow: 2px 2px 2px -1px #AAA;
+	border-radius: 4px;
+}
+
+fieldset {
+	background-color: floralwhite;
+	border-style: outset;
+	border-radius: 4px;
+}
+fieldset legend {
+	font-weight: bold;
+	color: #444;
+}
+
+fieldset table {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: white;
+}
+
+fieldset table.small, fieldset table.small > thead th, fieldset table.small > tfoot td { font-size: 0.85em; }
+
+fieldset table > thead th {
+	background-color: beige;
+	font-size: 10pt;
+}
+fieldset table.interactive > thead th:not(:last-child) {
+	background-color: beige;
+	font-size: 10pt;
+}
+fieldset table > tfoot {
+	background-color: antiquewhite;
+}
+
+fieldset table.interactive > tbody > tr > td:last-child {
+	text-align: center;
+}
+
+fieldset table > tbody > tr > td.parent {
+	padding: 1px;
+}
+
+fieldset table > tbody > tr > td.parent > table {
+}
+
+fieldset table > tbody > tr > td {
+	padding: 5px;
+	overflow-wrap: anywhere;
+}
+fieldset table > thead th {
+	padding: 3px;
+	overflow-wrap: normal;
+}
+fieldset table > tfoot td {
+	padding: 3px;
+	font-size: 10pt;
+}
+
+fieldset table td button, fieldset table td a {
+	margin: 0 3px 0 3px;
+}
+
+a { color: brown; }
+a:hover { color: blueviolet; }
+
+fieldset table.interactive > tbody tr td:last-child {
+	width: 0;
+	white-space: nowrap;
+}
+
+fieldset table.interactive > thead th:last-child {
+	background-color: floralwhite;
+	border-top: 1px solid floralwhite;
+	border-right: hidden;
+}
+
+.bar-top button {
+	margin-left: 6px;
+}
+
+button.pressed, button:active {
+	border-style: inset;
+	background-color: #D7D7D7;
+	box-shadow: inset 4px 4px 4px -1px #AAA;
+}
+
+button:hover:not([disabled]) { background-color: #E7E7E7; }

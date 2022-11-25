@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Docker Web Desktop ${version}</title>
+	<script src="js/lib/io.github.crisstanza.Autos.js?v=1.0.0"></script>
+	<script src="js/lib/io.github.crisstanza.Creator.js?v=1.0.0"></script>
+	<script src="js/lib/io.github.crisstanza.Fetcher.js?v=1.0.0"></script>
+	<script src="js/lib/io.github.crisstanza.SimpleDataGrid.js?v=1.0.0"></script>
+	<script src="js/index.js?v=${version}"></script>
+	<link rel="stylesheet" href="css/css.css?v=${version}" />
+	<link rel="icon" href="favicon.ico" type="image/x-icon" />
+</head>
+
+<body data-autos="ids">
+
+	<div class="bar-top">
+		<div class="left">Status: <span id="output-status">?</span></div>
+		<button class="right" data-target="_blank" data-action="/stop">stop</button>
+		<button class="right" data-action="/api/docker-d" id="bt-dockerd">dockerd</button>
+		<a href="/api/docker-info" target="_blank" class="right">info</a>
+	</div>
+	<div>
+		<fieldset id="output-settings">
+			<legend>Settings</legend>
+		</fieldset>
+	</div>
+	<div>
+		<fieldset id="output-images">
+			<legend>Images</legend>
+		</fieldset>
+	</div>
+	<div>
+		<fieldset id="output-instances">
+			<legend>Instances</legend>
+		</fieldset>
+	</div>
+	<div>
+		<fieldset id="output-stacks">
+			<legend>Stacks</legend>
+		</fieldset>
+	</div>
+	<div>
+		<fieldset id="output-networks">
+			<legend>Networks</legend>
+		</fieldset>
+	</div>
+	<div>
+		<fieldset id="output-disk-usages">
+			<legend>Disk Usage</legend>
+		</fieldset>
+	</div>
+
+</body>
+
+</html>

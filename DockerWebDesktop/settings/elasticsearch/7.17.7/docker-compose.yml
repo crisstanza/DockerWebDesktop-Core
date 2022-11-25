@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  elasticsearch_7-17-7:
+    image: elasticsearch:7.17.7
+    hostname: elasticsearch_7-17-7_localhost
+    deploy:
+      restart_policy:
+        condition: none
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - cluster.routing.allocation.disk.threshold_enabled=false
