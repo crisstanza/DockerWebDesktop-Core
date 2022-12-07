@@ -13,19 +13,19 @@ public class CommandLineArguments : ICommandLineArguments
 		this.fileSystemUtils = new FileSystemUtils();
 	}
 
-	[CommandLineArgument(DefaultValue = false)]
+	[CommandLineArgument(DefaultValue = false, EnvironmentVariable = "DWD_DEBUG")]
 	public bool Debug { get; set; }
 
-	[CommandLineArgument(DefaultValue = "255.255.240.0")]
+	[CommandLineArgument(DefaultValue = "255.255.240.0", EnvironmentVariable = "DWD_SUBNET_MASK")]
 	public string SubnetMask { get; set; }
 
-	[CommandLineArgument(DefaultValue = "localhost")]
+	[CommandLineArgument(DefaultValue = "localhost", EnvironmentVariable = "DWD_HOST")]
 	public string Host { get; set; }
 
 	[CommandLineArgument(DefaultValue = 7777, EnvironmentVariable = "DWD_PORT")]
 	public int Port { get; set; }
 
-	[CommandLineArgument(DefaultValue = null)]
+	[CommandLineArgument(DefaultValue = null, EnvironmentVariable = "DWD_SETTINGS_HOME")]
 	public string SettingsHome { get; set; }
 
 	public void Defaults()
