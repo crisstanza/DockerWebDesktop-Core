@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <Version>1.0.1.0</Version>
+    <Description>https://github.com/crisstanza/DockerWebDesktop-Core/</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,13 +38,10 @@
     <None Update="html\js\lib\io.github.crisstanza.Fetcher.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\arangodb\3.8\envs">
+    <None Update="settings\arangodb\3.8.8\envs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\arangodb\3.8\network">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="settings\arangodb\3.8\ports">
+    <None Update="settings\arangodb\3.8.8\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="settings\elasticsearch\7.17.7\docker-compose.yml">

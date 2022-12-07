@@ -5,6 +5,7 @@ using io.github.crisstanza.csharputils.server.response;
 using server.request.api;
 using server.response.api;
 using service;
+using System.Collections.Generic;
 using System.Net;
 
 namespace controller
@@ -19,7 +20,11 @@ namespace controller
 		#region start stop end
 		public void Start()
 		{
-			base.server.Start(this, args.SubnetMask);
+			Dictionary<string, string> extras = new Dictionary<string, string>()
+				{
+					{ "Settings home", this.args.SettingsHome }
+				};
+			base.server.Start(this, args.SubnetMask, extras);
 		}
 		public HttpListenerUtils.OutputBody Stop()
 		{
