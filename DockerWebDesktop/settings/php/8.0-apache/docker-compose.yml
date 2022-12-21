@@ -1,21 +1,22 @@
-﻿version: '3'
+﻿version: '3.4'
+
+configs:
+  php_ini:
+    file: ./php.ini
 
 services:
   php-apache-environment:
+    configs:
+      - source: php_ini
+        target: /usr/local/etc/php/php.ini
+        mode: 644
     image: php:8.0-apache
     deploy:
       restart_policy:
         condition: none
     volumes:
-      - /mnt/c/Users/cneves/source/repos/Client-PHP:/var/www/html/
+      - /local/path/:/var/www/html/
     ports:
       - "8000:80"
     environment:
-      - ELASTIC_SEARCH=http://192.168.227.120:9200/
-    networks:
-      - bridge
-
-networks:
-  bridge:
-    external:
-      name: bridge
+      - ENV_VAR_NAME=http://localhost:9200/
