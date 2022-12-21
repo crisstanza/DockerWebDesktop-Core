@@ -10,15 +10,6 @@ DockerWebDesktop-Core
 
 <br>
 
-## Run as normal user on Linux:
-
-	https://docs.docker.com/engine/security/rootless/
-	sudo apt-get update
-	sudo apt-get install iptables
-	dockerd-rootless-setuptool.sh install --skip-iptables
-	sudo usermod -aG docker localuser
-
-
 ## Run docker engine:
 
 	dockerd
@@ -27,7 +18,6 @@ DockerWebDesktop-Core
 ## Run docker swarn:
 
 	docker swarm init
-
 
 
 ## Install .NET Core on Ubuntu:
