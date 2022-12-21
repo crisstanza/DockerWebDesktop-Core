@@ -16,6 +16,7 @@ namespace service
 		private const string DOCKERD_PID_FILE = "/var/run/docker.pid";
 		private const string NETWORK_FILE = "network";
 		private const string DOCKERFILE_FILE = "Dockerfile";
+		private const string DOCKER_COMPOSE_FILE = "docker-compose.yml";
 
 		public DockerWebDesktopService(CommandLineArguments args) : base(args)
 		{
@@ -198,7 +199,7 @@ namespace service
 		}
 		public string ApiImageHistory(string imageId)
 		{
-			string arguments = "image history " + imageId;
+			string arguments = "image history " + imageId + " --no-trunc";
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
 			return execResult.Output;
 		}
@@ -408,9 +409,9 @@ namespace service
 		#region api deploy docker compose yml
 		public RunTimeUtils.ExecResult ApiDeployDockerComposeYml(string name, string version)
 		{
-			string dockerComposeYmlFile = DockerComposeYmlFile(name, version);
+			string dockerComposeYmlFile = DOCKER_COMPOSE_FILE; // DockerComposeYmlFile(name, version);
 			string arguments = "stack deploy -c " + dockerComposeYmlFile + " " + StackName(name, version);
-			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
+			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments, HomePath(name, version));
 			if (execResult.ExitCode != 0)
 			{
 				Console.WriteLine(execResult.Output);
@@ -543,7 +544,7 @@ namespace service
 		private List<Network> LoadNetworks()
 		{
 			List<Network> networks = new List<Network>();
-			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", "network ls");
+			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", "network ls --no-trunc");
 			if (execResult.ExitCode == 0)
 			{
 				FixedWidthColumnReader reader = new FixedWidthColumnReader(execResult.Output);
@@ -651,7 +652,7 @@ namespace service
 		}
 		private string DockerComposeYmlFile(string name, string version)
 		{
-			return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + "docker-compose.yml";
+			return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + DOCKER_COMPOSE_FILE;
 		}
 		#endregion
 

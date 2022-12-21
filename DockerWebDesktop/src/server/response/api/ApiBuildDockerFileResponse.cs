@@ -5,5 +5,6 @@ namespace server.response.api
 	public class ApiBuildDockerFileResponse : ADefaultResponse
 	{
 		public int Status { get; set; }
+		public string Output { get; set; }
 	}
 }

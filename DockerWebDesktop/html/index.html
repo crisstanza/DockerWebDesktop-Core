@@ -16,10 +16,14 @@
 <body data-autos="ids">
 
 	<div class="bar-top">
-		<div class="left">Status: <span id="output-status">?</span></div>
+		<div class="left">
+			Status: <span id="output-status">?</span>
+		</div>
 		<button class="right" data-target="_blank" data-action="/stop">stop</button>
 		<button class="right" data-action="/api/docker-d" id="bt-dockerd">dockerd</button>
 		<a href="/api/docker-info" target="_blank" class="right">info</a>
+		<br />
+		<div class="left" id="output-message"></div>
 	</div>
 	<div>
 		<fieldset id="output-settings">

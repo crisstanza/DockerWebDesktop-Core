@@ -5,5 +5,7 @@ namespace server.response.api
 	public class ApiDeployDockerComposeYmlResponse : ADefaultResponse
 	{
 		public int Status { get; set; }
+		public string Output { get; set; }
+
 	}
 }

@@ -32,7 +32,7 @@ public class CommandLineArguments : ICommandLineArguments
 	{
 		if (SettingsHome == null)
 		{
-			SettingsHome = this.fileSystemUtils.CurrentPath() + "settings" + Path.DirectorySeparatorChar;
+			SettingsHome = this.fileSystemUtils.CurrentPath() + "SETTINGS" + Path.DirectorySeparatorChar;
 		}
 	}
 

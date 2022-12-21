@@ -82,25 +82,31 @@ namespace controller
 		}
 		public HttpListenerUtils.OutputBody ApiImageRun(string repository, string tag, string imageId)
 		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiImageRun(repository, tag, imageId);
 			ADefaultResponse output = new ApiImageRunResponse()
 			{
-				Status = this.service.ApiImageRun(repository, tag, imageId).ExitCode
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}
 		public HttpListenerUtils.OutputBody ApiImageRemoveById(string imageId)
 		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiImageRemoveById(imageId);
 			ADefaultResponse output = new ApiImageRemoveResponse()
 			{
-				Status = this.service.ApiImageRemoveById(imageId).ExitCode
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}
 		public HttpListenerUtils.OutputBody ApiImageRemove(string repository, string tag)
 		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiImageRemove(repository, tag);
 			ADefaultResponse output = new ApiImageRemoveResponse()
 			{
-				Status = this.service.ApiImageRemove(repository, tag).ExitCode
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}
@@ -118,7 +124,7 @@ namespace controller
 			{
 				Data = this.service.ApiImageHistory(imageId)
 			};
-			return base.httpListenerUtils.DefaultJsonOutputBody(output.Data);
+			return base.httpListenerUtils.DefaultTextOutputBody(output.Data);
 		}
 		#endregion
 
@@ -133,9 +139,11 @@ namespace controller
 		}
 		public HttpListenerUtils.OutputBody ApiSettingRun(string name, string version)
 		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiSettingRun(name, version);
 			ADefaultResponse output = new ApiRunResponse()
 			{
-				Status = this.service.ApiSettingRun(name, version).ExitCode
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}
@@ -144,9 +152,11 @@ namespace controller
 		#region api docker file
 		public HttpListenerUtils.OutputBody ApiBuildDockerfile(string name, string version)
 		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiBuildDockerfile(name, version);
 			ADefaultResponse output = new ApiBuildDockerFileResponse()
 			{
-				Status = this.service.ApiBuildDockerfile(name, version).ExitCode
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}
@@ -155,9 +165,11 @@ namespace controller
 		#region api docker compose yml
 		public HttpListenerUtils.OutputBody ApiDeployDockerComposeYml(string name, string version)
 		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiDeployDockerComposeYml(name, version);
 			ADefaultResponse output = new ApiDeployDockerComposeYmlResponse()
 			{
-				Status = this.service.ApiDeployDockerComposeYml(name, version).ExitCode
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}
@@ -174,25 +186,31 @@ namespace controller
 		}
 		public HttpListenerUtils.OutputBody ApiInstanceStop(string containerId)
 		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiInstanceStop(containerId);
 			ADefaultResponse output = new ApiInstanceStopResponse()
 			{
-				Status = this.service.ApiInstanceStop(containerId).ExitCode
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}
 		public HttpListenerUtils.OutputBody ApiInstanceStart(string containerId)
 		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiInstanceStart(containerId);
 			ADefaultResponse output = new ApiInstanceStartResponse()
 			{
-				Status = this.service.ApiInstanceStart(containerId).ExitCode
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}
 		public HttpListenerUtils.OutputBody ApiInstanceRemove(string containerId)
 		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiInstanceRemove(containerId);
 			ADefaultResponse output = new ApiInstanceRemoveResponse()
 			{
-				Status = this.service.ApiInstanceRemove(containerId).ExitCode
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}
@@ -235,9 +253,11 @@ namespace controller
 		}
 		public HttpListenerUtils.OutputBody ApiStackRemove(string name)
 		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiStackRemove(name);
 			ADefaultResponse output = new ApiStackRemoveResponse()
 			{
-				Status = this.service.ApiStackRemove(name).ExitCode
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}

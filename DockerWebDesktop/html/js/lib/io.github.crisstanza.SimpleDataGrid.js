@@ -8,8 +8,10 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 
 	io.github.crisstanza.SimpleDataGrid = class {
 		#options = null;
-		constructor(options) {
+		#parent = null;
+		constructor(options, parent) {
 			this.options = options ? options : {};
+			this.parent = parent;
 		}
 		build(items, columns, actions, links) {
 			const table = io.github.crisstanza.Creator.html('table', { border: this.options.border ? 1 : 0 });
@@ -17,14 +19,16 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 				table.classList.add(this.options.class);
 			}
 			if (this.options.headers) {
-				const thead = io.github.crisstanza.Creator.html('thead', {}, table);
-				const tr = io.github.crisstanza.Creator.html('tr', {}, thead);
-				for (let i = 0; i < columns.length; i++) {
-					const column = columns[i];
-					io.github.crisstanza.Creator.html('th', {}, tr, column.name);
-				}
-				if (actions && actions.length || links && links.length) {
-					io.github.crisstanza.Creator.html('th', {}, tr);
+				if (items.length > 0) {
+					const thead = io.github.crisstanza.Creator.html('thead', {}, table);
+					const tr = io.github.crisstanza.Creator.html('tr', {}, thead);
+					for (let i = 0; i < columns.length; i++) {
+						const column = columns[i];
+						io.github.crisstanza.Creator.html('th', {}, tr, column.name);
+					}
+					if (actions && actions.length || links && links.length) {
+						io.github.crisstanza.Creator.html('th', {}, tr);
+					}
 				}
 			}
 			const tbody = io.github.crisstanza.Creator.html('tbody', {}, table);
@@ -79,6 +83,12 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 			const tfoot = io.github.crisstanza.Creator.html('tfoot', {}, table);
 			const tr = io.github.crisstanza.Creator.html('tr', {}, tfoot);
 			io.github.crisstanza.Creator.html('td', { colspan: columns.length + (actions && actions.length ? 1 : 0) + (links && links.length ? 1 : 0) }, tr, 'Total: ' + items.length);
+			if (this.parent) {
+				if (this.parent.querySelector('table')) {
+					this.parent.querySelector('table').remove();
+				}
+				this.parent.appendChild(table);
+			}
 			return table;
 		}
 		#escapeHtml(str) {

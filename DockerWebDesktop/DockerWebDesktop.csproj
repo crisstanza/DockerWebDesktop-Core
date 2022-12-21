@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
-    <Version>1.0.1.0</Version>
+    <Version>1.0.2.0</Version>
     <Description>https://github.com/crisstanza/DockerWebDesktop-Core/</Description>
   </PropertyGroup>
 
@@ -38,85 +38,91 @@
     <None Update="html\js\lib\io.github.crisstanza.Fetcher.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\arangodb\3.8.8\envs">
+    <None Update="SETTINGS\arangodb\3.8.8\envs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\arangodb\3.8.8\ports">
+    <None Update="SETTINGS\arangodb\3.8.8\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\7.17.7\docker-compose.yml">
+    <None Update="SETTINGS\elasticsearch\7.17.7\docker-compose.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\7.17.7\Dockerfile">
+    <None Update="SETTINGS\elasticsearch\7.17.7\Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\7.17.7\elasticsearch.yml">
+    <None Update="SETTINGS\elasticsearch\7.17.7\elasticsearch.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\7.17.7\envs">
+    <None Update="SETTINGS\elasticsearch\7.17.7\envs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\7.17.7\network">
+    <None Update="SETTINGS\elasticsearch\7.17.7\network">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\7.17.7\ports">
+    <None Update="SETTINGS\elasticsearch\7.17.7\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\6.8.8\docker-compose.yml">
+    <None Update="SETTINGS\elasticsearch\6.8.8\docker-compose.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\6.8.8\Dockerfile">
+    <None Update="SETTINGS\elasticsearch\6.8.8\Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\6.8.8\elasticsearch.yml">
+    <None Update="SETTINGS\elasticsearch\6.8.8\elasticsearch.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\6.8.8\network">
+    <None Update="SETTINGS\elasticsearch\6.8.8\network">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\6.8.8\ports">
+    <None Update="SETTINGS\elasticsearch\6.8.8\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\elasticsearch\6.8.8\envs">
+    <None Update="SETTINGS\elasticsearch\6.8.8\envs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\mongo\4.4-focal\network">
+    <None Update="SETTINGS\mongo\4.4-focal\network">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\mongo\4.4-focal\ports">
+    <None Update="SETTINGS\mongo\4.4-focal\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\nginx\1.21.4\docker-compose.yml">
+    <None Update="SETTINGS\nginx\1.21.4\docker-compose.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\nginx\1.21.4\Dockerfile">
+    <None Update="SETTINGS\nginx\1.21.4\Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\nginx\1.21.4\network">
+    <None Update="SETTINGS\nginx\1.21.4\network">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\nginx\1.21.4\ports">
+    <None Update="SETTINGS\nginx\1.21.4\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\php\8.0-apache\docker-compose.yml">
+    <None Update="SETTINGS\php\8.0-apache\docker-compose.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\php\8.0-apache\network">
+    <None Update="SETTINGS\php\8.0-apache\Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\php\8.0-apache\ports">
+    <None Update="SETTINGS\php\8.0-apache\network">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\rabbitmq\3.11-management\Dockerfile">
+    <None Update="SETTINGS\php\8.0-apache\php.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\rabbitmq\3.11-management\network">
+    <None Update="SETTINGS\php\8.0-apache\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\rabbitmq\3.11-management\ports">
+    <None Update="SETTINGS\rabbitmq\3.11-management\Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="settings\rabbitmq\3.11-management\rabbitmq_delayed_message_exchange-3.11.1.ez">
+    <None Update="SETTINGS\rabbitmq\3.11-management\network">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SETTINGS\rabbitmq\3.11-management\ports">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SETTINGS\rabbitmq\3.11-management\rabbitmq_delayed_message_exchange-3.11.1.ez">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

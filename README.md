@@ -45,3 +45,10 @@ DockerWebDesktop-Core
 
 	https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04
 	https://docs.docker.com/compose/compose-file/compose-file-v2/#restart
+	https://stackoverflow.com/questions/39388877/adding-files-to-standard-images-using-docker-compose
+	https://chmod-calculator.com/
+
+
+#### Docker commands examples:
+
+	docker cp 90c31a3d2a50b834fa5959aea8c08453030e04e687ee0df7122e5c63e34fd753:/usr/local/etc/php/php.ini-development .
