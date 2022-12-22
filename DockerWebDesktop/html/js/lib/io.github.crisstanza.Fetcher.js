@@ -31,9 +31,11 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 		#doFetch(url, callback, callbackError) {
 			fetch(url, this.options)
 				.then(response => {
-					if (!response.ok)
-						throw new Error(response.status);
-					return response.json();
+					if (response.ok) {
+						return response.json();
+					} else {
+						return response.text().then(text => { throw new Error(text) });
+					}
 				})
 				.then(json => callback(json))
 				.catch(exc => callbackError(exc))

@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
-    <Version>1.0.3.0</Version>
+    <Version>1.1.0.1</Version>
     <Description>https://github.com/crisstanza/DockerWebDesktop-Core/</Description>
   </PropertyGroup>
 
@@ -98,7 +98,13 @@
     <None Update="SETTINGS\nginx\1.21.4\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\node\gallium-slim\Dockerfile">
+    <None Update="SETTINGS\node\19.3.0-bullseye\Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SETTINGS\node\19.3.0-bullseye\network">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SETTINGS\node\19.3.0-bullseye\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SETTINGS\php\8.0-apache\docker-compose.yml">

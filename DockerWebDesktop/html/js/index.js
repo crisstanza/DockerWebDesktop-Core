@@ -9,6 +9,9 @@
 			while (output.indexOf('\n\n') >= 0) {
 				output = output.trim().replaceAll('\n\n', '\n');
 			}
+			while (output.indexOf('  ') >= 0) {
+				output = output.trim().replaceAll('  ', '&nbsp;&nbsp;');
+			}
 			return output.trim().replaceAll('\n', '<br />');
 		}
 		return '';
@@ -22,8 +25,13 @@
 			outputMessage.classList.add('error');
 		}
 		initGui(750);
-		// initGui(1000);
 	}
+	const showDefaultExceptionStatus = (exc) => {
+		outputStatus.innerHTML = '?';
+		outputMessage.classList.add('error');
+		outputMessage.innerHTML = formatOutput(exc.toString());
+	};
+
 	const getCommandFromButton = (button) => {
 		return button.getAttribute('data-action');
 	};
@@ -162,48 +170,32 @@
 	const imageRun = (event, image) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/image/run', { repository: image.Repository, tag: image.Tag, imageId: image.ImageId }, showDefaultResponseStatus, imageRunError);
+		fetcher.get('/api/image/run', { repository: image.Repository, tag: image.Tag, imageId: image.ImageId }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
-	const imageRunError = (exc) => {
-		outputStatus.innerHTML = exc;
-	};
-
 	const imageRemove = (event, image) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/image/remove', { repository: image.Repository, tag: image.Tag }, showDefaultResponseStatus, imageRemoveError);
+		fetcher.get('/api/image/remove', { repository: image.Repository, tag: image.Tag }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const imageRemoveById = (event, image) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/image/remove-by-id', { imageId: image.ImageId }, showDefaultResponseStatus, imageRemoveError);
-	};
-	const imageRemoveError = (exc) => {
-		outputStatus.innerHTML = exc;
+		fetcher.get('/api/image/remove-by-id', { imageId: image.ImageId }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const settingRun = (event, setting) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/setting/run', { name: setting.Name, version: setting.Version }, showDefaultResponseStatus, settingRunError);
-	};
-	const settingRunError = (exc) => {
-		outputStatus.innerHTML = exc;
+		fetcher.get('/api/setting/run', { name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const buildDockerfile = (event, image) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/build-dockerfile', { name: image.Name, version: image.Version }, showDefaultResponseStatus, buildDockerfileError);
-	};
-	const buildDockerfileError = (exc) => {
-		outputStatus.innerHTML = exc;
+		fetcher.get('/api/build-dockerfile', { name: image.Name, version: image.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const deployDockerComposeYml = (event, image) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/deploy-docker-compose-yml', { name: image.Name, version: image.Version }, showDefaultResponseStatus, deployDockerComposeYmlError);
-	};
-	const deployDockerComposeYmlError = (exc) => {
-		outputStatus.innerHTML = exc;
+		fetcher.get('/api/deploy-docker-compose-yml', { name: image.Name, version: image.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const showStackServices = (services) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small' });
@@ -258,10 +250,7 @@
 	const stackRemove = (event, stack) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/stack/remove', { name: stack.Name }, showDefaultResponseStatus, stackRemoveError);
-	};
-	const stackRemoveError = (exc) => {
-		outputStatus.innerHTML = exc;
+		fetcher.get('/api/stack/remove', { name: stack.Name }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const showInstances = (apiInstancesResponse) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputInstances);
@@ -303,26 +292,17 @@
 	const instanceStart = (event, instance) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/instance/start', { containerId: instance.ContainerId }, showDefaultResponseStatus, instanceStartError);
-	};
-	const instanceStartError = (exc) => {
-		outputStatus.innerHTML = exc;
+		fetcher.get('/api/instance/start', { containerId: instance.ContainerId }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const instanceStop = (event, instance) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/instance/stop', { containerId: instance.ContainerId }, showDefaultResponseStatus, instanceStopError);
-	};
-	const instanceStopError = (exc) => {
-		outputStatus.innerHTML = exc;
+		fetcher.get('/api/instance/stop', { containerId: instance.ContainerId }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const instanceRemove = (event, instance) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/instance/remove', { containerId: instance.ContainerId }, showDefaultResponseStatus, instanceRemoveError);
-	};
-	const instanceRemoveError = (exc) => {
-		outputStatus.innerHTML = exc;
+		fetcher.get('/api/instance/remove', { containerId: instance.ContainerId }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const instanceSee = (event, instance) => {
 		window.location.href = "/api/instance/see?containerId=" + instance.ContainerId;

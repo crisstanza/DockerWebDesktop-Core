@@ -10,16 +10,6 @@ DockerWebDesktop-Core
 
 <br>
 
-## Run docker engine:
-
-	dockerd
-
-
-## Run docker swarn:
-
-	docker swarm init
-
-
 ## Install .NET Core on Ubuntu:
 
 	wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb

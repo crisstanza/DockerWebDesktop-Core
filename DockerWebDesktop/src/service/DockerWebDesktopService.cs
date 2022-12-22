@@ -180,22 +180,14 @@ namespace service
 		{
 			string name = repository.Replace(".local", "");
 			string version = tag.Replace(".local", "");
-			string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(name, version));
+			string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(name, version), true);
 			String portsArguments = GetArguments("-p", ports);
 			portsArguments = this.stringUtils.IsBlank(portsArguments) ? "" : portsArguments + " ";
 			string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(name, version), true);
 			String envsArguments = GetArguments("-e", envs);
 			envsArguments = this.stringUtils.IsBlank(envsArguments) ? "" : envsArguments + " ";
 			String network = this.fileSystemUtils.GetTextFromFile(NetworkFile(name, version), true);
-			String networkArgument;
-			if (!stringUtils.IsBlank(network))
-			{
-				networkArgument = " --network " + network + " ";
-			}
-			else
-			{
-				networkArgument = "";
-			}
+			String networkArgument = this.GetArgument("--network", network);
 			string arguments = "run -d " + envsArguments + portsArguments + networkArgument + imageId;
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
 			if (execResult.ExitCode != 0)
@@ -378,7 +370,7 @@ namespace service
 					{
 						Name = this.fileSystemUtils.FolderName(folder),
 						Version = this.fileSystemUtils.FolderName(version),
-						Ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(version), true),
+						Ports = this.stringUtils.defaultArray(this.fileSystemUtils.GetLinesFromFile(PortsFile(version), true)),
 						Envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(version), true),
 						NetworkMode = this.stringUtils.defaultString(this.fileSystemUtils.GetTextFromFile(NetworkFile(version), true)),
 						Dockerfile = this.fileSystemUtils.ExistsFile(DockerfileFile(version)),
@@ -391,22 +383,14 @@ namespace service
 		}
 		public RunTimeUtils.ExecResult ApiSettingRun(string name, string version)
 		{
-			string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(name, version));
-			String portsArguments = GetArguments("-p", ports);
+			string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(name, version), true);
+			String portsArguments = this.GetArguments("-p", ports);
 			portsArguments = this.stringUtils.IsBlank(portsArguments) ? "" : portsArguments + " ";
 			string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(name, version), true);
-			String envsArguments = GetArguments("-e", envs);
+			String envsArguments = this.GetArguments("-e", envs);
 			envsArguments = this.stringUtils.IsBlank(envsArguments) ? "" : envsArguments + " ";
 			String network = this.fileSystemUtils.GetTextFromFile(NetworkFile(name, version), true);
-			String networkArgument;
-			if (!stringUtils.IsBlank(network))
-			{
-				networkArgument = " --network " + network + " ";
-			}
-			else
-			{
-				networkArgument = "";
-			}
+			String networkArgument = this.GetArgument("--network", network);
 			string arguments = "run -d " + envsArguments + portsArguments + networkArgument + name + ":" + version;
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
 			if (execResult.ExitCode != 0)
@@ -700,6 +684,17 @@ namespace service
 				}
 			}
 			return arguments.ToString().Trim();
+		}
+		private string GetArgument(string name, string value)
+		{
+			if (this.stringUtils.IsBlank(value))
+			{
+				return "";
+			}
+			else
+			{
+				return " --network " + value + " ";
+			}
 		}
 		#endregion
 	}
