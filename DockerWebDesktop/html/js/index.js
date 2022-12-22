@@ -126,13 +126,17 @@
 				{ label: 'deploy docker-compose.yml', handler: deployDockerComposeYml, enabled: (setting) => setting.DockerComposeYml }
 			],
 			[
-				{ label: 'test', handler: settingTest }
+				{ label: 'test IP', handler: settingTest }, { label: 'test localhost', handler: settingTestLocalhost }
 			]
 		);
 	};
 	const settingTest = (event, setting) => {
 		event.preventDefault();
 		window.open(`//${REAL_IP}:${setting.Ports[0].split(':')[0]}`);
+	};
+	const settingTestLocalhost = (event, setting) => {
+		event.preventDefault();
+		window.open(`//localhost:${setting.Ports[0].split(':')[0]}`);
 	};
 	const showSettingsError = (exc) => {
 		io.github.crisstanza.Creator.html('span', {}, outputSettings, exc);
