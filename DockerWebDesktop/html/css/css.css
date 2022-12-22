@@ -29,7 +29,6 @@ body * {
 
 .left { float: left; }
 .right { float: right; }
-
 .disabled { opacity: 0.5; }
 
 button {
@@ -119,8 +118,11 @@ fieldset table td button {
 	padding: 0 10px 0 10px;
 }
 
-a { color: brown; }
-a:hover { color: blueviolet; }
+a {
+	color: brown;
+	text-decoration: none;
+}
+a:hover { color: blueviolet; text-decoration: underline dotted; }
 
 fieldset table.interactive > tbody tr td:last-child {
 	width: 0;

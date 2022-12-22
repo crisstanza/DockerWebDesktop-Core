@@ -275,11 +275,13 @@
 				{ label: 'stop', handler: instanceStop, enabled: (instance) => instance.Running },
 				{ label: 'remove', handler: instanceRemove, enabled: (instance) => !instance.Running },
 				{ label: 'shell', handler: instanceSee, enabled: (instance) => instance.Running },
-				{ label: 'stats', handler: instanceStatsSee }
+				{ label: 'stats', handler: instanceStatsSee },
+				{ label: 'logs', handler: instanceLogsSee }
 			],
 			[
+				{ label: 'inspect', href: instanceInspectHref, target: '_blank' },
 				{ label: 'stats', href: instanceStatsHref, target: '_blank' },
-				{ label: 'inspect', href: instanceInspectHref, target: '_blank' }
+				{ label: 'logs', href: instanceLogsHref, target: '_blank' }
 			]
 		);
 	};
@@ -287,12 +289,10 @@
 		io.github.crisstanza.Creator.html('span', {}, outputInstances, exc);
 	};
 
-	const instanceInspectHref = (instance) => {
-		return '/api/instance/inspect?containerId=' + instance.ContainerId;
-	};
-	const instanceStatsHref = (instance) => {
-		return '/api/instance/stats?containerId=' + instance.ContainerId;
-	};
+	const instanceLogsHref = (instance) => { return '/api/instance/logs?containerId=' + instance.ContainerId; };
+	const instanceInspectHref = (instance) => { return '/api/instance/inspect?containerId=' + instance.ContainerId; };
+	const instanceStatsHref = (instance) => { return '/api/instance/stats?containerId=' + instance.ContainerId; };
+
 	const instanceStart = (event, instance) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
@@ -308,12 +308,11 @@
 		const fetcher = new io.github.crisstanza.Fetcher();
 		fetcher.get('/api/instance/remove', { containerId: instance.ContainerId }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
-	const instanceSee = (event, instance) => {
-		window.location.href = "/api/instance/see?containerId=" + instance.ContainerId;
-	};
-	const instanceStatsSee = (event, instance) => {
-		window.location.href = "/api/instance/stats-see?containerId=" + instance.ContainerId;
-	};
+
+	const instanceSee = (event, instance) => { window.location.href = "/api/instance/see?containerId=" + instance.ContainerId; };
+	const instanceStatsSee = (event, instance) => { window.location.href = "/api/instance/stats-see?containerId=" + instance.ContainerId; };
+	const instanceLogsSee = (event, instance) => { window.location.href = "/api/instance/logs-see?containerId=" + instance.ContainerId; };
+
 	const loadSettings = () => {
 		const fetcher = new io.github.crisstanza.Fetcher();
 		fetcher.post('/api/settings', null, showSettings, showSettingsError);

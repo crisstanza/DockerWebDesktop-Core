@@ -231,29 +231,30 @@ namespace controller
 		}
 		public HttpListenerUtils.OutputBody ApiInstanceSee(string containerId)
 		{
-			ApiInstanceSeeResponse output = new ApiInstanceSeeResponse()
-			{
-				Data = this.service.ApiInstanceSee(containerId)
-			};
-			return base.httpListenerUtils.DefaultDownloadOutputBody(output.Data.Contents, output.Data.Name);
+			DownloadFile fileToDownload = this.service.ApiInstanceSee(containerId);
+			return base.httpListenerUtils.DefaultDownloadOutputBody(fileToDownload.Contents, fileToDownload.Name);
 		}
 		public HttpListenerUtils.OutputBody ApiInstanceInspect(string containerId)
 		{
-			string data = this.service.ApiInstanceInspect(containerId);
-			return base.httpListenerUtils.DefaultJsonOutputBody(data);
+			return base.httpListenerUtils.DefaultJsonOutputBody(this.service.ApiInstanceInspect(containerId));
 		}
 		public HttpListenerUtils.OutputBody ApiInstanceStats(string containerId)
 		{
-			string data = this.service.ApiInstanceStats(containerId);
-			return base.httpListenerUtils.DefaultTextOutputBody(data);
+			return base.httpListenerUtils.DefaultTextOutputBody(this.service.ApiInstanceStats(containerId));
+		}
+		public HttpListenerUtils.OutputBody ApiInstanceLogs(string containerId)
+		{
+			return base.httpListenerUtils.DefaultTextOutputBody(this.service.ApiInstanceLogs(containerId));
 		}
 		public HttpListenerUtils.OutputBody ApiInstanceStatsSee(string containerId)
 		{
-			ApiInstanceStatsSeeResponse output = new ApiInstanceStatsSeeResponse()
-			{
-				Data = this.service.ApiInstanceStatsSee(containerId)
-			};
-			return base.httpListenerUtils.DefaultDownloadOutputBody(output.Data.Contents, output.Data.Name);
+			DownloadFile fileToDownload = this.service.ApiInstanceStatsSee(containerId);
+			return base.httpListenerUtils.DefaultDownloadOutputBody(fileToDownload.Contents, fileToDownload.Name);
+		}
+		public HttpListenerUtils.OutputBody ApiInstanceLogsSee(string containerId)
+		{
+			DownloadFile fileToDownload = this.service.ApiInstanceLogsSee(containerId);
+			return base.httpListenerUtils.DefaultDownloadOutputBody(fileToDownload.Contents, fileToDownload.Name);
 		}
 		#endregion
 

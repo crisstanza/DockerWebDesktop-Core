@@ -338,15 +338,28 @@ namespace service
 		}
 		public string ApiInstanceInspect(string containerId)
 		{
-			string arguments = "inspect " + containerId;
-			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
-			return execResult.Output;
+			return base.runTimeUtils.Exec("docker", "inspect " + containerId).Output;
 		}
 		public string ApiInstanceStats(string containerId)
 		{
-			string arguments = "stats " + containerId + " --no-stream";
-			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
-			return execResult.Output;
+			return base.runTimeUtils.Exec("docker", "stats " + containerId + " --no-stream").Output;
+		}
+		public string ApiInstanceLogs(string containerId)
+		{
+			return base.runTimeUtils.Exec("docker", "logs -t " + containerId + " --details").Output;
+		}
+		public DownloadFile ApiInstanceLogsSee(string containerId)
+		{
+			string dockerLogs = "docker logs -t " + containerId + " --details --follow";
+			string script = ":; " + dockerLogs + " ; exit 0";
+			script += "\n";
+			script += "start ubuntu.exe run " + dockerLogs;
+			script += "\n";
+			return new DownloadFile()
+			{
+				Contents = script,
+				Name = containerId + "-logs.cmd"
+			};
 		}
 		#endregion
 
