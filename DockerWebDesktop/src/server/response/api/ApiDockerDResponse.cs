@@ -6,6 +6,5 @@ namespace server.response.api
 	{
 		public int Status { get; set; }
 		public string Output { get; set; }
-
 	}
 }

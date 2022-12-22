@@ -80,14 +80,12 @@ namespace service
 		#endregion
 
 		#region api dockerd
-		public int ApiDockerD(string command)
+		public RunTimeUtils.ExecResult ApiDockerD(string command)
 		{
 			if (command == "start")
 			{
-				string arguments = null;
-
-				int status = base.runTimeUtils.Run("dockerd", arguments);
-				return status;
+				int status = base.runTimeUtils.Run("dockerd", null);
+				return new RunTimeUtils.ExecResult() { ExitCode = status };
 			}
 			else if (command == "stop")
 			{
@@ -96,19 +94,30 @@ namespace service
 				string pid = base.fileSystemUtils.GetTextFromFile(pidFile, true);
 				if (pid != null)
 				{
-					string arguments = "-9 " + pid;
-					int status = base.runTimeUtils.Exec("kill", arguments).ExitCode;
-					base.runTimeUtils.Exec("rm", pidFile + " " + sockFile);
-					return status;
+					RunTimeUtils.ExecResult execResultKillProcess = base.runTimeUtils.Exec("kill", "-9 " + pid);
+					if (execResultKillProcess.ExitCode != 0)
+					{
+						return new RunTimeUtils.ExecResult()
+						{
+							ExitCode = execResultKillProcess.ExitCode,
+							Output = execResultKillProcess.Output
+						};
+					}
+					RunTimeUtils.ExecResult execResultRemovePidFile = base.runTimeUtils.Exec("rm", pidFile + " " + sockFile);
+					return new RunTimeUtils.ExecResult()
+					{
+						ExitCode = execResultRemovePidFile.ExitCode,
+						Output = execResultRemovePidFile.Output
+					};
 				}
 				else
 				{
-					return 0;
+					return new RunTimeUtils.ExecResult() { ExitCode = 0 };
 				}
 			}
 			else
 			{
-				return -1;
+				return new RunTimeUtils.ExecResult() { ExitCode = -1 };
 			}
 		}
 		#endregion

@@ -63,10 +63,11 @@ namespace controller
 		#region api dockerd
 		public HttpListenerUtils.OutputBody ApiDockerD(string command)
 		{
-			// RunTimeUtils.ExecResult execResult = this.service.ApiDockerD(command);
+			RunTimeUtils.ExecResult execResult = this.service.ApiDockerD(command);
 			ADefaultResponse output = new ApiDockerDResponse()
 			{
-				Status = this.service.ApiDockerD(command)
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}
