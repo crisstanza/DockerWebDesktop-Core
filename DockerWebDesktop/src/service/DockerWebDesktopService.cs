@@ -45,6 +45,8 @@ namespace service
 					Console.WriteLine(execResult.Output);
 				}
 			}
+			RunTimeUtils.ExecResult execResultSwarm = base.runTimeUtils.Exec("docker", "node ls");
+			bool swarm = execResultSwarm.ExitCode == 0;
 			IPAddress ip = this.networkingUtils.GetLocalAddress(IPAddress.Parse(args.SubnetMask));
 			return new ApiStatus()
 			{
@@ -52,6 +54,7 @@ namespace service
 				{
 					Ip = ip?.ToString(),
 					DockerD = dockerD,
+					Swarm = swarm,
 					Version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion
 				}
 			};
@@ -107,6 +110,19 @@ namespace service
 			{
 				return -1;
 			}
+		}
+		#endregion
+
+		#region api dockerd
+		public RunTimeUtils.ExecResult Swarm(string command)
+		{
+			string arguments = "swarm " + command;
+			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
+			if (execResult.ExitCode != 0)
+			{
+				Console.WriteLine(execResult.Output);
+			}
+			return execResult;
 		}
 		#endregion
 

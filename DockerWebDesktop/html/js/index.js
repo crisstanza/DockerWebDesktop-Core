@@ -32,6 +32,8 @@
 		const command = getCommandFromButton(button);
 		window.open(command);
 	};
+
+	// dockerd
 	const btDockerd_Click = (event) => {
 		const button = event.target;
 		if (button.classList.contains('pressed')) {
@@ -50,7 +52,7 @@
 		if (dockerdStartResponse.Status == 0) {
 			btDockerd.classList.add('pressed');
 		}
-		showDockerDStatus(true);
+		showDockerAndSwarmDStatus(true, null);
 	};
 	const dockerdStartError = (exc) => { outputStatus.innerHTML = exc; };
 	const dockerdStop = (event) => {
@@ -63,9 +65,46 @@
 		if (dockerdStopResponse.Status == 0) {
 			btDockerd.classList.remove('pressed');
 		}
-		showDockerDStatus(false);
+		showDockerAndSwarmDStatus(false, null);
 	};
 	const dockerdStopError = (exc) => { outputStatus.innerHTML = exc; };
+	// /dockerd
+
+	// swarm
+	const btSwarm_Click = (event) => {
+		const button = event.target;
+		if (button.classList.contains('pressed')) {
+			swarmLeave(event);
+		} else {
+			swarmInit(event);
+		}
+	};
+	const swarmInit = (event) => {
+		resetOutput();
+		const fetcher = new io.github.crisstanza.Fetcher();
+		fetcher.get('/api/swarm', { command: 'init' }, swarmInitSuccess, swarmInitError);
+	};
+	const swarmInitSuccess = (swarmInitResponse) => {
+		showDefaultResponseStatus(swarmInitResponse);
+		if (swarmInitResponse.Status == 0) {
+			btSwarm.classList.add('pressed');
+		}
+	};
+	const swarmInitError = (exc) => { outputStatus.innerHTML = exc; };
+	const swarmLeave = (event) => {
+		resetOutput();
+		const fetcher = new io.github.crisstanza.Fetcher();
+		fetcher.get('/api/swarm', { command: 'leave --force' }, swarmLeaveSuccess, swarmLeaveError);
+	};
+	const swarmLeaveSuccess = (swarmLeaveResponse) => {
+		showDefaultResponseStatus(swarmLeaveResponse);
+		if (swarmLeaveResponse.Status == 0) {
+			btSwarm.classList.remove('pressed');
+		}
+	};
+	const swarmLeaveError = (exc) => { outputStatus.innerHTML = exc; };
+	// /swarm
+
 	const showSettings = (apiSettingsResponse) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputSettings);
 		gridBuilder.build(
@@ -356,13 +395,18 @@
 		io.github.crisstanza.Creator.html('span', {}, outputDiskUsages, exc);
 	};
 
-	const showDockerDStatus = (status) => {
-		if (status) {
-			outputMessage.classList.remove('error');
-			outputMessage.innerHTML = 'DockerD is running!';
-		} else {
-			outputMessage.classList.add('error');
-			outputMessage.innerHTML = 'DockerD is NOT running!';
+	const showDockerAndSwarmDStatus = (statusDockerD, statusSwarm) => {
+		outputMessage.classList.remove('error');
+		outputMessage.innerHTML = '';
+		if (statusDockerD === true) {
+			outputMessage.innerHTML += '<div>DockerD is running!</div>';
+		} else if (statusDockerD === false) {
+			outputMessage.innerHTML += '<div class="error">DockerD is NOT running!</div>';
+		}
+		if (statusSwarm === true) {
+			outputMessage.innerHTML += '<div>Swarm is initiated!</div>';
+		} else if (statusSwarm === false) {
+			outputMessage.innerHTML += '<div class="error">Swarm is NOT initiated!<div>';
 		}
 	};
 
@@ -377,8 +421,13 @@
 			btDockerd.classList.remove('pressed');
 			[outputImages, outputInstances, outputStacks, outputNetworks, outputDiskUsages].forEach((element) => element.classList.add('disabled'));
 		}
+		if (status.Swarm) {
+			btSwarm.classList.add('pressed');
+		} else {
+			btSwarm.classList.remove('pressed');
+		}
 		if (outputStatus.innerText == '?') {
-			showDockerDStatus(status.DockerD);
+			showDockerAndSwarmDStatus(status.DockerD, status.Swarm);
 			outputStatus.innerHTML = 0;
 		}
 	};
@@ -405,6 +454,7 @@
 			button.addEventListener('click', bt_Click_Open);
 		});
 		btDockerd.addEventListener('click', btDockerd_Click);
+		btSwarm.addEventListener('click', btSwarm_Click);
 	};
 	const init = () => {
 		// initGui(0);

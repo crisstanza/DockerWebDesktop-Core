@@ -120,6 +120,11 @@ fieldset table.interactive > thead th:last-child {
 	border-right: hidden;
 }
 
+.bar-top button.bt-stop {
+	margin-left: 18px;
+	background-color: #ff000033;
+}
+
 .bar-top button {
 	margin-left: 6px;
 }
@@ -138,7 +143,14 @@ button.pressed:not([disabled]), button:active:not([disabled]) {
 	background-color: #D7D7D7;
 	box-shadow: inset 4px 4px 4px -1px #AAA;
 }
-
 button:hover:not([disabled]) { background-color: #E7E7E7; }
 
-div.error { color: red; }
+.bar-top button.bt-stop.pressed:not([disabled]), .bar-top button.bt-stop:active:not([disabled]) {
+	background-color: #ff000044;
+	box-shadow: inset 4px 4px 4px -1px #ff000055;
+}
+.bar-top button.bt-stop:hover:not([disabled]) { background-color: #ff000033; }
+
+div.error {
+	color: red;
+}

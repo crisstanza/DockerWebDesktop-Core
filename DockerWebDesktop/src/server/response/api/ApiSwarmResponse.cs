@@ -2,9 +2,10 @@
 
 namespace server.response.api
 {
-	public class ApiDeployDockerComposeYmlResponse : ADefaultResponse
+	public class ApiSwarmResponse : ADefaultResponse
 	{
 		public int Status { get; set; }
 		public string Output { get; set; }
+
 	}
 }
