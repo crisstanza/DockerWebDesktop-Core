@@ -1,5 +1,6 @@
 ﻿:root {
 	--border-radius: 3px;
+	--small-font: 0.85em;
 }
 
 html, body, button {
@@ -22,6 +23,10 @@ body > * {
 	flex: 100%;
 }
 
+body * {
+	font-size: 14pt;
+}
+
 .left { float: left; }
 .right { float: right; }
 
@@ -32,6 +37,7 @@ button {
 	padding: 3px 9px 3px 9px;
 	box-shadow: 2px 2px 2px -1px #AAA;
 	border-radius: var(--border-radius);
+	font-size: var(--small-font);
 }
 
 fieldset {
@@ -54,15 +60,15 @@ fieldset table {
 	background-color: white;
 }
 
-fieldset table.small, fieldset table.small > thead th, fieldset table.small > tfoot td { font-size: 0.85em; }
+fieldset table.small, fieldset table.small > thead th, fieldset table.small > tfoot td { font-size: var(--small-font); }
 
 fieldset table > thead th {
 	background-color: beige;
-	font-size: 10pt;
+	font-size: var(--small-font);
 }
 fieldset table.interactive > thead th:not(:last-child) {
 	background-color: beige;
-	font-size: 10pt;
+	font-size: var(--small-font);
 }
 fieldset table > tfoot {
 	background-color: antiquewhite;
@@ -96,7 +102,7 @@ fieldset table > thead th {
 }
 fieldset table > tfoot td {
 	padding: 3px 2px 1px 2px;
-	font-size: 10pt;
+	font-size: var(--small-font);
 }
 
 fieldset table td button, fieldset table td a {
@@ -107,10 +113,10 @@ fieldset table td a:not(:first-child) {
 }
 fieldset table td a {
 	padding-right: 2px;
-	font-size: 10pt;
+	font-size: var(--small-font);
 }
 fieldset table td button {
-	padding: 0 10px 2px 10px;
+	padding: 0 10px 0 10px;
 }
 
 a { color: brown; }
@@ -134,6 +140,7 @@ fieldset table.interactive > thead th:last-child {
 }
 
 .bar-top button {
+	font-size: 1em;
 	margin-left: 6px;
 }
 
