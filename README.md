@@ -25,6 +25,20 @@ DockerWebDesktop-Core
 	sudo apt install dotnet-sdk-3.1
 
 
+## Usage example:
+
+	export DWD_PORT=9876 ; sudo -E dotnet run
+
+
+### Environment variables:
+
+	- DWD_DEBUG - not used
+	- DWD_SUBNET_MASK
+	- DWD_HOST - do not use!
+	- DWD_PORT
+	- DWD_SETTINGS_HOME
+
+
 ### Links:
 
 	https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04
