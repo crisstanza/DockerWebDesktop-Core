@@ -94,6 +94,14 @@ fieldset table > tfoot td {
 
 fieldset table td button, fieldset table td a {
 	margin: 0px 2px 0px 2px;
+}
+fieldset table td a:not(:first-child) {
+	padding-left: 1px;
+}
+fieldset table td a {
+	padding-right: 2px;
+}
+fieldset table td button {
 	padding: 0 10px 2px 10px;
 }
 
@@ -103,7 +111,7 @@ a:hover { color: blueviolet; }
 fieldset table.interactive > tbody tr td:last-child {
 	width: 0;
 	white-space: nowrap;
-	padding: 0px 2px 0px 2px;
+	padding: 0;
 }
 
 fieldset table.interactive > thead th:last-child {
