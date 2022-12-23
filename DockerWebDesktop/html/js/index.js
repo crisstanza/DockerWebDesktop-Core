@@ -347,10 +347,7 @@
 		gridBuilder.build(
 			apiNetworksResponse.Data.Networks,
 			[
-				{ name: 'NetworkId' },
-				{ name: 'Name' },
-				{ name: 'Driver' },
-				{ name: 'Scope' }
+				{ name: 'NetworkId' }, { name: 'Name' }, { name: 'Driver' }, { name: 'Scope' }
 			],
 			[],
 			[
@@ -432,15 +429,11 @@
 
 	const initListeners = () => {
 		const buttons = document.querySelectorAll('button[data-target=_blank]');
-		buttons.forEach((button) => {
-			button.setAttribute('title', getCommandFromButton(button));
-			button.addEventListener('click', bt_Click_Open);
-		});
+		buttons.forEach((button) => button.addEventListener('click', bt_Click_Open));
 		btDockerd.addEventListener('click', btDockerd_Click);
 		btSwarm.addEventListener('click', btSwarm_Click);
 	};
 	const init = () => {
-		// initGui(0);
 		initGui(100);
 		initListeners();
 	};

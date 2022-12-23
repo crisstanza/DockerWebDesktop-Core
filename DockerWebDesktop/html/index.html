@@ -19,10 +19,10 @@
 		<div class="left">
 			Status: <span id="output-status">?</span>
 		</div>
-		<button class="right bt-stop" data-target="_blank" data-action="/stop">stop</button>
-		<button class="right" data-action="/api/swarm" id="bt-swarm">swarm</button>
-		<button class="right" data-action="/api/docker-d" id="bt-dockerd">dockerd</button>
-		<a href="/api/docker-info" target="_blank" class="right">info</a>
+		<button class="right bt-stop" data-target="_blank" data-action="/stop" title="stop DockerWebDesktop">stop</button>
+		<button class="right" data-action="/api/swarm" id="bt-swarm" title="init/leave swarm">swarm</button>
+		<button class="right" data-action="/api/docker-d" id="bt-dockerd" title="start/stop dockerd">dockerd</button>
+		<a href="/api/docker-info" target="_blank" class="right" title="docker info">info</a>
 		<br />
 		<div class="left" id="output-message"></div>
 	</div>
