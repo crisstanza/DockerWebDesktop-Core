@@ -8,6 +8,6 @@ services:
       restart_policy:
         condition: none
     volumes:
-      - /mnt/c/Users/cneves/source/repos/LotFac/_new3/:/usr/share/nginx/html/
+      - /local/path/:/usr/share/nginx/html/
     ports:
       - "8888:80"

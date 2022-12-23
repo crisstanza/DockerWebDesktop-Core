@@ -15,7 +15,7 @@ services:
       restart_policy:
         condition: none
     volumes:
-      - /mnt/c/Users/cneves/source/repos/siam-2.0:/var/www/html/
+      - /local/path/:/var/www/html/
     ports:
       - "8000:80"
     environment:
