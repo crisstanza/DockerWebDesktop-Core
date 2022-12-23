@@ -383,13 +383,13 @@
 		outputMessage.innerHTML = '';
 		if (statusDockerD === true) {
 			outputMessage.innerHTML += '<div>DockerD is running!</div>';
+			if (statusSwarm === true) {
+				outputMessage.innerHTML += '<div>Swarm is initiated!</div>';
+			} else if (statusSwarm === false) {
+				outputMessage.innerHTML += '<div class="error">Swarm is NOT initiated!<div>';
+			}
 		} else if (statusDockerD === false) {
 			outputMessage.innerHTML += '<div class="error">DockerD is NOT running!</div>';
-		}
-		if (statusSwarm === true) {
-			outputMessage.innerHTML += '<div>Swarm is initiated!</div>';
-		} else if (statusSwarm === false) {
-			outputMessage.innerHTML += '<div class="error">Swarm is NOT initiated!<div>';
 		}
 	};
 
