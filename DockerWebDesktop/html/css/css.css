@@ -1,5 +1,6 @@
 ﻿:root {
 	--border-radius: 3px;
+	--normal-font: 14pt;
 	--small-font: 0.85em;
 }
 
@@ -24,7 +25,7 @@ body > * {
 }
 
 body * {
-	font-size: 14pt;
+	font-size: var(--normal-font);
 }
 
 .left { float: left; }
@@ -59,7 +60,9 @@ fieldset table {
 	background-color: white;
 }
 
-fieldset table.small, fieldset table.small > thead th, fieldset table.small > tfoot td { font-size: var(--small-font); }
+	fieldset table.small, fieldset table.small > thead th, fieldset table.small > tfoot td, .output-message div {
+		font-size: var(--small-font);
+	}
 
 fieldset table > thead th {
 	background-color: beige;

@@ -18,7 +18,7 @@
 	};
 	const showDefaultResponseStatus = (response) => {
 		outputStatus.innerHTML = response.Status;
-		outputMessage.innerHTML = formatOutput(response.Output);
+		outputMessage.innerHTML = '<div>' + formatOutput(response.Output) + '</div>';
 		if (response.Status == 0) {
 			outputMessage.classList.remove('error');
 		} else {
@@ -29,7 +29,7 @@
 	const showDefaultExceptionStatus = (exc) => {
 		outputStatus.innerHTML = '?';
 		outputMessage.classList.add('error');
-		outputMessage.innerHTML = formatOutput(exc.toString());
+		outputMessage.innerHTML = '<div>' + formatOutput(exc.toString()) + '</div>';
 	};
 
 	const getCommandFromButton = (button) => {
