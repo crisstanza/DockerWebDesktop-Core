@@ -279,6 +279,21 @@ namespace controller
 		}
 		#endregion
 
+		#region api nodes
+		public HttpListenerUtils.OutputBody ApiNodes()
+		{
+			ADefaultResponse output = new ApiNodesResponse()
+			{
+				Data = this.service.ApiNodes()
+			};
+			return base.httpListenerUtils.DefaultJsonOutputBody(output);
+		}
+		public HttpListenerUtils.OutputBody ApiNodeInspect(string id)
+		{
+			return base.httpListenerUtils.DefaultJsonOutputBody(this.service.ApiNodeInspect(id));
+		}
+		#endregion
+
 		#region api networks
 		public HttpListenerUtils.OutputBody ApiNetworks()
 		{

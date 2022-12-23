@@ -248,14 +248,37 @@
 			]
 		);
 	};
-	const showStacksError = (exc) => {
-		io.github.crisstanza.Creator.html('span', {}, outputStacks, exc);
-	};
+	const showStacksError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputStacks, exc); };
 	const stackRemove = (event, stack) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
 		fetcher.get('/api/stack/remove', { name: stack.Name }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
+
+	// nodes
+	const showNodes = (apiNodesResponse) => {
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputNodes);
+		gridBuilder.build(
+			apiNodesResponse.Data.Nodes,
+			[
+				{ name: 'Id' },
+				{ name: 'HostName' },
+				{ name: 'Status' },
+				{ name: 'Availability' },
+				{ name: 'ManagerStatus' },
+				{ name: 'EngineVersion' }
+			],
+			[],
+			[
+				{ label: 'inspect', href: nodeInspectHref, target: '_blank' },
+			]
+		);
+	};
+	const showNodesError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputNodes, exc); };
+	const nodeInspectHref = (node) => { return '/api/node/inspect?id=' + cleanNodeId(node.Id); };
+	const cleanNodeId = (id) => { return id.endsWith(' *') ? id.substring(0, id.length - 2) : id; };
+	// /nodes
+
 	const showInstances = (apiInstancesResponse) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputInstances);
 		gridBuilder.build(
@@ -285,10 +308,7 @@
 			]
 		);
 	};
-	const showInstancesError = (exc) => {
-		io.github.crisstanza.Creator.html('span', {}, outputInstances, exc);
-	};
-
+	const showInstancesError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputInstances, exc); };
 	const instanceLogsHref = (instance) => { return '/api/instance/logs?containerId=' + instance.ContainerId; };
 	const instanceInspectHref = (instance) => { return '/api/instance/inspect?containerId=' + instance.ContainerId; };
 	const instanceStatsHref = (instance) => { return '/api/instance/stats?containerId=' + instance.ContainerId; };
@@ -329,6 +349,10 @@
 		const fetcher = new io.github.crisstanza.Fetcher();
 		fetcher.get('/api/stacks', null, showStacks, showStacksError);
 	};
+	const loadNodes = () => {
+		const fetcher = new io.github.crisstanza.Fetcher();
+		fetcher.get('/api/nodes', null, showNodes, showNodesError);
+	};
 	const loadNetworks = () => {
 		const fetcher = new io.github.crisstanza.Fetcher();
 		fetcher.get('/api/networks', null, showNetworks, showNetworksError);
@@ -355,12 +379,8 @@
 			]
 		);
 	};
-	const showNetworksError = (exc) => {
-		io.github.crisstanza.Creator.html('span', {}, outputNetworks, exc);
-	};
-	const networkInspectHref = (network) => {
-		return '/api/network/inspect?networkId=' + network.NetworkId;
-	};
+	const showNetworksError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputNetworks, exc); };
+	const networkInspectHref = (network) => { return '/api/network/inspect?networkId=' + network.NetworkId; };
 
 	const showDiskUsages = (apiDiskUsagesResponse) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true }, outputDiskUsages);
@@ -371,9 +391,7 @@
 			]
 		);
 	};
-	const showDiskUsagesError = (exc) => {
-		io.github.crisstanza.Creator.html('span', {}, outputDiskUsages, exc);
-	};
+	const showDiskUsagesError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputDiskUsages, exc); };
 
 	const showDockerAndSwarmDStatus = (statusDockerD, statusSwarm) => {
 		outputMessage.classList.remove('error');
@@ -396,10 +414,10 @@
 		btDockerd.removeAttribute('disabled');
 		if (status.DockerD) {
 			btDockerd.classList.add('pressed');
-			[outputImages, outputInstances, outputStacks, outputNetworks, outputDiskUsages].forEach((element) => element.classList.remove('disabled'));
+			[outputImages, outputInstances, outputStacks, outputNodes, outputNetworks, outputDiskUsages].forEach((element) => element.classList.remove('disabled'));
 		} else {
 			btDockerd.classList.remove('pressed');
-			[outputImages, outputInstances, outputStacks, outputNetworks, outputDiskUsages].forEach((element) => element.classList.add('disabled'));
+			[outputImages, outputInstances, outputStacks, outputNodes, outputNetworks, outputDiskUsages].forEach((element) => element.classList.add('disabled'));
 		}
 		if (status.Swarm) {
 			btSwarm.classList.add('pressed');
@@ -421,6 +439,7 @@
 			loadImages();
 			loadInstances();
 			loadStacks();
+			loadNodes();
 			loadNetworks();
 			loadDiskUsages();
 			loadStatus();

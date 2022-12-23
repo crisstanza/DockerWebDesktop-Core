@@ -549,6 +549,49 @@ namespace service
 		}
 		#endregion
 
+		#region api nodes
+		public ApiNodes ApiNodes()
+		{
+			return new ApiNodes()
+			{
+				Nodes = LoadNodes()
+			};
+		}
+		private List<Node> LoadNodes()
+		{
+			List<Node> nodes = new List<Node>();
+			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", "node ls");
+			if (execResult.ExitCode == 0)
+			{
+				FixedWidthColumnReader reader = new FixedWidthColumnReader(execResult.Output);
+				reader.Headers("ID", "HOSTNAME", "STATUS", "AVAILABILITY", "MANAGER STATUS", "ENGINE VERSION");
+				while (reader.HasLines())
+				{
+					FixedWidthColumnReader.Line line = reader.NextLine();
+					Node node = new Node()
+					{
+						Id = line.NextValue(),
+						HostName = line.NextValue(),
+						Status = line.NextValue(),
+						Availability = line.NextValue(),
+						ManagerStatus = line.NextValue(),
+						EngineVersion = line.NextValue()
+					};
+					nodes.Add(node);
+				}
+			}
+			else
+			{
+				Console.WriteLine(execResult.Output);
+			}
+			return nodes;
+		}
+		public string ApiNodeInspect(string id)
+		{
+			return base.runTimeUtils.Exec("docker", "node inspect " + id).Output;
+		}
+		#endregion
+
 		#region api networks
 		public ApiNetworks ApiNetworks()
 		{
