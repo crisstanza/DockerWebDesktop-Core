@@ -366,6 +366,7 @@
 		fetcher.get('/api/status', null, showStatus, showStatusError);
 	};
 
+	// networks
 	const showNetworks = (apiNetworksResponse) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputNetworks);
 		gridBuilder.build(
@@ -373,7 +374,9 @@
 			[
 				{ name: 'NetworkId' }, { name: 'Name' }, { name: 'Driver' }, { name: 'Scope' }
 			],
-			[],
+			[
+				{ label: 'remove', handler: networkRemove },
+			],
 			[
 				{ label: 'inspect', href: networkInspectHref, target: '_blank' }
 			]
@@ -381,6 +384,12 @@
 	};
 	const showNetworksError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputNetworks, exc); };
 	const networkInspectHref = (network) => { return '/api/network/inspect?networkId=' + network.NetworkId; };
+	const networkRemove = (event, network) => {
+		resetOutput();
+		const fetcher = new io.github.crisstanza.Fetcher();
+		fetcher.get('/api/network/remove', { networkId: network.NetworkId }, showDefaultResponseStatus, showDefaultExceptionStatus);
+	};
+	// /networks
 
 	const showDiskUsages = (apiDiskUsagesResponse) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true }, outputDiskUsages);

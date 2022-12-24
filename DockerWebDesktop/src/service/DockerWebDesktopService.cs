@@ -633,6 +633,10 @@ namespace service
 			}
 			return networks;
 		}
+		public RunTimeUtils.ExecResult ApiNetworkRemove(string networkId)
+		{
+			return base.runTimeUtils.Exec("docker", "network rm " + networkId, null, "y");
+		}
 		#endregion
 
 		#region api disk usages

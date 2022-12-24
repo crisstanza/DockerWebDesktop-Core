@@ -308,6 +308,17 @@ namespace controller
 			string data = this.service.ApiNetworkInspect(networkId);
 			return base.httpListenerUtils.DefaultJsonOutputBody(data);
 		}
+		public HttpListenerUtils.OutputBody ApiNetworkRemove(string networkId)
+		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiNetworkRemove(networkId);
+			ADefaultResponse output = new ApiNetworkRemoveResponse()
+			{
+				Status = execResult.ExitCode,
+				Output = execResult.Output
+			};
+			return base.httpListenerUtils.DefaultJsonOutputBody(output);
+		}
+
 		#endregion
 
 		#region api disk usages
