@@ -1,4 +1,5 @@
-﻿using io.github.crisstanza.csharputils;
+﻿using io.github.crisstanza.commandliner;
+using io.github.crisstanza.csharputils;
 using io.github.crisstanza.csharputils.constants;
 using io.github.crisstanza.csharputils.server;
 using io.github.crisstanza.csharputils.server.response;
@@ -20,11 +21,19 @@ namespace controller
 		#region start stop end
 		public void Start()
 		{
-			Dictionary<string, string> extras = new Dictionary<string, string>()
+			Dictionary<string, string> extras = new Dictionary<string, string>();
+			IPAddress localAddress = base.networkingUtils.GetLocalAddress(IPAddress.Parse(args.SubnetMask));
+			if (localAddress != null)
+			{
+				extras.Add("Local address", localAddress.ToString());
+			}
+			extras.Add("Settings home", this.args.SettingsHome);
+			Dictionary<string, string> dependencies = new Dictionary<string, string>()
 				{
-					{ "Settings home", this.args.SettingsHome }
+					{ "CommandLiner-Core", CommandLinerCore.Version() },
+					{ "CSharpUtils-Core", CSharpUtilsCore.Version() }
 				};
-			base.server.Start(this, args.SubnetMask, extras);
+			base.server.Start(this, DockerWebDesktop.Version(), dependencies, extras);
 		}
 		public HttpListenerUtils.OutputBody Stop()
 		{

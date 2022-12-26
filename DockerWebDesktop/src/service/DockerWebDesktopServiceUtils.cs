@@ -14,7 +14,7 @@ namespace service
 		{
 			this.args = args;
 			this.fileSystemUtils = new FileSystemUtils();
-			this.runTimeUtils = new RunTimeUtils();
+			this.runTimeUtils = new RunTimeUtils(args.Debug);
 			this.stringUtils = new StringUtils();
 			this.networkingUtils = new NetworkingUtils();
 		}

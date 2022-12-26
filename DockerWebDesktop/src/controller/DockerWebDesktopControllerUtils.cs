@@ -11,6 +11,7 @@ namespace controller
 		protected readonly HttpListenerService server;
 		protected readonly JsonUtils jsonUtils;
 		protected readonly HttpListenerUtils httpListenerUtils;
+		protected readonly NetworkingUtils networkingUtils;
 
 		public DockerWebDesktopControllerUtils(CommandLineArguments args)
 		{
@@ -19,6 +20,7 @@ namespace controller
 			this.server = new HttpListenerService(args.Host, args.Port);
 			this.jsonUtils = new JsonUtils();
 			this.httpListenerUtils = new HttpListenerUtils();
+			this.networkingUtils = new NetworkingUtils();
 		}
 	}
 }

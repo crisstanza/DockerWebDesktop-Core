@@ -7,12 +7,18 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 
 # Demo:
 
-<img src="https://github.com/crisstanza/DockerWebDesktop-Core/raw/main/DOC/DockerWebDesktop-1.1.1.1.png">
+<img src="https://github.com/crisstanza/DockerWebDesktop-Core/raw/main/DOC/DockerWebDesktop-1.1.1.1.png"><br><br>
 
 # Dependencies:
 
  - https://github.com/crisstanza/CSharpUtils-Core
  - https://github.com/crisstanza/CommandLiner-Core
+
+<br>
+
+| DockerWebDesktop-Core | CommandLiner-Core | CSharpUtils-Core |
+| :-------------------: | :---------------: | :--------------: |
+| <b>1.1.5.0</b>        | 0.3.0.0           | 0.3.0.0          |
 
 <br>
 
@@ -34,11 +40,11 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 
 ### Environment variables:
 
-	- DWD_DEBUG - not used
-	- DWD_SUBNET_MASK
+	- DWD_DEBUG - true|false - show docker commands on the console
+	- DWD_SUBNET_MASK - your network subnet mask
 	- DWD_HOST - do not use!
-	- DWD_PORT
-	- DWD_SETTINGS_HOME
+	- DWD_PORT number - port where to listen to
+	- DWD_SETTINGS_HOME - directory path, ending with /
 
 
 ### Links:
@@ -47,8 +53,3 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 	https://docs.docker.com/compose/compose-file/compose-file-v2/#restart
 	https://stackoverflow.com/questions/39388877/adding-files-to-standard-images-using-docker-compose
 	https://chmod-calculator.com/
-
-
-#### Docker commands examples:
-
-	docker cp 90c31a3d2a50b834fa5959aea8c08453030e04e687ee0df7122e5c63e34fd753:/usr/local/etc/php/php.ini-development .

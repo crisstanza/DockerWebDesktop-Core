@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using System.Text;
 
 namespace service
@@ -42,7 +41,6 @@ namespace service
 				else
 				{
 					dockerD = false;
-					Console.WriteLine(execResult.Output);
 				}
 			}
 			RunTimeUtils.ExecResult execResultSwarm = base.runTimeUtils.Exec("docker", "node ls");
@@ -55,7 +53,7 @@ namespace service
 					Ip = ip?.ToString(),
 					DockerD = dockerD,
 					Swarm = swarm,
-					Version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion
+					Version = DockerWebDesktop.Version()
 				}
 			};
 		}
@@ -125,13 +123,7 @@ namespace service
 		#region api dockerd
 		public RunTimeUtils.ExecResult Swarm(string command)
 		{
-			string arguments = "swarm " + command;
-			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
-			if (execResult.ExitCode != 0)
-			{
-				Console.WriteLine(execResult.Output);
-			}
-			return execResult;
+			return base.runTimeUtils.Exec("docker", "swarm " + command);
 		}
 		#endregion
 
@@ -170,10 +162,6 @@ namespace service
 					images.Add(image);
 				}
 			}
-			else
-			{
-				Console.WriteLine(execResult.Output);
-			}
 			return images;
 		}
 		public RunTimeUtils.ExecResult ApiImageRun(string repository, string tag, string imageId)
@@ -190,10 +178,6 @@ namespace service
 			String networkArgument = this.GetArgument("--network", network);
 			string arguments = "run -d -t " + envsArguments + portsArguments + networkArgument + imageId;
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
-			if (execResult.ExitCode != 0)
-			{
-				Console.WriteLine(execResult.Output);
-			}
 			return execResult;
 		}
 		public RunTimeUtils.ExecResult ApiImageRemoveById(string imageId)
@@ -285,10 +269,6 @@ namespace service
 					};
 					instances.Add(instance);
 				}
-			}
-			else
-			{
-				Console.WriteLine(execResult.Output);
 			}
 			return instances;
 		}
@@ -406,10 +386,6 @@ namespace service
 			String networkArgument = this.GetArgument("--network", network);
 			string arguments = "run -d -t " + envsArguments + portsArguments + networkArgument + name + ":" + version;
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
-			if (execResult.ExitCode != 0)
-			{
-				Console.WriteLine(execResult.Output);
-			}
 			return execResult;
 		}
 		#endregion
@@ -420,10 +396,6 @@ namespace service
 			string dockerfileFile = DOCKERFILE_FILE; //  DockerfileFile(name, version);
 			string arguments = "build -t " + name + ".local:" + version + ".local -f " + dockerfileFile + " .";
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments, HomePath(name, version));
-			if (execResult.ExitCode != 0)
-			{
-				Console.WriteLine(execResult.Output);
-			}
 			return execResult;
 		}
 		#endregion
@@ -434,10 +406,6 @@ namespace service
 			string dockerComposeYmlFile = DOCKER_COMPOSE_FILE; // DockerComposeYmlFile(name, version);
 			string arguments = "stack deploy -c " + dockerComposeYmlFile + " " + StackName(name, version);
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments, HomePath(name, version));
-			if (execResult.ExitCode != 0)
-			{
-				Console.WriteLine(execResult.Output);
-			}
 			return execResult;
 		}
 		#endregion
@@ -475,10 +443,6 @@ namespace service
 					stacks.Add(stack);
 				}
 			}
-			else
-			{
-				Console.WriteLine(execResult.Output);
-			}
 			return stacks;
 		}
 		private List<StackTask> LoadStackTasks(string stack)
@@ -506,10 +470,6 @@ namespace service
 					tasks.Add(task);
 				}
 			}
-			else
-			{
-				Console.WriteLine(execResult.Output);
-			}
 			return tasks;
 		}
 		private List<StackService> LoadStackServices(string stack)
@@ -534,10 +494,6 @@ namespace service
 					};
 					services.Add(service);
 				}
-			}
-			else
-			{
-				Console.WriteLine(execResult.Output);
 			}
 			return services;
 		}
@@ -579,10 +535,6 @@ namespace service
 					};
 					nodes.Add(node);
 				}
-			}
-			else
-			{
-				Console.WriteLine(execResult.Output);
 			}
 			return nodes;
 		}
@@ -627,10 +579,6 @@ namespace service
 					networks.Add(network);
 				}
 			}
-			else
-			{
-				Console.WriteLine(execResult.Output);
-			}
 			return networks;
 		}
 		public RunTimeUtils.ExecResult ApiNetworkRemove(string networkId)
@@ -668,10 +616,6 @@ namespace service
 					};
 					diskUsages.Add(diskUsage);
 				}
-			}
-			else
-			{
-				Console.WriteLine(execResult.Output);
 			}
 			return diskUsages;
 		}
