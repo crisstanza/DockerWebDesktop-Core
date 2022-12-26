@@ -1,4 +1,4 @@
-﻿DockerWebDesktop-Core
+DockerWebDesktop-Core
 =====================
 
 C# REST service with HTML interface running on Linux to manage Docker containers (_serviço REST em C# com interface HTML rodando​ em Linux para gerenciar containers Docker_).
