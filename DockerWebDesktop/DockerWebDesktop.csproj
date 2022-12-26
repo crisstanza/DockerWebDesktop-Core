@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
-    <Version>1.1.5.0</Version>
+    <Version>1.1.5.1</Version>
     <Description>https://github.com/crisstanza/DockerWebDesktop-Core/</Description>
   </PropertyGroup>
 
@@ -17,7 +17,13 @@
     <None Update="html\css\css.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="html\css\github.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="html\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="html\img\github.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="html\index.html">
