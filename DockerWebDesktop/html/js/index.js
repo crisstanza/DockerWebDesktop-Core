@@ -206,34 +206,38 @@
 		const grid = gridBuilder.build(
 			services,
 			[
-				{ name: 'Id' },
-				{ name: 'Name' },
-				{ name: 'Mode' },
-				{ name: "Replicas" },
-				{ name: "Image" },
-				{ name: "Ports" }
-			]
-		);
-		return grid;
-	};
-	const showStackTasks = (tasks) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small' });
-		const grid = gridBuilder.build(
-			tasks,
-			[
-				{ name: 'Id' },
-				{ name: 'Name' },
-				{ name: 'Image' },
-				{ name: 'Node' },
-				{ name: 'DesiredState' },
-				{ name: 'CurrentState' },
-				{ name: 'Error' },
-				{ name: 'Ports' }
+				{ name: 'Id' }, { name: 'Name' }, { name: 'Mode' }, { name: "Replicas" }, { name: "Image" }, { name: "Ports" }
 			]
 		);
 		return grid;
 	};
 	const showStacks = (apiStacksResponse) => {
+		let needsRefresh = false;
+		const checkStackTaskCurrentState = (currentState) => {
+			if (currentState) {
+				if (currentState.startsWith('Preparing ') || currentState.startsWith('Starting ')) {
+					needsRefresh = true;
+				}
+			}
+			return currentState;
+		};
+		const showStackTasks = (tasks) => {
+			const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small' });
+			const grid = gridBuilder.build(
+				tasks,
+				[
+					{ name: 'Id' },
+					{ name: 'Name' },
+					{ name: 'Image' },
+					{ name: 'Node' },
+					{ name: 'DesiredState' },
+					{ name: 'CurrentState', formatter: checkStackTaskCurrentState },
+					{ name: 'Error' },
+					{ name: 'Ports' }
+				]
+			);
+			return grid;
+		};
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputStacks);
 		gridBuilder.build(
 			apiStacksResponse.Data.Stacks,
@@ -247,6 +251,9 @@
 				{ label: 'remove', handler: stackRemove }
 			]
 		);
+		if (needsRefresh) {
+			initGui(5000);
+		}
 	};
 	const showStacksError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputStacks, exc); };
 	const stackRemove = (event, stack) => {
