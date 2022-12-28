@@ -57,12 +57,12 @@ fieldset legend {
 fieldset table {
 	width: 100%;
 	border-collapse: collapse;
-	background-color: white;
+	background-color: transparent;
 }
 
-	fieldset table.small, fieldset table.small > thead th, fieldset table.small > tfoot td, .output-message div {
-		font-size: var(--small-font);
-	}
+fieldset table.small, fieldset table.small > thead th, fieldset table.small > tfoot td, .output-message div {
+	font-size: var(--small-font);
+}
 
 fieldset table > thead th {
 	background-color: beige;
@@ -88,10 +88,13 @@ fieldset table > tbody > tr > td.parent > table {
 }
 
 fieldset table > tbody > tr:nth-child(odd) {
-	background-color: #f2f2f2;
+	background-color: #f2f2f277;
 }
 fieldset table > tbody > tr:nth-child(even) {
-	background-color: #e5e5e5;
+	background-color: #C9C9C977;
+}
+fieldset table > tbody > tr:hover {
+	background-color: #71a37c44;
 }
 
 fieldset table > tbody > tr > td {
