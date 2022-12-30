@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
   web:
@@ -11,3 +11,7 @@ services:
       - /local/path/:/usr/share/nginx/html/
     ports:
       - "8888:80"
+networks:
+  default:
+    name: bridge
+    external: true
