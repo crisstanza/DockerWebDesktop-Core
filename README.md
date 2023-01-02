@@ -34,6 +34,12 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 	sudo apt install dotnet-sdk-3.1
 
 
+## Install Docker on Ubuntu:
+
+	sudo snap install docker     # version 20.10.17, or
+	sudo apt install docker.io  # version 20.10.12-0ubuntu2~20.04.1
+
+
 ## Usage example:
 
 	export DWD_PORT=9876 ; sudo -E dotnet run
@@ -46,6 +52,19 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 	- DWD_HOST - do not use!
 	- DWD_PORT number - port where to listen to
 	- DWD_SETTINGS_HOME - directory path, ending with /
+
+
+### VSCode Extensions:
+
+	- C# - v1.25.2 - Microsoft - C# for Visual Studio Code (powered by OmniSharp)
+	- dotnet --list-sdks
+	- sudo ./dotnet-install.sh -c 6.0 --install-dir /usr/share/dotnet
+
+
+### Git:
+
+	git config user.email "crisstanza@work"
+	git config user.name "crisstanza"
 
 
 ### Links:
