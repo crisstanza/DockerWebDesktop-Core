@@ -1,26 +1,32 @@
 #!/bin/bash
 clear ; cd "$(dirname "$0")"
 
-git_pull() {
-	pwd ; git pull ; echo
-}
-
-git_status() {
-	pwd ; git status ; echo
-}
-
-update_all() {
-	cd ../DockerWebDesktop-Core ; git_pull
-	cd ../CommandLiner-Core ; git_pull
-	cd ../CSharpUtils-Core ; git_pull
+pull_all() {
+	git -C ../../DockerWebDesktop-Core pull
+	git -C ../../CommandLiner-Core pull
+	git -C ../../CSharpUtils-Core pull
 }
 
 status_all() {
-	cd ../DockerWebDesktop-Core ; git_status
-	cd ../CommandLiner-Core ; git_status
-	cd ../CSharpUtils-Core ; git_status
+	git -C ../../DockerWebDesktop-Core status
+	git -C ../../CommandLiner-Core status
+	git -C ../../CSharpUtils-Core status
 }
 
-cd ..
-update_all
-status_all
+clone_deps() {
+	git -C ../.. clone git@github.com:crisstanza/CSharpUtils-Core.git
+	git -C ../.. clone git@github.com:crisstanza/CommandLiner-Core.git
+}
+
+run() {
+	export local DWD_PORT=9999
+	export local DWD_DEBUG=true
+	export local DWD_SUBNET_MASK=255.255.255.0
+	dotnet run -p ../DockerWebDesktop
+}
+
+# pull_all
+# status_all
+# clone_deps
+
+run
