@@ -64,17 +64,24 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 					if (links && links.length) {
 						for (let j = 0; j < links.length; j++) {
 							const link = links[j];
+							const enabledChecker = link.enabled;
+							const enabled = !(enabledChecker && !enabledChecker(item));
 							const a = io.github.crisstanza.Creator.html('a', {}, td, link.label);
-							if (link.href) {
-								a.href = link.href(item);
+							if (enabled) {
+								if (link.href) {
+									a.href = link.href(item);
+								}
+								if (link.target) {
+									a.target = link.target;
+								}
+								if (link.handler) {
+									a.addEventListener('click', function (event) { link.handler(event, item) });
+								}
+								if (link.hover) {
+									a.addEventListener('mouseover', function (event) { link.hover(event, item) });
+								}
 							} else {
-								a.href = '#';
-							}
-							if (link.target) {
-								a.target = link.target;
-							}
-							if (link.handler) {
-								a.addEventListener('click', function (event) { link.handler(event, item) });
+								a.setAttribute('disabled', 'disabled');
 							}
 						}
 					}

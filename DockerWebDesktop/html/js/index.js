@@ -311,7 +311,8 @@
 			[
 				{ label: 'inspect', href: instanceInspectHref, target: '_blank' },
 				{ label: 'stats', href: instanceStatsHref, target: '_blank' },
-				{ label: 'logs', href: instanceLogsHref, target: '_blank' }
+				{ label: 'logs', href: instanceLogsHref, target: '_blank' },
+				{ label: 'test', hover: instanceTestHover, handler: instanceTest, enabled: (instance) => instance.NetworkSetting && instance.NetworkSetting.BridgeIp }
 			]
 		);
 	};
@@ -319,6 +320,25 @@
 	const instanceLogsHref = (instance) => { return '/api/instance/logs?containerId=' + instance.ContainerId; };
 	const instanceInspectHref = (instance) => { return '/api/instance/inspect?containerId=' + instance.ContainerId; };
 	const instanceStatsHref = (instance) => { return '/api/instance/stats?containerId=' + instance.ContainerId; };
+	const instanceTest = (event, instance) => {
+		event.preventDefault();
+		let panel = document.getElementById(instance.ContainerId);
+		if (panel) {
+			panel.parentNode.removeChild(panel);
+		}
+	};
+	const instanceTestHover = (event, instance) => {
+		let panel = document.getElementById(instance.ContainerId);
+		if (!panel) {
+			const attributes = { id: instance.ContainerId, class: 'panel' };
+			panel = io.github.crisstanza.Creator.html('div', attributes, event.target.parentNode);
+			instance.NetworkSetting.Ports.forEach(port => {
+				const url = `${instance.NetworkSetting.BridgeIp}:${port}`;
+				const linkWithPort = io.github.crisstanza.Creator.html('a', { href: `//${url}`, target: '_blank' }, null, url);
+				panel.append(linkWithPort);
+			});
+		}
+	};
 
 	const instanceStart = (event, instance) => {
 		resetOutput();

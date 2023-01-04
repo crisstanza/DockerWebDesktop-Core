@@ -9,6 +9,7 @@ namespace service
 		protected RunTimeUtils runTimeUtils;
 		protected StringUtils stringUtils;
 		protected NetworkingUtils networkingUtils;
+		protected JsonUtils jsonUtils;
 
 		public DockerWebDesktopServiceUtils(CommandLineArguments args)
 		{
@@ -17,6 +18,7 @@ namespace service
 			this.runTimeUtils = new RunTimeUtils(args.Debug);
 			this.stringUtils = new StringUtils();
 			this.networkingUtils = new NetworkingUtils();
+			this.jsonUtils = new JsonUtils();
 		}
 	}
 }
