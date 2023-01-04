@@ -10,5 +10,6 @@
 		public string Status { get; set; }
 		public string Ports { get; set; }
 		public string Names { get; set; }
+		public NetworkSetting NetworkSetting { get; set; }
 	}
 }

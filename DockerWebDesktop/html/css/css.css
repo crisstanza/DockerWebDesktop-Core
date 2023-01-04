@@ -84,9 +84,6 @@ fieldset table > tbody > tr > td.parent {
 	padding: 1px;
 }
 
-fieldset table > tbody > tr > td.parent > table {
-}
-
 fieldset table > tbody > tr:nth-child(odd) {
 	background-color: #f2f2f277;
 }
@@ -101,6 +98,13 @@ fieldset table > tbody > tr > td {
 	padding: 3px 2px 1px 2px;
 	overflow-wrap: anywhere;
 }
+
+fieldset table > tbody > tr > td > div.panel {
+	text-align: right;
+	font-size: var(--small-font);
+	margin-top: 4px;
+}
+
 fieldset table > thead th {
 	padding: 3px 2px 1px 2px;
 	overflow-wrap: normal;
@@ -127,8 +131,10 @@ fieldset table td button {
 a {
 	color: brown;
 	text-decoration: none;
+	cursor: pointer;
 }
-a:hover { color: blueviolet; text-decoration: underline dotted; }
+a:hover:not([disabled]) { color: blueviolet; text-decoration: underline dotted; }
+a[disabled] { opacity: 0.5; cursor: default; }
 
 fieldset table.interactive > tbody tr td:last-child {
 	width: 0;

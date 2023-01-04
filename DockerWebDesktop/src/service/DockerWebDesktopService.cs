@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 
 namespace service
 {
@@ -230,11 +231,47 @@ namespace service
             foreach (Instance instance in allInstances)
             {
                 instance.Running = ContainsByContainerId(runningInstances, instance);
+                if (instance.Running)
+                {
+                    instance.NetworkSetting = LoadInstanceNetworkSetting(instance.ContainerId);
+                }
             }
             return new ApiInstances()
             {
                 Instances = allInstances
             };
+        }
+        private NetworkSetting LoadInstanceNetworkSetting(string containerId)
+        {
+            string inspect = ApiInstanceInspect(containerId);
+            JsonElement json = base.jsonUtils.Deserialize<JsonElement>(inspect);
+            if (json.GetArrayLength() > 0)
+            {
+                JsonElement first = json[0];
+                JsonElement networkSettingsPorts = first.GetProperty("NetworkSettings").GetProperty("Ports");
+                JsonElement.ObjectEnumerator i = networkSettingsPorts.EnumerateObject();
+                List<int> ports = new List<int>();
+                while (i.MoveNext())
+                {
+                    string name = i.Current.Name;
+                    if (networkSettingsPorts.TryGetProperty(name, out JsonElement dummy)) {
+                        if (dummy.ValueKind != JsonValueKind.Null) {
+                            string port = name.Substring(0, name.IndexOf("/"));
+                            ports.Add(Int32.Parse(port));
+                        }
+                    }
+                }
+                string bridgeIp = null;
+                if (first.GetProperty("NetworkSettings").GetProperty("Networks").TryGetProperty("bridge", out JsonElement bridge)) {
+                    bridgeIp = bridge.GetProperty("IPAddress").GetString();
+                }
+                return new NetworkSetting()
+                {
+                    BridgeIp = bridgeIp,
+                    Ports = ports
+                };
+            }
+            return null;
         }
         private bool ContainsByContainerId(List<Instance> runningInstances, Instance instance)
         {
