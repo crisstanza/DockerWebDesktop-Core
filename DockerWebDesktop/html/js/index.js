@@ -102,7 +102,7 @@
 	const swarmLeave = (event) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/swarm', { command: 'leave --force' }, swarmLeaveSuccess, swarmLeaveError);
+		fetcher.get('/api/swarm', { command: 'leave' }, swarmLeaveSuccess, swarmLeaveError);
 	};
 	const swarmLeaveSuccess = (swarmLeaveResponse) => {
 		showDefaultResponseStatus(swarmLeaveResponse);
