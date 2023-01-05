@@ -178,13 +178,17 @@
 	};
 	const imageRemove = (event, image) => {
 		resetOutput();
-		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/image/remove', { repository: image.Repository, tag: image.Tag }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		if (confirm(`Confirm remove image "${image.Repository}:${image.Tag}"?`)) {
+			const fetcher = new io.github.crisstanza.Fetcher();
+			fetcher.get('/api/image/remove', { repository: image.Repository, tag: image.Tag }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		}
 	};
 	const imageRemoveById = (event, image) => {
 		resetOutput();
-		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/image/remove-by-id', { imageId: image.ImageId }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		if (confirm(`Confirm remove image "${image.ImageId}"?`)) {
+			const fetcher = new io.github.crisstanza.Fetcher();
+			fetcher.get('/api/image/remove-by-id', { imageId: image.ImageId }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		}
 	};
 	const settingRun = (event, setting) => {
 		resetOutput();
@@ -258,8 +262,10 @@
 	const showStacksError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputStacks, exc); };
 	const stackRemove = (event, stack) => {
 		resetOutput();
-		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/stack/remove', { name: stack.Name }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		if (confirm(`Confirm remove stack "${stack.Name}"?`)) {
+			const fetcher = new io.github.crisstanza.Fetcher();
+			fetcher.get('/api/stack/remove', { name: stack.Name }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		}
 	};
 
 	// nodes
@@ -315,7 +321,7 @@
 				{
 					label: 'test',
 					hover: instanceTestHover,
-					handler: instanceTest,
+					handler: instanceTestHandler,
 					enabled: (instance) => instance.NetworkSetting && instance.NetworkSetting.Ports && instance.NetworkSetting.Ports.length && instance.NetworkSetting.BridgeIp
 				}
 			]
@@ -325,7 +331,7 @@
 	const instanceLogsHref = (instance) => { return '/api/instance/logs?containerId=' + instance.ContainerId; };
 	const instanceInspectHref = (instance) => { return '/api/instance/inspect?containerId=' + instance.ContainerId; };
 	const instanceStatsHref = (instance) => { return '/api/instance/stats?containerId=' + instance.ContainerId; };
-	const instanceTest = (event, instance) => {
+	const instanceTestHandler = (event, instance) => {
 		event.preventDefault();
 		let panel = document.getElementById(instance.ContainerId);
 		if (panel) {
@@ -357,8 +363,10 @@
 	};
 	const instanceRemove = (event, instance) => {
 		resetOutput();
-		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/instance/remove', { containerId: instance.ContainerId }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		if (confirm(`Confirm remove instance "${instance.ContainerId}"?`)) {
+			const fetcher = new io.github.crisstanza.Fetcher();
+			fetcher.get('/api/instance/remove', { containerId: instance.ContainerId }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		}
 	};
 
 	const instanceSee = (event, instance) => { window.location.href = "/api/instance/see?containerId=" + instance.ContainerId; };
@@ -418,8 +426,10 @@
 	const networkInspectHref = (network) => { return '/api/network/inspect?networkId=' + network.NetworkId; };
 	const networkRemove = (event, network) => {
 		resetOutput();
-		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/network/remove', { networkId: network.NetworkId }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		if (confirm(`Confirm remove network "${network.NetworkId}"?`)) {
+			const fetcher = new io.github.crisstanza.Fetcher();
+			fetcher.get('/api/network/remove', { networkId: network.NetworkId }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		}
 	};
 	// /networks
 
