@@ -43,6 +43,9 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 ## Usage example:
 
 	export DWD_PORT=9876 ; sudo -E dotnet run
+or
+	
+	sudo ./SCRIPTS/bash.bash run
 
 
 ### Environment variables:
