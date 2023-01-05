@@ -18,6 +18,7 @@ namespace service
         private const string ENVS_FILE = "envs";
         private const string NETWORK_FILE = "network";
         private const string PORTS_FILE = "ports";
+        private const string VOLUMES_FILE = "volumes";
         private const string DOCKERFILE_FILE = "Dockerfile";
         private const string DOCKER_COMPOSE_FILE = "docker-compose.yml";
 
@@ -188,12 +189,15 @@ namespace service
             string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(name, version), true);
             String portsArguments = GetArguments("-p", ports);
             portsArguments = this.stringUtils.IsBlank(portsArguments) ? "" : portsArguments + " ";
+            string[] volumes = this.fileSystemUtils.GetLinesFromFile(VolumesFile(name, version), true);
+            String volumesArguments = this.GetArguments("-v", volumes);
+            volumesArguments = this.stringUtils.IsBlank(volumesArguments) ? "" : volumesArguments + " ";
             string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(name, version), true);
             String envsArguments = GetArguments("-e", envs);
             envsArguments = this.stringUtils.IsBlank(envsArguments) ? "" : envsArguments + " ";
             String network = this.fileSystemUtils.GetTextFromFile(NetworkFile(name, version), true);
             String networkArgument = this.GetArgument("--network", network);
-            string arguments = "run -d -t " + envsArguments + portsArguments + networkArgument + imageId;
+            string arguments = "run -d -t " + envsArguments + portsArguments + volumesArguments + networkArgument + imageId;
             RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
             return execResult;
         }
@@ -424,6 +428,7 @@ namespace service
                         Name = this.fileSystemUtils.FolderName(folder),
                         Version = this.fileSystemUtils.FolderName(version),
                         Ports = this.stringUtils.defaultArray(this.fileSystemUtils.GetLinesFromFile(PortsFile(version), true)),
+                        Volumes = this.stringUtils.defaultArray(this.fileSystemUtils.GetLinesFromFile(VolumesFile(version), true)),
                         Envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(version), true),
                         NetworkMode = this.stringUtils.defaultString(this.fileSystemUtils.GetTextFromFile(NetworkFile(version), true)),
                         Dockerfile = this.fileSystemUtils.ExistsFile(DockerfileFile(version)),
@@ -439,12 +444,15 @@ namespace service
             string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(name, version), true);
             String portsArguments = this.GetArguments("-p", ports);
             portsArguments = this.stringUtils.IsBlank(portsArguments) ? "" : portsArguments + " ";
+            string[] volumes = this.fileSystemUtils.GetLinesFromFile(VolumesFile(name, version), true);
+            String volumesArguments = this.GetArguments("-v", volumes);
+            volumesArguments = this.stringUtils.IsBlank(volumesArguments) ? "" : volumesArguments + " ";
             string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(name, version), true);
             String envsArguments = this.GetArguments("-e", envs);
             envsArguments = this.stringUtils.IsBlank(envsArguments) ? "" : envsArguments + " ";
             String network = this.fileSystemUtils.GetTextFromFile(NetworkFile(name, version), true);
             String networkArgument = this.GetArgument("--network", network);
-            string arguments = "run -d -t " + envsArguments + portsArguments + networkArgument + name + ":" + version;
+            string arguments = "run -d -t " + envsArguments + portsArguments + volumesArguments + networkArgument + name + ":" + version;
             RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
             return execResult;
         }
@@ -690,9 +698,17 @@ namespace service
         {
             return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + PORTS_FILE;
         }
+        private string VolumesFile(string name, string version)
+        {
+            return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + VOLUMES_FILE;
+        }
         private string PortsFile(string version)
         {
             return version + Path.DirectorySeparatorChar + PORTS_FILE;
+        }
+        private string VolumesFile(string version)
+        {
+            return version + Path.DirectorySeparatorChar + VOLUMES_FILE;
         }
         private string EnvsFile(string name, string version)
         {

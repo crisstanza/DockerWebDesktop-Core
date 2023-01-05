@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
-    <Version>1.2.2.1</Version>
+    <Version>1.2.3.0</Version>
     <Description>https://github.com/crisstanza/DockerWebDesktop-Core/</Description>
   </PropertyGroup>
 
@@ -102,6 +102,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SETTINGS\nginx\1.21.4\ports">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SETTINGS\nginx\1.21.4\volumes">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SETTINGS\node\19.3.0-bullseye\Dockerfile">

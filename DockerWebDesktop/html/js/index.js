@@ -118,7 +118,7 @@
 		gridBuilder.build(
 			apiSettingsResponse.Data.Settings,
 			[
-				{ name: 'Name' }, { name: 'Version' }, { name: 'Ports' }, { name: 'NetworkMode' }
+				{ name: 'Name' }, { name: 'Version' }, { name: 'Ports' }, { name: 'Volumes' }, { name: 'NetworkMode' }
 			],
 			[
 				{ label: 'run', handler: settingRun, enabled: (setting) => setting.Ports },
