@@ -1,27 +1,36 @@
 #!/bin/bash
 clear ; cd "$(dirname "${0}")"
 
+PROJECTS=()
+PROJECTS+=('DockerWebDesktop-Core') # this project
+PROJECTS+=('CommandLiner-Core')
+PROJECTS+=('CSharpUtils-Core')
+
+MAX_LOG=4
+
 git_log() {
-	echo `cd ../../DockerWebDesktop-Core && pwd` ; echo ; git -C ../../DockerWebDesktop-Core log -n 5 --oneline ; echo ; echo
-	echo `cd ../../DockerWebDesktop-Core && pwd` ; echo ; git -C ../../CommandLiner-Core log -n 5 --oneline ; echo ; echo
-	echo `cd ../../DockerWebDesktop-Core && pwd` ; echo ; git -C ../../CSharpUtils-Core log -n 5 --oneline ; echo ; echo
+	for PROJECT in ${PROJECTS[*]} ; do
+		echo `cd ../../${PROJECT} && pwd` ; echo ; git -C ../../${PROJECT} log -n ${MAX_LOG} --oneline ; echo ; echo
+	done
 }
 
 git_pull() {
-	git -C ../../DockerWebDesktop-Core pull
-	git -C ../../CommandLiner-Core pull
-	git -C ../../CSharpUtils-Core pull
+	for PROJECT in ${PROJECTS[*]} ; do
+		echo `cd ../../${PROJECT} && pwd` ; echo ; git -C ../../${PROJECT} pull ; echo ; echo
+	done
 }
 
 git_status() {
-	echo `cd ../../DockerWebDesktop-Core && pwd` ; echo ; git -C ../../DockerWebDesktop-Core status -sb ; echo ; echo
-	echo `cd ../../CommandLiner-Core && pwd` ; echo ; git -C ../../CommandLiner-Core status -sb ; echo ; echo
-	echo `cd ../../CSharpUtils-Core && pwd` ; echo ; git -C ../../CSharpUtils-Core status -sb ; echo ; echo
+	for PROJECT in ${PROJECTS[*]} ; do
+		echo `cd ../../${PROJECT} && pwd` ; echo ; git -C ../../${PROJECT} status -sb ; echo ; echo
+	done
 }
 
 git_clone_deps() {
-	git -C ../.. clone git@github.com:crisstanza/CSharpUtils-Core.git
-	git -C ../.. clone git@github.com:crisstanza/CommandLiner-Core.git
+	# starts at 1 to skip this project
+	for (( i=1; i<${#PROJECTS[@]}; i++ )) ; do
+		git -C ../.. clone git@github.com:crisstanza/${PROJECTS[${i}]}.git ; echo
+	done
 }
 
 run() {
