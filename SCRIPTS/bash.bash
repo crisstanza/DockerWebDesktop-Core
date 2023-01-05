@@ -1,6 +1,12 @@
 #!/bin/bash
 clear ; cd "$(dirname "${0}")"
 
+git_log() {
+	echo `cd ../../DockerWebDesktop-Core && pwd` ; echo ; git -C ../../DockerWebDesktop-Core log -n 5 --oneline ; echo ; echo
+	echo `cd ../../DockerWebDesktop-Core && pwd` ; echo ; git -C ../../CommandLiner-Core log -n 5 --oneline ; echo ; echo
+	echo `cd ../../DockerWebDesktop-Core && pwd` ; echo ; git -C ../../CSharpUtils-Core log -n 5 --oneline ; echo ; echo
+}
+
 git_pull() {
 	git -C ../../DockerWebDesktop-Core pull
 	git -C ../../CommandLiner-Core pull
