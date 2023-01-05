@@ -248,21 +248,27 @@ namespace service
             if (json.GetArrayLength() > 0)
             {
                 JsonElement first = json[0];
-                JsonElement networkSettingsPorts = first.GetProperty("NetworkSettings").GetProperty("Ports");
-                JsonElement.ObjectEnumerator i = networkSettingsPorts.EnumerateObject();
                 List<int> ports = new List<int>();
-                while (i.MoveNext())
                 {
-                    string name = i.Current.Name;
-                    if (networkSettingsPorts.TryGetProperty(name, out JsonElement dummy)) {
-                        if (dummy.ValueKind != JsonValueKind.Null) {
-                            string port = name.Substring(0, name.IndexOf("/"));
-                            ports.Add(Int32.Parse(port));
-                        }
+                    JsonElement hostConfigPortBindings = first.GetProperty("HostConfig").GetProperty("PortBindings");
+                    JsonElement.ObjectEnumerator iPortBindings = hostConfigPortBindings.EnumerateObject();
+                    while (iPortBindings.MoveNext())
+                    {
+                        ports.Add(this.ParsePortSlashProtocol(iPortBindings.Current.Name));
+                    }
+                }
+                if (ports.Count == 0)
+                {
+                    JsonElement configExposedPorts = first.GetProperty("Config").GetProperty("ExposedPorts");
+                    JsonElement.ObjectEnumerator iExposedPorts = configExposedPorts.EnumerateObject();
+                    while (iExposedPorts.MoveNext())
+                    {
+                        ports.Add(this.ParsePortSlashProtocol(iExposedPorts.Current.Name));
                     }
                 }
                 string bridgeIp = null;
-                if (first.GetProperty("NetworkSettings").GetProperty("Networks").TryGetProperty("bridge", out JsonElement bridge)) {
+                if (first.GetProperty("NetworkSettings").GetProperty("Networks").TryGetProperty("bridge", out JsonElement bridge))
+                {
                     bridgeIp = bridge.GetProperty("IPAddress").GetString();
                 }
                 return new NetworkSetting()
@@ -273,6 +279,7 @@ namespace service
             }
             return null;
         }
+
         private bool ContainsByContainerId(List<Instance> runningInstances, Instance instance)
         {
             foreach (Instance runningInstance in runningInstances)
@@ -726,6 +733,11 @@ namespace service
         private string StackName(string name, string version)
         {
             return (name + "_" + version).Replace('.', '-');
+        }
+        private int ParsePortSlashProtocol(string name)
+        {
+            string port = name.Substring(0, name.IndexOf("/"));
+            return Int32.Parse(port);
         }
         #endregion
 
