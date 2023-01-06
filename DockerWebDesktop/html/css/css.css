@@ -28,8 +28,6 @@ body * {
 	font-size: var(--normal-font);
 }
 
-.left { float: left; }
-.right { float: right; }
 .disabled { opacity: 0.5; }
 
 button {
@@ -146,6 +144,16 @@ fieldset table.interactive > thead th:last-child {
 	background-color: floralwhite;
 	border-top: 1px solid floralwhite;
 	border-right: hidden;
+}
+
+.bar-top-top {
+	display: flex;
+	justify-content: space-between;
+}
+
+.new-version-message {
+	display: none;
+	text-align: center;
 }
 
 .bar-top button.bt-stop {
