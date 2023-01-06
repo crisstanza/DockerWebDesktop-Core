@@ -227,6 +227,17 @@ namespace service
             RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
             return execResult.Output;
         }
+        public RunTimeUtils.ExecResult ApiImagePrune()
+        {
+            return base.runTimeUtils.Exec("docker", "image prune --force");
+        }
+        #endregion
+
+        #region api builder
+        public RunTimeUtils.ExecResult ApiBuilderPrune()
+        {
+            return base.runTimeUtils.Exec("docker", "builder prune --force");
+        }
         #endregion
 
         #region api instances
@@ -782,6 +793,20 @@ namespace service
             {
                 return " --network " + value + " ";
             }
+        }
+        #endregion
+
+        #region volumes
+        public RunTimeUtils.ExecResult ApiVolumePrune()
+        {
+            return base.runTimeUtils.Exec("docker", "volume prune --force");
+        }
+        #endregion
+
+        #region container
+        public RunTimeUtils.ExecResult ApiContainerPrune()
+        {
+            return base.runTimeUtils.Exec("docker", "container prune --force");
         }
         #endregion
     }

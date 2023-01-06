@@ -152,6 +152,16 @@ namespace controller
 			};
 			return base.httpListenerUtils.DefaultTextOutputBody(output.Data);
 		}
+		public HttpListenerUtils.OutputBody ApiImagePrune()
+		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiImagePrune();
+			ADefaultResponse output = new ApiImagePruneResponse()
+			{
+				Status = execResult.ExitCode,
+				Output = execResult.Output
+			};
+			return base.httpListenerUtils.DefaultJsonOutputBody(output);
+		}
 		#endregion
 
 		#region api settings
@@ -338,6 +348,45 @@ namespace controller
 			ADefaultResponse output = new ApiDiskUsagesResponse()
 			{
 				Data = this.service.ApiDiskUsages()
+			};
+			return base.httpListenerUtils.DefaultJsonOutputBody(output);
+		}
+		#endregion
+
+		#region api builder
+		public HttpListenerUtils.OutputBody ApiBuilderPrune()
+		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiBuilderPrune();
+			ADefaultResponse output = new ApiBuilderPruneResponse()
+			{
+				Status = execResult.ExitCode,
+				Output = execResult.Output
+			};
+			return base.httpListenerUtils.DefaultJsonOutputBody(output);
+		}
+		#endregion
+
+		#region api volumes
+		public HttpListenerUtils.OutputBody ApiVolumePrune()
+		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiVolumePrune();
+			ADefaultResponse output = new ApiVolumePruneResponse()
+			{
+				Status = execResult.ExitCode,
+				Output = execResult.Output
+			};
+			return base.httpListenerUtils.DefaultJsonOutputBody(output);
+		}
+		#endregion
+
+		#region api container
+		public HttpListenerUtils.OutputBody ApiContainerPrune()
+		{
+			RunTimeUtils.ExecResult execResult = this.service.ApiContainerPrune();
+			ADefaultResponse output = new ApiContainerPruneResponse()
+			{
+				Status = execResult.ExitCode,
+				Output = execResult.Output
 			};
 			return base.httpListenerUtils.DefaultJsonOutputBody(output);
 		}

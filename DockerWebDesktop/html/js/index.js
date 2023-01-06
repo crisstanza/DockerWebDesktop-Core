@@ -433,16 +433,35 @@
 	};
 	// /networks
 
+	// disk usage
 	const showDiskUsages = (apiDiskUsagesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true }, outputDiskUsages);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputDiskUsages);
 		gridBuilder.build(
 			apiDiskUsagesResponse.Data.DiskUsages,
 			[
 				{ name: 'Type' }, { name: 'Total' }, { name: 'Active' }, { name: 'Size' }, { name: 'Reclaimable' }
+			],
+			[
+				{ label: 'prune', handler: diskUsagePrune },
 			]
 		);
 	};
 	const showDiskUsagesError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputDiskUsages, exc); };
+	const diskUsagePrune = (event, diskUsage) => {
+		resetOutput();
+		if (confirm(`Confirm prune "${diskUsage.Type}"?`)) {
+			const fetcher = new io.github.crisstanza.Fetcher();
+			fetcher.get(`/api/${pruneType(diskUsage.Type)}/prune`, {}, showDefaultResponseStatus, showDefaultExceptionStatus);
+		}
+	};
+	const pruneType = (diskUsageType) => {
+		return pruneType[diskUsageType];
+	};
+	pruneType['Images'] = 'image';
+	pruneType['Containers'] = 'container';
+	pruneType['Local Volumes'] = 'volume';
+	pruneType['Build Cache'] = 'builder';
+	// /disk usage
 
 	const showDockerAndSwarmDStatus = (statusDockerD, statusSwarm) => {
 		outputMessage.classList.remove('error');
