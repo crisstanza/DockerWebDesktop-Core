@@ -34,9 +34,9 @@ git_clone_deps() {
 }
 
 run() {
-	export local DWD_PORT=9999
-	export local DWD_DEBUG=false
-	export local DWD_SUBNET_MASK=255.255.255.0
+	export local DWD_PORT=$([ -z ${DWD_PORT} ] && echo 9999 || echo "${DWD_PORT}")
+	export local DWD_DEBUG=$([ -z ${DWD_DEBUG} ] && echo 'false' || echo "${DWD_DEBUG}")
+	export local DWD_SUBNET_MASK=$([ -z ${DWD_SUBNET_MASK} ] && echo '255.255.255.0' || echo "${DWD_SUBNET_MASK}")
 	dotnet run -p ../DockerWebDesktop
 }
 
