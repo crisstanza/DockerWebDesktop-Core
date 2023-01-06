@@ -72,12 +72,14 @@ namespace service
         }
         #endregion
 
-        #region api docker info
+        #region api docker
         public string ApiDockerInfo()
         {
-            string arguments = "info";
-            RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
-            return execResult.Output;
+            return base.runTimeUtils.Exec("docker", "info").Output;
+        }
+        public string ApiDockerVersion()
+        {
+            return base.runTimeUtils.Exec("docker", "version").Output;
         }
         #endregion
 

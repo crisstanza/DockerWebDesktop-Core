@@ -154,8 +154,10 @@ fieldset table.interactive > thead th:last-child {
 }
 
 .bar-top button {
-	font-size: 1em;
 	margin-left: 6px;
+}
+.bar-top a {
+	margin-right: 6px;
 }
 
 .bar-top > div:last-child {

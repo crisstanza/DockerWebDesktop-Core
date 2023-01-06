@@ -60,13 +60,15 @@ namespace controller
 		}
 		#endregion
 
-		#region docker info
+		#region docker
 		public HttpListenerUtils.OutputBody ApiDockerInfo()
 		{
-			string data = this.service.ApiDockerInfo();
-			return base.httpListenerUtils.DefaultTextOutputBody(data);
+			return base.httpListenerUtils.DefaultTextOutputBody(this.service.ApiDockerInfo());
 		}
-
+		public HttpListenerUtils.OutputBody ApiDockerVersion()
+		{
+			return base.httpListenerUtils.DefaultTextOutputBody(this.service.ApiDockerVersion());
+		}
 		#endregion
 
 		#region api dockerd
