@@ -47,6 +47,10 @@ or
 	
 	sudo ./SCRIPTS/bash.bash run
 
+Another example:
+
+	export DWD_DEBUG=true ; sudo -E ./SCRIPTS/bash.bash run
+
 
 ### Environment variables:
 
@@ -54,6 +58,7 @@ or
 	- DWD_SUBNET_MASK - your network subnet mask
 	- DWD_HOST - do not use!
 	- DWD_PORT number - port where to listen to
+	- DWD_CHECK_FOR_UPDATES_INTERVAL - check for latest version interval in minutes
 	- DWD_SETTINGS_HOME - directory path, ending with /
 
 

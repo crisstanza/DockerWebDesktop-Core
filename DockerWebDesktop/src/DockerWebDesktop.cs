@@ -9,6 +9,7 @@ public class DockerWebDesktop
 		CommandLineArguments arguments = new CommandLiner(args).Fill(new CommandLineArguments());
 		DockerWebDesktopController controller = new DockerWebDesktopController(arguments);
 		controller.Start();
+		controller.StartCheckForUpdates();
 	}
 
 	public static string Version()
