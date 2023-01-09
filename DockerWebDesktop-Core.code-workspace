@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../CommandLiner-Core"
+		},
+		{
+			"path": "../CSharpUtils-Core"
+		}
+	],
+	"settings": {}
+}

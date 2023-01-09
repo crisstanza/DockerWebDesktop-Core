@@ -20,18 +20,47 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 | :-------------------: | :---------------: | :--------------: |
 | <b>1.1.5.0</b>        | 0.3.0.0           | 0.3.0.0          |
 | <b>1.1.5.1</b>        | 0.3.0.0           | 0.3.0.1          |
+| <b>1.7.0.0</b>        | 0.7.0.0           | 0.7.0.0          |
 
 <br>
 
+
+## Install Ubunto on Windows:
+
+Open "Command Prompt" as Administrador and run:
+
+	wsl --install
+
+Restart your machine.
+
+Check your version:
+
+	show ubuntu version
+
+
 ## Install .NET Core on Ubuntu:
+
+Ubuntu 20.04:
 
 	wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
 	sudo dpkg -i packages-microsoft-prod.deb
+	rm packages-microsoft-prod.deb
 
 	sudo apt update
 	sudo apt install apt-transport-https
 	# sudo apt install dotnet-runtime-3.1
 	sudo apt install dotnet-sdk-3.1
+
+Ubuntu 22.04:
+
+	wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
+	sudo dpkg -i packages-microsoft-prod.deb
+	rm packages-microsoft-prod.deb
+
+	sudo apt update
+	# sudo apt install apt-transport-https
+	# sudo apt install dotnet-runtime-7.0
+	sudo apt install dotnet-sdk-7.0
 
 
 ## Install Docker on Ubuntu:
@@ -66,7 +95,7 @@ Another example:
 
 	- C# - v1.25.2 - Microsoft - C# for Visual Studio Code (powered by OmniSharp)
 	- dotnet --list-sdks
-	- sudo ./dotnet-install.sh -c 6.0 --install-dir /usr/share/dotnet
+	- for Ubuntu: sudo ./dotnet-install.sh -c 6.0 --install-dir /usr/share/dotnet
 
 
 ### Git:
