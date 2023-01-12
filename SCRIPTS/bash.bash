@@ -38,7 +38,7 @@ run() {
 	export local DWD_DEBUG=$([ -z ${DWD_DEBUG} ] && echo 'false' || echo "${DWD_DEBUG}")
 	export local DWD_SUBNET_MASK=$([ -z ${DWD_SUBNET_MASK} ] && echo '255.255.255.0' || echo "${DWD_SUBNET_MASK}")
 	export local DWD_CHECK_FOR_UPDATES_INTERVAL=$([ -z ${DWD_CHECK_FOR_UPDATES_INTERVAL} ] && echo 360 || echo "${DWD_CHECK_FOR_UPDATES_INTERVAL}")
-	dotnet run -p ../DockerWebDesktop
+	dotnet run --project ../DockerWebDesktop
 }
 
 if [ ${#} -eq 0 ] ; then
