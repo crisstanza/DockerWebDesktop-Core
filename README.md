@@ -25,11 +25,11 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 <br>
 
 
-## Install Ubunto on Windows:
+## Install Ubuntu on Windows:
 
 Open "Command Prompt" as Administrador and run:
 
-	wsl --install
+	wsl --install -d Ubuntu
 
 Restart your machine.
 
@@ -65,8 +65,7 @@ Ubuntu 22.04:
 
 ## Install Docker on Ubuntu:
 
-	sudo snap install docker     # version 20.10.17, or
-	sudo apt install docker.io  # version 20.10.12-0ubuntu2~20.04.1
+	sudo apt install docker.io
 
 
 ## Usage example:
