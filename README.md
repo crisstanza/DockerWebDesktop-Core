@@ -75,9 +75,10 @@ or
 	
 	sudo ./SCRIPTS/bash.bash run
 
-Another example:
+Another examples:
 
 	export DWD_DEBUG=true ; sudo -E ./SCRIPTS/bash.bash run
+	export DWD_CHECK_FOR_UPDATES_INTERVAL=2 ; sudo -E ./SCRIPTS/bash.bash run
 
 
 ### Environment variables:
@@ -99,8 +100,8 @@ Another example:
 
 ### Git:
 
-	git config user.email "crisstanza@work"
-	git config user.name "crisstanza"
+	git config user.email "crisstanza@users.noreply.github.com"
+	git config user.name "Cris Stanza"
 
 
 ### Links:
