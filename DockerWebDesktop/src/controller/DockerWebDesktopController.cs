@@ -26,10 +26,8 @@ namespace controller
             Dictionary<string, string> extras = new Dictionary<string, string>();
             IPAddress localAddress = base.networkingUtils.GetLocalAddress(IPAddress.Parse(args.SubnetMask));
             extras.Add("Debug", this.args.Debug.ToString());
-            if (localAddress != null)
-            {
-                extras.Add("Local address", localAddress.ToString());
-            }
+            extras.Add("Local address", localAddress == null ? "could not resolve" : localAddress.ToString());
+            extras.Add("Check for updates interval", this.args.CheckForUpdatesInterval + " minutes");
             extras.Add("Settings home", this.args.SettingsHome);
             Dictionary<string, string> dependencies = new Dictionary<string, string>()
                 {
@@ -65,7 +63,7 @@ namespace controller
         private void CheckForUpdates()
         {
             // https://raw.githubusercontent.com/crisstanza/DockerWebDesktop-Core/main/DockerWebDesktop/DockerWebDesktop.csproj
-			Console.WriteLine("checking... " + DateTime.Now.ToString());
+            Console.WriteLine("checking... " + DateTime.Now.ToString());
             TimeSpan interval = TimeSpan.FromMinutes(this.args.CheckForUpdatesInterval);
             Thread.Sleep((int)interval.TotalMilliseconds);
             CheckForUpdates();
