@@ -146,10 +146,16 @@
     <None Update="SETTINGS\rabbitmq\3.11-management\rabbitmq_delayed_message_exchange-3.11.1.ez">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\postgres\15.1\ports">
+    <None Update="SETTINGS\postgres\12.4-alpine\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\postgres\15.1\envs">
+    <None Update="SETTINGS\postgres\12.4-alpine\envs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SETTINGS\postgres\12.4-alpine\network">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SETTINGS\redis\6.0-alpine\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

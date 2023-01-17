@@ -9,7 +9,6 @@ using service;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Threading;
 
 namespace controller
 {
@@ -17,7 +16,7 @@ namespace controller
     {
         public DockerWebDesktopController(CommandLineArguments args) : base(args)
         {
-            this.service = new DockerWebDesktopService(args);
+            base.service = new DockerWebDesktopService(args);
         }
 
         #region start stop end
@@ -54,19 +53,10 @@ namespace controller
         #region check for updates
         public void StartCheckForUpdates()
         {
-            if (this.args.CheckForUpdatesInterval > 0)
+            if (base.args.CheckForUpdatesInterval > 0)
             {
-                Thread checkConnectionsThread = new Thread(CheckForUpdates);
-                checkConnectionsThread.Start();
+                base.service.StartCheckForUpdates();
             }
-        }
-        private void CheckForUpdates()
-        {
-            // https://raw.githubusercontent.com/crisstanza/DockerWebDesktop-Core/main/DockerWebDesktop/DockerWebDesktop.csproj
-            Console.WriteLine("checking... " + DateTime.Now.ToString());
-            TimeSpan interval = TimeSpan.FromMinutes(this.args.CheckForUpdatesInterval);
-            Thread.Sleep((int)interval.TotalMilliseconds);
-            CheckForUpdates();
         }
         #endregion
 

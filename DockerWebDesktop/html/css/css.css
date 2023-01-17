@@ -152,8 +152,22 @@ fieldset table.interactive > thead th:last-child {
 }
 
 .new-version-message {
-	display: none;
+	line-height: 1.5;
+	font-size: var(--small-font);
 	text-align: center;
+	color: #5e3683;
+}
+
+.new-version-message:not([update=true]) {
+	display: none;
+}
+
+.new-version-message * {
+	font-size: 1em;
+}
+
+.new-version-message a {
+	font-weight: bold;
 }
 
 .bar-top button.bt-stop {
@@ -164,7 +178,7 @@ fieldset table.interactive > thead th:last-child {
 .bar-top button {
 	margin-left: 6px;
 }
-.bar-top a {
+.bar-top .links a {
 	margin-right: 6px;
 }
 
