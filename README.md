@@ -77,7 +77,7 @@ Ubuntu 22.04:
 
 ### If you face some iptables issue, try this:
 
-	- make sure you are running WSL: 
+	- make sure you are running WSL 2: 
 		wsl -l -v
 		wsl --status
 	sudo update-alternatives --set iptables /usr/sbin/iptables-legacy ; sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
