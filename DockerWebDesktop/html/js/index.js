@@ -501,6 +501,9 @@
 		if (status.Update) {
 			newVersionMessage.setAttribute('update', 'true');
 			latestVersion.innerText = status.NewVersion;
+		} else {
+			newVersionMessage.removeAttribute('update');
+			latestVersion.innerText = '?';
 		}
 	};
 	const showStatusError = (exc) => {
