@@ -25,6 +25,9 @@ public class CommandLineArguments : ICommandLineArguments
 	[CommandLineArgument(DefaultValue = 9999, EnvironmentVariable = "DWD_PORT")]
 	public int Port { get; set; }
 
+	[CommandLineArgument(DefaultValue = 360, EnvironmentVariable = "DWD_CHECK_FOR_UPDATES_INTERVAL")]
+	public int CheckForUpdatesInterval { get; set; }
+
 	[CommandLineArgument(DefaultValue = null, EnvironmentVariable = "DWD_SETTINGS_HOME")]
 	public string SettingsHome { get; set; }
 

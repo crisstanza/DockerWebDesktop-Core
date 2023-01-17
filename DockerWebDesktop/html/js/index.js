@@ -498,6 +498,10 @@
 			showDockerAndSwarmDStatus(status.DockerD, status.Swarm);
 			outputStatus.innerHTML = 0;
 		}
+		if (status.Update) {
+			newVersionMessage.setAttribute('update', 'true');
+			latestVersion.innerText = status.NewVersion;
+		}
 	};
 	const showStatusError = (exc) => {
 		outputStatus.innerHTML = exc;

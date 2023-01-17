@@ -2,9 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
-    <Version>1.2.5.1</Version>
+    <TargetFramework>netcoreapp7.0</TargetFramework>
+    <RootNamespace></RootNamespace>
+    <Authors>Cris Stanza</Authors>
+    <Company>Cris Stanza</Company>
+    <Version>1.7.0.1</Version>
     <Description>https://github.com/crisstanza/DockerWebDesktop-Core/</Description>
   </PropertyGroup>
 
@@ -143,10 +146,16 @@
     <None Update="SETTINGS\rabbitmq\3.11-management\rabbitmq_delayed_message_exchange-3.11.1.ez">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\postgres\15.1\ports">
+    <None Update="SETTINGS\postgres\12.4-alpine\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\postgres\15.1\envs">
+    <None Update="SETTINGS\postgres\12.4-alpine\envs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SETTINGS\postgres\12.4-alpine\network">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SETTINGS\redis\6.0-alpine\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

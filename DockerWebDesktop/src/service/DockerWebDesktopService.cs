@@ -8,6 +8,8 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Xml;
 
 namespace service
 {
@@ -22,9 +24,38 @@ namespace service
         private const string DOCKERFILE_FILE = "Dockerfile";
         private const string DOCKER_COMPOSE_FILE = "docker-compose.yml";
 
+        private Version latestVersion;
+
         public DockerWebDesktopService(CommandLineArguments args) : base(args)
         {
+            this.latestVersion = null;
         }
+
+        #region check for updates
+        public void StartCheckForUpdates()
+        {
+            Thread checkConnectionsThread = new Thread(CheckForUpdates);
+            checkConnectionsThread.IsBackground = true;
+            checkConnectionsThread.Start();
+        }
+        private void CheckForUpdates()
+        {
+            string latest = base.latestVersionChecker.Get();
+            if (latest != null)
+            {
+                XmlDocument xml = new XmlDocument();
+                xml.LoadXml(latest);
+                XmlText version = (XmlText)xml.DocumentElement.SelectSingleNode("//Project/PropertyGroup/Version/text()");
+                this.latestVersion = new Version(version.Data);
+            }
+            if (base.args.CheckForUpdatesInterval > 0)
+            {
+                TimeSpan interval = TimeSpan.FromMinutes(base.args.CheckForUpdatesInterval);
+                Thread.Sleep((int)interval.TotalMilliseconds);
+                CheckForUpdates();
+            }
+        }
+        #endregion
 
         #region api status
         public ApiStatus ApiStatus()
@@ -51,6 +82,26 @@ namespace service
             RunTimeUtils.ExecResult execResultSwarm = base.runTimeUtils.Exec("docker", "node ls");
             bool swarm = execResultSwarm.ExitCode == 0;
             IPAddress ip = this.networkingUtils.GetLocalAddress(IPAddress.Parse(args.SubnetMask));
+            Version currentVersion = new Version(DockerWebDesktop.Version());
+            bool? needsUpdate;
+            string newVersion;
+            if (this.latestVersion == null)
+            {
+                needsUpdate = null;
+                newVersion = null;
+            }
+            else
+            {
+                needsUpdate = currentVersion < this.latestVersion;
+                if (needsUpdate != null && needsUpdate == true)
+                {
+                    newVersion = this.latestVersion.ToString();
+                }
+                else
+                {
+                    newVersion = null;
+                }
+            }
             return new ApiStatus()
             {
                 Status = new Status()
@@ -58,7 +109,9 @@ namespace service
                     Ip = ip?.ToString(),
                     DockerD = dockerD,
                     Swarm = swarm,
-                    Version = DockerWebDesktop.Version()
+                    Version = DockerWebDesktop.Version(),
+                    Update = needsUpdate,
+                    NewVersion = newVersion
                 }
             };
         }

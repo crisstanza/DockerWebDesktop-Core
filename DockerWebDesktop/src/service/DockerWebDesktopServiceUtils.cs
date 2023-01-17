@@ -10,6 +10,7 @@ namespace service
 		protected StringUtils stringUtils;
 		protected NetworkingUtils networkingUtils;
 		protected JsonUtils jsonUtils;
+		protected HttpClientUtils latestVersionChecker;
 
 		public DockerWebDesktopServiceUtils(CommandLineArguments args)
 		{
@@ -19,6 +20,7 @@ namespace service
 			this.stringUtils = new StringUtils();
 			this.networkingUtils = new NetworkingUtils();
 			this.jsonUtils = new JsonUtils();
+			this.latestVersionChecker = new HttpClientUtils("https://raw.githubusercontent.com/crisstanza/DockerWebDesktop-Core/main/DockerWebDesktop/DockerWebDesktop.csproj");
 		}
 	}
 }

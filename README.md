@@ -20,24 +20,67 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 | :-------------------: | :---------------: | :--------------: |
 | <b>1.1.5.0</b>        | 0.3.0.0           | 0.3.0.0          |
 | <b>1.1.5.1</b>        | 0.3.0.0           | 0.3.0.1          |
+| <b>1.7.0.0</b>        | 0.7.0.0           | 0.7.0.0          |
+| <b>1.7.0.1</b>        | 0.7.0.1           | 0.7.0.1          |
 
 <br>
 
+
+## Install Ubuntu on Windows:
+
+Open "Command Prompt" as Administrador and run:
+
+	wsl --set-default-version 2
+	wsl --install -d Ubuntu
+
+Restart your machine.
+
+Check your version:
+
+	show ubuntu version
+
+If you want to reboot Ubuntu:
+
+	wsl --shutdown
+
+Other commands:
+	wsl --list --online
+	wsl --unregister Ubuntu
+
+
 ## Install .NET Core on Ubuntu:
+
+Ubuntu 20.04:
 
 	wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
 	sudo dpkg -i packages-microsoft-prod.deb
+	rm packages-microsoft-prod.deb
 
 	sudo apt update
 	sudo apt install apt-transport-https
 	# sudo apt install dotnet-runtime-3.1
 	sudo apt install dotnet-sdk-3.1
 
+Ubuntu 22.04:
+
+	wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb ; \
+	sudo dpkg -i packages-microsoft-prod.deb ; \
+	rm packages-microsoft-prod.deb
+
+	sudo apt update ; sudo apt install -y dotnet-sdk-7.0
+
 
 ## Install Docker on Ubuntu:
 
-	sudo snap install docker     # version 20.10.17, or
-	sudo apt install docker.io  # version 20.10.12-0ubuntu2~20.04.1
+	sudo apt update ; sudo apt install -y docker.io
+
+
+### If you face some iptables issue, try this:
+
+	- make sure you are running WSL: 
+		wsl -l -v
+		wsl --status
+	sudo update-alternatives --set iptables /usr/sbin/iptables-legacy ; sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 
 
 ## Usage example:
@@ -47,6 +90,12 @@ or
 	
 	sudo ./SCRIPTS/bash.bash run
 
+Another examples:
+
+	export DWD_DEBUG=true ; sudo -E ./SCRIPTS/bash.bash run
+	export DWD_CHECK_FOR_UPDATES_INTERVAL=5 ; sudo -E ./SCRIPTS/bash.bash run
+	unset DWD_CHECK_FOR_UPDATES_INTERVAL ; sudo -E ./SCRIPTS/bash.bash run
+
 
 ### Environment variables:
 
@@ -54,6 +103,7 @@ or
 	- DWD_SUBNET_MASK - your network subnet mask
 	- DWD_HOST - do not use!
 	- DWD_PORT number - port where to listen to
+	- DWD_CHECK_FOR_UPDATES_INTERVAL - check for latest version interval in minutes
 	- DWD_SETTINGS_HOME - directory path, ending with /
 
 
@@ -61,13 +111,13 @@ or
 
 	- C# - v1.25.2 - Microsoft - C# for Visual Studio Code (powered by OmniSharp)
 	- dotnet --list-sdks
-	- sudo ./dotnet-install.sh -c 6.0 --install-dir /usr/share/dotnet
+	- for Ubuntu: sudo ./dotnet-install.sh -c 6.0 --install-dir /usr/share/dotnet
 
 
 ### Git:
 
-	git config user.email "crisstanza@work"
-	git config user.name "crisstanza"
+	git config user.email "crisstanza@users.noreply.github.com"
+	git config user.name "Cris Stanza"
 
 
 ### Links:
@@ -75,4 +125,7 @@ or
 	https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04
 	https://docs.docker.com/compose/compose-file/compose-file-v2/#restart
 	https://stackoverflow.com/questions/39388877/adding-files-to-standard-images-using-docker-compose
+	https://learn.microsoft.com/en-us/answers/questions/724536/dmesg-showing-only-5-lines
+	https://learn.microsoft.com/en-us/dotnet/api/system.net.ipaddress?view=net-7.0
+	https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
 	https://chmod-calculator.com/
