@@ -422,10 +422,10 @@ namespace service
         }
         public DownloadFile ApiInstanceSee(string containerId)
         {
-            string dockerExecIt = "docker exec -it " + containerId + " /bin/bash";
+            string dockerExecIt = "docker exec -it " + containerId + " /bin/sh";
             string script = ":; " + dockerExecIt + " ; exit 0";
             script += "\n";
-            script += "start ubuntu.exe run " + dockerExecIt;
+            script += "start ubuntu.exe run sudo " + dockerExecIt;
             script += "\n";
             return new DownloadFile()
             {
@@ -438,7 +438,7 @@ namespace service
             string dockerStats = "docker stats " + containerId;
             string script = ":; " + dockerStats + " ; exit 0";
             script += "\n";
-            script += "start ubuntu.exe run " + dockerStats;
+            script += "start ubuntu.exe run sudo " + dockerStats;
             script += "\n";
             return new DownloadFile()
             {
@@ -463,7 +463,7 @@ namespace service
             string dockerLogs = "docker logs -t " + containerId + " --details --follow";
             string script = ":; " + dockerLogs + " ; exit 0";
             script += "\n";
-            script += "start ubuntu.exe run " + dockerLogs;
+            script += "start ubuntu.exe run sudo " + dockerLogs;
             script += "\n";
             return new DownloadFile()
             {
