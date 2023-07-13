@@ -23,6 +23,7 @@ namespace service
         private const string VOLUMES_FILE = "volumes";
         private const string DOCKERFILE_FILE = "Dockerfile";
         private const string DOCKER_COMPOSE_FILE = "docker-compose.yml";
+        private const string START_UBUNTU_ON_WINDOWS_COMMAND = "wsl -d Ubuntu-22.04 -u root";
 
         private Version latestVersion;
 
@@ -425,7 +426,7 @@ namespace service
             string dockerExecIt = "docker exec -it " + containerId + " /bin/sh";
             string script = ":; " + dockerExecIt + " ; exit 0";
             script += "\n";
-            script += "start ubuntu.exe run sudo " + dockerExecIt;
+            script += START_UBUNTU_ON_WINDOWS_COMMAND + " -- " + dockerExecIt;
             script += "\n";
             return new DownloadFile()
             {
@@ -438,7 +439,7 @@ namespace service
             string dockerStats = "docker stats " + containerId;
             string script = ":; " + dockerStats + " ; exit 0";
             script += "\n";
-            script += "start ubuntu.exe run sudo " + dockerStats;
+            script += START_UBUNTU_ON_WINDOWS_COMMAND + " -- " + dockerStats;
             script += "\n";
             return new DownloadFile()
             {
@@ -463,7 +464,7 @@ namespace service
             string dockerLogs = "docker logs -t " + containerId + " --details --follow";
             string script = ":; " + dockerLogs + " ; exit 0";
             script += "\n";
-            script += "start ubuntu.exe run sudo " + dockerLogs;
+            script += START_UBUNTU_ON_WINDOWS_COMMAND + " -- " + dockerLogs;
             script += "\n";
             return new DownloadFile()
             {

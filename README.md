@@ -28,23 +28,28 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 
 ## Install Ubuntu on Windows:
 
-Open "Command Prompt" as Administrador and run:
+Open "Command Prompt" as Administrador and:
+
+List available:
+
+	wsl --list --online
+
+Install:
 
 	wsl --set-default-version 2
-	wsl --install -d Ubuntu
+	wsl --install -d Ubuntu-22.04
 
-Restart your machine.
+Restart your machine and, after that, create your Ubuntu user.
 
-Check your version:
+Check your version (inside Ubuntu):
 
-	show ubuntu version
+	lsb_release -a
 
 If you want to reboot Ubuntu:
 
 	wsl --shutdown
 
 Other commands:
-	wsl --list --online
 	wsl --unregister Ubuntu
 
 
@@ -56,8 +61,7 @@ Ubuntu 20.04:
 	sudo dpkg -i packages-microsoft-prod.deb
 	rm packages-microsoft-prod.deb
 
-	sudo apt update
-	sudo apt install apt-transport-https
+	sudo apt update ; sudo apt install apt-transport-https
 	# sudo apt install dotnet-runtime-3.1
 	sudo apt install dotnet-sdk-3.1
 
@@ -66,6 +70,13 @@ Ubuntu 22.04:
 	wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb ; \
 	sudo dpkg -i packages-microsoft-prod.deb ; \
 	rm packages-microsoft-prod.deb
+
+	sudo snap remove dotnet-sdk
+	sudo apt remove 'dotnet*'
+	sudo apt remove 'aspnetcore*'
+	sudo apt remove 'netstandard*'
+	sudo rm /etc/apt/sources.list.d/microsoft-prod.list
+	sudo rm /etc/apt/sources.list.d/microsoft-prod.list.save
 
 	sudo apt update ; sudo apt install -y dotnet-sdk-7.0
 
@@ -81,6 +92,12 @@ Ubuntu 22.04:
 		wsl -l -v
 		wsl --status
 	sudo update-alternatives --set iptables /usr/sbin/iptables-legacy ; sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+
+
+### If you face dockerd issue, try this:
+
+	docker system prune --volumes -f 
+	sudo rm /var/lib/docker/volumes/metadata.db
 
 
 ## Usage example:
@@ -129,3 +146,4 @@ Another examples:
 	https://learn.microsoft.com/en-us/dotnet/api/system.net.ipaddress?view=net-7.0
 	https://www.omgubuntu.co.uk/how-to-install-wsl2-on-windows-10
 	https://chmod-calculator.com/
+ 
