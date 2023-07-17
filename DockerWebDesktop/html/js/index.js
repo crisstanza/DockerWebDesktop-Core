@@ -542,7 +542,10 @@
 				if (div) {
 					const th = ths[i];
 					if (div.innerText.length >= th.innerText.length) {
-						const width = headerWidths[i] + 'px';
+						const style = getComputedStyle(cell, null);
+						const paddingLeft = propertyValue(style, 'padding-left');
+						const paddingRight = propertyValue(style, 'padding-right');
+						const width = (headerWidths[i] - paddingLeft - paddingRight) + 'px';
 						div.style.width = width;
 						cell.style.width = width;
 						div.title = div.innerText;
