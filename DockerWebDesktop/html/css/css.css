@@ -1,11 +1,13 @@
 ﻿:root {
 	--border-radius: 3px;
 	--normal-font: 14pt;
-	--small-font: 0.85em;
+	--small-font: 0.75em;
+	--font-color: #444;
 }
 
-html, body, button {
+* {
 	font-family: Arial, sans-serif;
+	color: var(--font-color);
 }
 
 html {
@@ -28,7 +30,7 @@ body * {
 	font-size: var(--normal-font);
 }
 
-.disabled { opacity: 0.5; }
+.disabled, [disabled=disabled] { opacity: 0.5; }
 
 button {
 	border-width: 1px;
@@ -48,7 +50,6 @@ fieldset {
 }
 fieldset legend {
 	font-weight: bold;
-	color: #444;
 	margin-bottom: -3px;
 }
 
@@ -132,7 +133,8 @@ a {
 	cursor: pointer;
 }
 a:hover:not([disabled]) { color: blueviolet; text-decoration: underline dotted; }
-a[disabled] { opacity: 0.5; cursor: default; }
+fieldset > legend > a { color: inherit !important; }
+a[disabled] { cursor: default; }
 
 fieldset table.interactive > tbody tr td:last-child {
 	width: 0;
@@ -146,9 +148,17 @@ fieldset table.interactive > thead th:last-child {
 	border-right: hidden;
 }
 
+fieldset table.interactive > tbody tr td > span {
+	display: grid;
+}
+
 .bar-top-top {
 	display: flex;
 	justify-content: space-between;
+}
+
+.bar-top > .bar-top-top > div > i {
+	opacity: 0.75;
 }
 
 .new-version-message {

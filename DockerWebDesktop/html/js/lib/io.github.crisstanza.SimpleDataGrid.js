@@ -50,11 +50,25 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 				}
 				if (actions && actions.length || links && links.length) {
 					const td = io.github.crisstanza.Creator.html('td', {}, tr);
+					let containerAll;
+					if (this.options.wrapInteractions?.all) {
+						const wrapper = io.github.crisstanza.Creator.html('span', {}, td);
+						containerAll = wrapper;
+					} else {
+						containerAll = td;
+					}
 					if (actions && actions.length) {
+						let containerActions;
+						if (this.options.wrapInteractions?.actions) {
+							const wrapper = io.github.crisstanza.Creator.html('span', {}, containerAll);
+							containerActions = wrapper;
+						} else {
+							containerActions = containerAll;
+						}
 						for (let j = 0; j < actions.length; j++) {
 							const action = actions[j];
 							const enabledChecker = action.enabled;
-							const button = io.github.crisstanza.Creator.html('button', {}, td, action.label);
+							const button = io.github.crisstanza.Creator.html('button', {}, containerActions, action.label);
 							button.addEventListener('click', function (event) { action.handler(event, item) });
 							if (enabledChecker && !enabledChecker(item)) {
 								button.setAttribute('disabled', 'disabled');
@@ -62,11 +76,18 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 						}
 					}
 					if (links && links.length) {
+						let containerLinks;
+						if (this.options.wrapInteractions?.links) {
+							const wrapper = io.github.crisstanza.Creator.html('span', {}, containerAll);
+							containerLinks = wrapper;
+						} else {
+							containerLinks = containerAll;
+						}
 						for (let j = 0; j < links.length; j++) {
 							const link = links[j];
 							const enabledChecker = link.enabled;
 							const enabled = !(enabledChecker && !enabledChecker(item));
-							const a = io.github.crisstanza.Creator.html('a', {}, td, link.label);
+							const a = io.github.crisstanza.Creator.html('a', {}, containerLinks, link.label);
 							if (enabled) {
 								if (link.href) {
 									a.href = link.href(item);

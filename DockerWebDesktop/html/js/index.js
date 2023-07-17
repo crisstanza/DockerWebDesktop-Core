@@ -143,7 +143,7 @@
 	};
 
 	const showImages = (apiImagesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputImages);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrapInteractions: { all: true, actions: true, links: true } }, outputImages);
 		gridBuilder.build(
 			apiImagesResponse.Data.Images,
 			[
@@ -293,7 +293,7 @@
 	// /nodes
 
 	const showInstances = (apiInstancesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputInstances);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrapInteractions: { all: true, actions: true, links: true } }, outputInstances);
 		gridBuilder.build(
 			apiInstancesResponse.Data.Instances,
 			[
