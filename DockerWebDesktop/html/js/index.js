@@ -31,6 +31,10 @@
 		outputMessage.classList.add('error');
 		outputMessage.innerHTML = '<div>' + formatOutput(exc.toString()) + '</div>';
 	};
+	const propertyValue = (style, property) => {
+		const value = style.getPropertyValue(property).replace(/px/, '')
+		return value ? Number(value) : 0;
+	}
 
 	const getCommandFromButton = (button) => {
 		return button.getAttribute('data-action');
@@ -114,8 +118,8 @@
 	// /swarm
 
 	const showSettings = (apiSettingsResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputSettings);
-		gridBuilder.build(
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true } }, outputSettings);
+		const table = gridBuilder.build(
 			apiSettingsResponse.Data.Settings,
 			[
 				{ name: 'Name' }, { name: 'Version' }, { name: 'Ports' }, { name: 'Volumes' }, { name: 'NetworkMode' }
@@ -129,6 +133,7 @@
 				{ label: 'test IP', handler: settingTest }, { label: 'test localhost', handler: settingTestLocalhost }
 			]
 		);
+		ellipsis(table);
 	};
 	const settingTest = (event, setting) => {
 		event.preventDefault();
@@ -143,8 +148,8 @@
 	};
 
 	const showImages = (apiImagesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrapInteractions: { all: true, actions: true, links: true } }, outputImages);
-		gridBuilder.build(
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true } }, outputImages);
+		const table = gridBuilder.build(
 			apiImagesResponse.Data.Images,
 			[
 				{ name: 'Repository' }, { name: 'Tag' }, { name: 'ImageId' }, { name: 'Created' }, { name: 'Size' }
@@ -159,6 +164,7 @@
 				{ label: 'inspect', href: imageInspectHref, target: '_blank' }
 			]
 		);
+		ellipsis(table);
 	};
 	const imageHistoryHref = (image) => {
 		return '/api/image/history?imageId=' + image.ImageId;
@@ -206,7 +212,7 @@
 		fetcher.get('/api/deploy-docker-compose-yml', { name: image.Name, version: image.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const showStackServices = (services) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small' });
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small', wrap: { values: true } });
 		const grid = gridBuilder.build(
 			services,
 			[
@@ -226,7 +232,7 @@
 			return currentState;
 		};
 		const showStackTasks = (tasks) => {
-			const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small' });
+			const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small', wrap: { values: true } });
 			const grid = gridBuilder.build(
 				tasks,
 				[
@@ -243,7 +249,7 @@
 			return grid;
 		};
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputStacks);
-		gridBuilder.build(
+		const table = gridBuilder.build(
 			apiStacksResponse.Data.Stacks,
 			[
 				{ name: 'Name' },
@@ -258,6 +264,8 @@
 		if (needsRefresh) {
 			initGui(5000);
 		}
+		const subTables = table.querySelectorAll('table');
+		subTables.forEach(subTable => ellipsis(subTable));
 	};
 	const showStacksError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputStacks, exc); };
 	const stackRemove = (event, stack) => {
@@ -270,8 +278,8 @@
 
 	// nodes
 	const showNodes = (apiNodesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputNodes);
-		gridBuilder.build(
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true } }, outputNodes);
+		const table = gridBuilder.build(
 			apiNodesResponse.Data.Nodes,
 			[
 				{ name: 'Id' },
@@ -286,6 +294,7 @@
 				{ label: 'inspect', href: nodeInspectHref, target: '_blank' },
 			]
 		);
+		ellipsis(table);
 	};
 	const showNodesError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputNodes, exc); };
 	const nodeInspectHref = (node) => { return '/api/node/inspect?id=' + cleanNodeId(node.Id); };
@@ -293,8 +302,8 @@
 	// /nodes
 
 	const showInstances = (apiInstancesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrapInteractions: { all: true, actions: true, links: true } }, outputInstances);
-		gridBuilder.build(
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true } }, outputInstances);
+		const table = gridBuilder.build(
 			apiInstancesResponse.Data.Instances,
 			[
 				{ name: 'ContainerId' },
@@ -326,6 +335,7 @@
 				}
 			]
 		);
+		ellipsis(table);
 	};
 	const showInstancesError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputInstances, exc); };
 	const instanceLogsHref = (instance) => { return '/api/instance/logs?containerId=' + instance.ContainerId; };
@@ -408,8 +418,8 @@
 
 	// networks
 	const showNetworks = (apiNetworksResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputNetworks);
-		gridBuilder.build(
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true } }, outputNetworks);
+		const table = gridBuilder.build(
 			apiNetworksResponse.Data.Networks,
 			[
 				{ name: 'NetworkId' }, { name: 'Name' }, { name: 'Driver' }, { name: 'Scope' }
@@ -421,6 +431,7 @@
 				{ label: 'inspect', href: networkInspectHref, target: '_blank' }
 			]
 		);
+		ellipsis(table);
 	};
 	const showNetworksError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputNetworks, exc); };
 	const networkInspectHref = (network) => { return '/api/network/inspect?networkId=' + network.NetworkId; };
@@ -435,8 +446,8 @@
 
 	// disk usage
 	const showDiskUsages = (apiDiskUsagesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputDiskUsages);
-		gridBuilder.build(
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true } }, outputDiskUsages);
+		const table = gridBuilder.build(
 			apiDiskUsagesResponse.Data.DiskUsages,
 			[
 				{ name: 'Type' }, { name: 'Total' }, { name: 'Active' }, { name: 'Size' }, { name: 'Reclaimable' }
@@ -445,6 +456,7 @@
 				{ label: 'prune', handler: diskUsagePrune },
 			]
 		);
+		ellipsis(table);
 	};
 	const showDiskUsagesError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputDiskUsages, exc); };
 	const diskUsagePrune = (event, diskUsage) => {
@@ -510,6 +522,38 @@
 		outputStatus.innerHTML = exc;
 	};
 
+	const window_Resize = (event) => {
+		initGui(0);
+	}
+
+	const ellipsis = (table) => {
+		const ths = Array.from(table.querySelectorAll('thead > tr > th'));
+		const headerWidths = ths.map(th => {
+			const style = getComputedStyle(th, null);
+			const paddingLeft = propertyValue(style, 'padding-left');
+			const paddingRight = propertyValue(style, 'padding-right');
+			return Math.trunc(th.getBoundingClientRect().width) - paddingLeft - paddingRight;
+		});
+		const rows = table.querySelectorAll('tbody > tr');
+		rows.forEach(row => {
+			const cells = row.querySelectorAll('td');
+			cells.forEach((cell, i) => {
+				const div = cell.querySelector('div');
+				if (div) {
+					const th = ths[i];
+					if (div.innerText.length >= th.innerText.length) {
+						const width = headerWidths[i] + 'px';
+						div.style.width = width;
+						cell.style.width = width;
+						div.title = div.innerText;
+					} else {
+						div.style.width = '100%';
+					}
+				}
+			});
+		});
+	}
+
 	const initGui = (delay) => {
 		setTimeout(() => {
 			loadSettings();
@@ -528,6 +572,7 @@
 		buttons.forEach((button) => button.addEventListener('click', bt_Click_Open));
 		btDockerd.addEventListener('click', btDockerd_Click);
 		btSwarm.addEventListener('click', btSwarm_Click);
+		window.addEventListener('resize', window_Resize)
 	};
 	const init = () => {
 		initGui(100);

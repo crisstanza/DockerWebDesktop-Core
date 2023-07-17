@@ -98,6 +98,14 @@ fieldset table > tbody > tr > td {
 	overflow-wrap: anywhere;
 }
 
+fieldset table > tbody > tr > td > div
+{
+	width: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 fieldset table > tbody > tr > td > div.panel {
 	text-align: right;
 	font-size: var(--small-font);

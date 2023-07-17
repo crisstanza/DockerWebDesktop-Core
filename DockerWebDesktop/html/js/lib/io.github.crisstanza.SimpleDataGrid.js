@@ -42,16 +42,25 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 					const formatter = column.formatter;
 					const value = item[key];
 					const formattedValue = formatter ? formatter(value) : this.#escapeHtml(value);
-					if (formattedValue instanceof Node) {
-						io.github.crisstanza.Creator.html('td', { class: className }, tr, null, formattedValue);
+					if (this.options.wrap?.values) {
+						const td = io.github.crisstanza.Creator.html('td', { class: className }, tr);
+						if (formattedValue instanceof Node) {
+							io.github.crisstanza.Creator.html('div', {}, td, null, formattedValue);
+						} else {
+							io.github.crisstanza.Creator.html('div', {}, td, formattedValue);
+						}
 					} else {
-						io.github.crisstanza.Creator.html('td', { class: className }, tr, formattedValue);
+						if (formattedValue instanceof Node) {
+							io.github.crisstanza.Creator.html('td', { class: className }, tr, null, formattedValue);
+						} else {
+							io.github.crisstanza.Creator.html('td', { class: className }, tr, formattedValue);
+						}
 					}
 				}
 				if (actions && actions.length || links && links.length) {
 					const td = io.github.crisstanza.Creator.html('td', {}, tr);
 					let containerAll;
-					if (this.options.wrapInteractions?.all) {
+					if (this.options.wrap?.interactions?.all) {
 						const wrapper = io.github.crisstanza.Creator.html('span', {}, td);
 						containerAll = wrapper;
 					} else {
@@ -59,7 +68,7 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 					}
 					if (actions && actions.length) {
 						let containerActions;
-						if (this.options.wrapInteractions?.actions) {
+						if (this.options.wrap?.interactions?.actions) {
 							const wrapper = io.github.crisstanza.Creator.html('span', {}, containerAll);
 							containerActions = wrapper;
 						} else {
@@ -77,7 +86,7 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 					}
 					if (links && links.length) {
 						let containerLinks;
-						if (this.options.wrapInteractions?.links) {
+						if (this.options.wrap?.interactions?.links) {
 							const wrapper = io.github.crisstanza.Creator.html('span', {}, containerAll);
 							containerLinks = wrapper;
 						} else {
