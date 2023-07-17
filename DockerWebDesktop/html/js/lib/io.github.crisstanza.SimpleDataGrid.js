@@ -76,11 +76,15 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 						}
 						for (let j = 0; j < actions.length; j++) {
 							const action = actions[j];
-							const enabledChecker = action.enabled;
-							const button = io.github.crisstanza.Creator.html('button', {}, containerActions, action.label);
-							button.addEventListener('click', function (event) { action.handler(event, item) });
-							if (enabledChecker && !enabledChecker(item)) {
-								button.setAttribute('disabled', 'disabled');
+							if (action.lineBreak) {
+								io.github.crisstanza.Creator.html('br', {}, containerActions);
+							} else {
+								const enabledChecker = action.enabled;
+								const button = io.github.crisstanza.Creator.html('button', {}, containerActions, action.label);
+								button.addEventListener('click', function (event) { action.handler(event, item) });
+								if (enabledChecker && !enabledChecker(item)) {
+									button.setAttribute('disabled', 'disabled');
+								}
 							}
 						}
 					}

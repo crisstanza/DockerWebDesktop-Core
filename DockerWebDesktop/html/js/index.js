@@ -319,9 +319,11 @@
 				{ label: 'start', handler: instanceStart, enabled: (instance) => !instance.Running },
 				{ label: 'stop', handler: instanceStop, enabled: (instance) => instance.Running },
 				{ label: 'remove', handler: instanceRemove, enabled: (instance) => !instance.Running },
+				{ lineBreak: true },
 				{ label: 'shell', handler: instanceSee, enabled: (instance) => instance.Running },
 				{ label: 'stats', handler: instanceStatsSee },
-				{ label: 'logs', handler: instanceLogsSee }
+				{ label: 'logs', handler: instanceLogsSee },
+				{ label: 'scripts', handler: instanceScripts }
 			],
 			[
 				{ label: 'inspect', href: instanceInspectHref, target: '_blank' },
@@ -329,7 +331,6 @@
 				{ label: 'logs', href: instanceLogsHref, target: '_blank' },
 				{
 					label: 'test',
-					hover: instanceTestHover,
 					handler: instanceTestHandler,
 					enabled: (instance) => instance.NetworkSetting && instance.NetworkSetting.Ports && instance.NetworkSetting.Ports.length && instance.NetworkSetting.BridgeIp
 				}
@@ -346,11 +347,7 @@
 		let panel = document.getElementById(instance.ContainerId);
 		if (panel) {
 			panel.parentNode.removeChild(panel);
-		}
-	};
-	const instanceTestHover = (event, instance) => {
-		let panel = document.getElementById(instance.ContainerId);
-		if (!panel) {
+		} else {
 			const attributes = { id: instance.ContainerId, class: 'panel' };
 			panel = io.github.crisstanza.Creator.html('div', attributes, event.target.parentNode);
 			instance.NetworkSetting.Ports.forEach(port => {
@@ -382,6 +379,7 @@
 	const instanceSee = (event, instance) => { window.location.href = "/api/instance/see?containerId=" + instance.ContainerId; };
 	const instanceStatsSee = (event, instance) => { window.location.href = "/api/instance/stats-see?containerId=" + instance.ContainerId; };
 	const instanceLogsSee = (event, instance) => { window.location.href = "/api/instance/logs-see?containerId=" + instance.ContainerId; };
+	const instanceScripts = (event, instance) => { window.location.href = "/api/instance/scripts?containerId=" + instance.ContainerId; };
 
 	const loadSettings = () => {
 		const fetcher = new io.github.crisstanza.Fetcher();
