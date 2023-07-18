@@ -33,7 +33,7 @@ public class CommandLineArguments : ICommandLineArguments
 
 	public void Defaults()
 	{
-		if (SettingsHome == null)
+		if (SettingsHome == null || SettingsHome == "")
 		{
 			SettingsHome = this.fileSystemUtils.CurrentPath() + "SETTINGS" + Path.DirectorySeparatorChar;
 		}

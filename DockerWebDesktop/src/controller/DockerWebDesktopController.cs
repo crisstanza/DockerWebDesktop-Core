@@ -287,6 +287,11 @@ namespace controller
             DownloadFile fileToDownload = this.service.ApiInstanceLogsSee(containerId);
             return base.httpListenerUtils.DefaultDownloadOutputBody(fileToDownload.Contents, fileToDownload.Name);
         }
+        public HttpListenerUtils.OutputBody ApiInstanceScripts(string containerId)
+        {
+            DownloadFile fileToDownload = this.service.ApiInstanceScripts(containerId);
+            return base.httpListenerUtils.DefaultDownloadOutputBody(fileToDownload.Contents, fileToDownload.Name);
+        }
         #endregion
 
         #region api stacks

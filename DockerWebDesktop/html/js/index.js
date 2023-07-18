@@ -122,7 +122,9 @@
 		const table = gridBuilder.build(
 			apiSettingsResponse.Data.Settings,
 			[
-				{ name: 'Name' }, { name: 'Version' }, { name: 'Ports' }, { name: 'Volumes' }, { name: 'NetworkMode' }
+				{ name: 'Name' }, { name: 'Version' }, { name: 'Ports' }, { name: 'Volumes' },
+				{ name: 'Scripts', formatter: (value) => value ? 'YES' : '' },
+				{ name: 'NetworkMode' }
 			],
 			[
 				{ label: 'run', handler: settingRun, enabled: (setting) => setting.Ports },
@@ -323,7 +325,7 @@
 				{ label: 'shell', handler: instanceSee, enabled: (instance) => instance.Running },
 				{ label: 'stats', handler: instanceStatsSee },
 				{ label: 'logs', handler: instanceLogsSee },
-				{ label: 'scripts', handler: instanceScripts }
+				{ label: 'scripts', handler: instanceScripts, enabled: (instance) => instance.Running && instance.Scripts },
 			],
 			[
 				{ label: 'inspect', href: instanceInspectHref, target: '_blank' },

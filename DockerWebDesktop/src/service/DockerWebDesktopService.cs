@@ -5,6 +5,7 @@ using server.response.api;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -21,6 +22,8 @@ namespace service
         private const string NETWORK_FILE = "network";
         private const string PORTS_FILE = "ports";
         private const string VOLUMES_FILE = "volumes";
+        private const string SCRIPTS_FOLDER = "scripts";
+        private const string SCRIPTS_FOLDER_MNT = "/mnt/scripts/";
         private const string DOCKERFILE_FILE = "Dockerfile";
         private const string DOCKER_COMPOSE_FILE = "docker-compose.yml";
         private const string START_UBUNTU_ON_WINDOWS_COMMAND = "wsl -d Ubuntu-22.04 -u root";
@@ -305,6 +308,8 @@ namespace service
                 if (instance.Running)
                 {
                     instance.NetworkSetting = LoadInstanceNetworkSetting(instance.ContainerId);
+                    RunTimeUtils.ExecResult result = base.runTimeUtils.Exec("docker", "exec -it " + instance.ContainerId + " /bin/sh -c \"if [[ -f " + SCRIPTS_FOLDER_MNT + "main.sh ]] ; then echo 1 ; else echo 0 ; fi\"");
+                    instance.Scripts = base.booleanUtils.FromInt(result.Output);
                 }
             }
             return new ApiInstances()
@@ -350,7 +355,6 @@ namespace service
             }
             return null;
         }
-
         private bool ContainsByContainerId(List<Instance> runningInstances, Instance instance)
         {
             foreach (Instance runningInstance in runningInstances)
@@ -472,6 +476,21 @@ namespace service
                 Name = containerId + "-logs.cmd"
             };
         }
+        public DownloadFile ApiInstanceScripts(string containerId)
+        {
+            string dockerScript = "docker exec -w " + SCRIPTS_FOLDER_MNT + " -it " + containerId + " /bin/sh -c ./main.sh";
+            string script = ":; " + dockerScript + " ; exit 0";
+            script += "\n";
+            script += START_UBUNTU_ON_WINDOWS_COMMAND + " -- " + dockerScript;
+            script += "\n";
+            script += "pause";
+            script += "\n";
+            return new DownloadFile()
+            {
+                Contents = script,
+                Name = containerId + "-scripts.cmd"
+            };
+        }
         #endregion
 
         #region api settings
@@ -499,7 +518,8 @@ namespace service
                         Envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(version), true),
                         NetworkMode = this.stringUtils.defaultString(this.fileSystemUtils.GetTextFromFile(NetworkFile(version), true)),
                         Dockerfile = this.fileSystemUtils.ExistsFile(DockerfileFile(version)),
-                        DockerComposeYml = this.fileSystemUtils.ExistsFile(DockerComposeYmlFile(version))
+                        DockerComposeYml = this.fileSystemUtils.ExistsFile(DockerComposeYmlFile(version)),
+                        Scripts = this.fileSystemUtils.ExistsFolder(ScriptsFolder(version))
                     };
                     settings.Add(image);
                 }
@@ -512,6 +532,15 @@ namespace service
             String portsArguments = this.GetArguments("-p", ports);
             portsArguments = this.stringUtils.IsBlank(portsArguments) ? "" : portsArguments + " ";
             string[] volumes = this.fileSystemUtils.GetLinesFromFile(VolumesFile(name, version), true);
+            string scripts = this.ScriptsFolder(name, version);
+            if (base.fileSystemUtils.ExistsFolder(scripts))
+            {
+                if (volumes == null)
+                {
+                    volumes = new string[0];
+                }
+                volumes = volumes.Append(scripts + ":" + SCRIPTS_FOLDER_MNT).ToArray();
+            }
             String volumesArguments = this.GetArguments("-v", volumes);
             volumesArguments = this.stringUtils.IsBlank(volumesArguments) ? "" : volumesArguments + " ";
             string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(name, version), true);
@@ -768,6 +797,14 @@ namespace service
         private string VolumesFile(string name, string version)
         {
             return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + VOLUMES_FILE;
+        }
+        private string ScriptsFolder(string name, string version)
+        {
+            return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + SCRIPTS_FOLDER + Path.DirectorySeparatorChar;
+        }
+        private string ScriptsFolder(string version)
+        {
+            return version + Path.DirectorySeparatorChar + SCRIPTS_FOLDER + Path.DirectorySeparatorChar;
         }
         private string PortsFile(string version)
         {

@@ -5,6 +5,7 @@
 		public string ContainerId { get; set; }
 		public string Image { get; set; }
 		public bool Running { get; set; }
+		public bool Scripts { get; set; }
 		public string Command { get; set; }
 		public string Created { get; set; }
 		public string Status { get; set; }
