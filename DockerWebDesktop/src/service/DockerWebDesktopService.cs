@@ -24,6 +24,7 @@ namespace service
         private const string VOLUMES_FILE = "volumes";
         private const string SCRIPTS_FOLDER = "scripts";
         private const string SCRIPTS_FOLDER_MNT = "/mnt/scripts/";
+        private const string SCRIPTS_MAIN_SCRIPT = "main.sh";
         private const string DOCKERFILE_FILE = "Dockerfile";
         private const string DOCKER_COMPOSE_FILE = "docker-compose.yml";
         private const string START_UBUNTU_ON_WINDOWS_COMMAND = "wsl -d Ubuntu-22.04 -u root";
@@ -308,7 +309,7 @@ namespace service
                 if (instance.Running)
                 {
                     instance.NetworkSetting = LoadInstanceNetworkSetting(instance.ContainerId);
-                    RunTimeUtils.ExecResult result = base.runTimeUtils.Exec("docker", "exec -it " + instance.ContainerId + " /bin/sh -c \"if [[ -f " + SCRIPTS_FOLDER_MNT + "main.sh ]] ; then echo 1 ; else echo 0 ; fi\"");
+                    RunTimeUtils.ExecResult result = base.runTimeUtils.Exec("docker", "exec -it " + instance.ContainerId + " /bin/sh -c \"if [[ -f " + SCRIPTS_FOLDER_MNT + SCRIPTS_MAIN_SCRIPT + " ]] ; then echo 1 ; else echo 0 ; fi\"");
                     instance.Scripts = base.booleanUtils.FromInt(result.Output);
                 }
             }
@@ -478,7 +479,7 @@ namespace service
         }
         public DownloadFile ApiInstanceScripts(string containerId)
         {
-            string dockerScript = "docker exec -w " + SCRIPTS_FOLDER_MNT + " -it " + containerId + " /bin/sh -c ./main.sh";
+            string dockerScript = "docker exec -w " + SCRIPTS_FOLDER_MNT + " -it " + containerId + " /bin/sh -c ./" + SCRIPTS_MAIN_SCRIPT;
             string script = ":; " + dockerScript + " ; exit 0";
             script += "\n";
             script += START_UBUNTU_ON_WINDOWS_COMMAND + " -- " + dockerScript;
