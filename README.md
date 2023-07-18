@@ -7,7 +7,8 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 
 # Demo:
 
-<img src="https://github.com/crisstanza/DockerWebDesktop-Core/raw/main/DOC/DockerWebDesktop-1.1.1.1.png"><br><br>
+<!-- <img src="https://github.com/crisstanza/DockerWebDesktop-Core/raw/main/DOC/DockerWebDesktop-1.1.1.1.png"><br><br> -->
+<img src="DOC/DockerWebDesktop-1.8.1.1.png"><br><br>
 
 # Dependencies:
 
@@ -18,10 +19,11 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 
 | DockerWebDesktop-Core | CommandLiner-Core | CSharpUtils-Core |
 | :-------------------: | :---------------: | :--------------: |
-| <b>1.1.5.0</b>        | 0.3.0.0           | 0.3.0.0          |
-| <b>1.1.5.1</b>        | 0.3.0.0           | 0.3.0.1          |
-| <b>1.7.0.0</b>        | 0.7.0.0           | 0.7.0.0          |
+| <b>1.8.1.1</b>        | 0.7.0.1           | 0.7.1.0          |
 | <b>1.7.0.1</b>        | 0.7.0.1           | 0.7.0.1          |
+| <b>1.7.0.0</b>        | 0.7.0.0           | 0.7.0.0          |
+| <b>1.1.5.1</b>        | 0.3.0.0           | 0.3.0.1          |
+| <b>1.1.5.0</b>        | 0.3.0.0           | 0.3.0.0          |
 
 <br>
 
