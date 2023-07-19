@@ -118,7 +118,14 @@
 	// /swarm
 
 	const showSettings = (apiSettingsResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true } }, outputSettings);
+		const options = {
+			border: true, headers: true, class: 'interactive', wrap: {
+				interactions: {
+					all: true, actions: true, links: true
+				}, values: true, headers: true
+			}
+		};
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid(options, outputSettings);
 		const table = gridBuilder.build(
 			apiSettingsResponse.Data.Settings,
 			[
@@ -546,10 +553,19 @@
 						const paddingLeft = propertyValue(style, 'padding-left');
 						const paddingRight = propertyValue(style, 'padding-right');
 						const width = (headerWidths[i] - paddingLeft - paddingRight) + 'px';
-						div.style.width = width;
-						cell.style.width = width;
 						div.title = div.innerText;
+						div.style.width = width;
+						th.style.width = width;
 					} else {
+						//const span = th.querySelector('span');
+						//if (span) {
+						//	const style = getComputedStyle(span, null);
+						//	const paddingLeft = propertyValue(style, 'padding-left');
+						//	const paddingRight = propertyValue(style, 'padding-right');
+						//	const width = (Math.trunc(span.getBoundingClientRect().width) - paddingLeft - paddingRight) + 'px';
+						//	th.style.width = width;
+						//	cell.style.width = width;
+						//}
 						div.style.width = '100%';
 					}
 				}

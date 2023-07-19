@@ -1,7 +1,7 @@
 ﻿:root {
 	--border-radius: 3px;
-	--normal-font: 14pt;
-	--small-font: 0.75em;
+	--normal-font: 1.1rem;
+	--small-font: 0.75rem;
 	--font-color: #444;
 }
 
@@ -12,6 +12,9 @@
 
 html {
 	background-color: aliceblue;
+}
+html, html * {
+	font-size: var(--normal-font);
 }
 
 body {
@@ -24,10 +27,6 @@ body {
 
 body > * {
 	flex: 100%;
-}
-
-body * {
-	font-size: var(--normal-font);
 }
 
 .disabled, [disabled=disabled] { opacity: 0.5; }
@@ -63,7 +62,7 @@ fieldset table.small, fieldset table.small > thead th, fieldset table.small > tf
 	font-size: var(--small-font);
 }
 
-fieldset table > thead th {
+fieldset table > thead th, fieldset table > thead th * {
 	background-color: beige;
 	font-size: var(--small-font);
 }
