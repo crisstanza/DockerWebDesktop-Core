@@ -42,6 +42,6 @@ function _main() {
     fi
 }
 
-_main
+_main "${@}"
 
 ########################## /HIC SUNT DRACONES ##########################
