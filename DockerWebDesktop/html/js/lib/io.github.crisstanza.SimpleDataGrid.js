@@ -24,7 +24,12 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 					const tr = io.github.crisstanza.Creator.html('tr', {}, thead);
 					for (let i = 0; i < columns.length; i++) {
 						const column = columns[i];
-						io.github.crisstanza.Creator.html('th', {}, tr, column.name);
+						if (this.options.wrap?.headers) {
+							const th = io.github.crisstanza.Creator.html('th', {}, tr);
+							io.github.crisstanza.Creator.html('span', {}, th, column.name);
+						} else {
+							io.github.crisstanza.Creator.html('th', {}, tr, column.name);
+						}
 					}
 					if (actions && actions.length || links && links.length) {
 						io.github.crisstanza.Creator.html('th', {}, tr);
