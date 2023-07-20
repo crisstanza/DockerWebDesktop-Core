@@ -11,7 +11,7 @@ clean() {
     clear
 }
 
-test() {
+test() { # test mysql connectivity
     mysql -u root < test.sql
 }
 
@@ -26,12 +26,13 @@ function _privateFunction() { # pseudo-private
 ########################## HIC SUNT DRACONES ##########################
 
 function _menu() { # pseudo-private
-	echo -e "Available commands:"
-    cat `basename ${0}` | grep -v '^function _' | grep '()\s{' | \
-        while read COMMAND ; do echo " - ${COMMAND::-4}" ; done
-    echo ; echo -n ': ' ; read OPTION
-    echo ; for COMMAND in ${OPTION} ; do "${COMMAND}" ; echo ; done
-    _menu
+    while true ; do
+	    echo -e "Available commands:"
+        cat `basename ${0}` | grep -v '^function _' | grep '()\s{' | \
+            while read COMMAND ; do echo " - ${COMMAND%%()*}" ; done
+        echo ; echo -n ': ' ; read OPTION
+        echo ; for COMMAND in ${OPTION} ; do "${COMMAND}" ; echo ; done
+    done
 }
 
 function _main() {
