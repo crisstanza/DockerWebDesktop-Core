@@ -123,7 +123,7 @@
 				interactions: {
 					all: true, actions: true, links: true
 				}, values: true, headers: true
-			}
+			}, headerHandler: headerHandler
 		};
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid(options, outputSettings);
 		const table = gridBuilder.build(
@@ -157,7 +157,7 @@
 	};
 
 	const showImages = (apiImagesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true } }, outputImages);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true }, headerHandler: headerHandler }, outputImages);
 		const table = gridBuilder.build(
 			apiImagesResponse.Data.Images,
 			[
@@ -221,7 +221,7 @@
 		fetcher.get('/api/deploy-docker-compose-yml', { name: image.Name, version: image.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const showStackServices = (services) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small', wrap: { values: true } });
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small', wrap: { values: true }, headerHandler: headerHandler });
 		const grid = gridBuilder.build(
 			services,
 			[
@@ -241,7 +241,7 @@
 			return currentState;
 		};
 		const showStackTasks = (tasks) => {
-			const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small', wrap: { values: true } });
+			const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small', wrap: { values: true }, headerHandler: headerHandler });
 			const grid = gridBuilder.build(
 				tasks,
 				[
@@ -257,7 +257,7 @@
 			);
 			return grid;
 		};
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive' }, outputStacks);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', headerHandler: headerHandler }, outputStacks);
 		const table = gridBuilder.build(
 			apiStacksResponse.Data.Stacks,
 			[
@@ -287,7 +287,7 @@
 
 	// nodes
 	const showNodes = (apiNodesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true } }, outputNodes);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true }, headerHandler: headerHandler }, outputNodes);
 		const table = gridBuilder.build(
 			apiNodesResponse.Data.Nodes,
 			[
@@ -311,7 +311,7 @@
 	// /nodes
 
 	const showInstances = (apiInstancesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true } }, outputInstances);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true }, headerHandler: headerHandler }, outputInstances);
 		const table = gridBuilder.build(
 			apiInstancesResponse.Data.Instances,
 			[
@@ -425,7 +425,7 @@
 
 	// networks
 	const showNetworks = (apiNetworksResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true } }, outputNetworks);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true }, headerHandler: headerHandler }, outputNetworks);
 		const table = gridBuilder.build(
 			apiNetworksResponse.Data.Networks,
 			[
@@ -453,7 +453,7 @@
 
 	// disk usage
 	const showDiskUsages = (apiDiskUsagesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true } }, outputDiskUsages);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true }, headerHandler: headerHandler }, outputDiskUsages);
 		const table = gridBuilder.build(
 			apiDiskUsagesResponse.Data.DiskUsages,
 			[
@@ -533,6 +533,39 @@
 		initGui(0);
 	}
 
+	const headerHandler = (event, th, i) => {
+		const half = th.clientWidth / 2;
+		const table = th.parentNode.parentNode.parentNode;
+		if (event.offsetX < half) {
+			decreaseColumnWidth(i, table);
+		} else {
+			increaseColumnWidth(i, table);
+		}
+	};
+
+	const changeColumnWidth = (currentHeader, table, mult) => {
+		const header = table.tHead.rows[0].cells[currentHeader];
+		const newWidth = header.getBoundingClientRect().width * mult + 'px';
+		header.style.width = newWidth;
+		const rows = table.tBodies[0].rows;
+		for (let currentRow = 0; currentRow < rows.length; currentRow++) {
+			const row = rows[currentRow];
+			const cell = row.cells[currentHeader];
+			const div = cell.querySelector(':scope > div');
+			if (div) {
+				div.style.width = newWidth;
+			} else {
+				//cell.style.width = newWidth;
+			}
+		}
+	};
+	const decreaseColumnWidth = (i, table) => {
+		changeColumnWidth(i, table, 0.75);
+	};
+	const increaseColumnWidth = (i, table) => {
+		changeColumnWidth(i, table, 1.25);
+	};
+
 	const ellipsis = (table) => {
 		const ths = Array.from(table.querySelectorAll('thead > tr > th'));
 		const headerWidths = ths.map(th => {
@@ -552,10 +585,10 @@
 						const style = getComputedStyle(cell, null);
 						const paddingLeft = propertyValue(style, 'padding-left');
 						const paddingRight = propertyValue(style, 'padding-right');
-						const width = (headerWidths[i] - paddingLeft - paddingRight) + 'px';
+						const newWidth = (headerWidths[i] - paddingLeft - paddingRight) + 'px';
 						div.title = div.innerText;
-						div.style.width = width;
-						th.style.width = width;
+						div.style.width = newWidth;
+						th.style.width = newWidth;
 					} else {
 						//const span = th.querySelector('span');
 						//if (span) {
