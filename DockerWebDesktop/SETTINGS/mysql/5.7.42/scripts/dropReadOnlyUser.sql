@@ -1,0 +1,2 @@
+DROP USER readOnly@'%';
+FLUSH PRIVILEGES;

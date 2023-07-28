@@ -12,7 +12,15 @@ clean() {
 }
 
 test() { # test mysql connectivity
-    mysql -u root < test.sql
+    mysql -u root -proot < test.sql
+}
+
+createReadOnlyUser() {
+    mysql -u root -proot < createReadOnlyUser.sql
+}
+
+dropReadOnlyUser() {
+    mysql -u root -proot < dropReadOnlyUser.sql
 }
 
 example() {
