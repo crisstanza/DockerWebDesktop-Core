@@ -28,6 +28,7 @@ namespace service
         private const string DOCKERFILE_FILE = "Dockerfile";
         private const string DOCKER_COMPOSE_FILE = "docker-compose.yml";
         private const string START_UBUNTU_ON_WINDOWS_COMMAND = "wsl -d Ubuntu-22.04 -u root";
+        private const string LINE_COMMENT = "#";
 
         private Version latestVersion;
 
@@ -870,7 +871,10 @@ namespace service
             {
                 foreach (string value in values)
                 {
-                    arguments.Append(name).Append(" ").Append(value).Append(" ");
+                    if (base.stringUtils.NotStartsWith(value.Trim(), LINE_COMMENT))
+                    {
+                        arguments.Append(name).Append(" ").Append(value).Append(" ");
+                    }
                 }
             }
             return arguments.ToString().Trim();
