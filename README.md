@@ -31,7 +31,7 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 
 ## Install Ubuntu on Windows:
 
-Open "Command Prompt" as Administrador and:
+Open "Command Prompt" as Administrator and:
 
 List available:
 
