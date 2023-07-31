@@ -19,7 +19,7 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 
 | DockerWebDesktop-Core | CommandLiner-Core | CSharpUtils-Core |
 | :-------------------: | :---------------: | :--------------: |
-| <b>1.8.2.1</b>        | 0.7.0.1           | 0.7.1.1          |
+| <b>1.8.2.2</b>        | 0.7.0.1           | 0.7.1.1          |
 | <b>1.8.1.1</b>        | 0.7.0.1           | 0.7.1.0          |
 | <b>1.7.0.1</b>        | 0.7.0.1           | 0.7.0.1          |
 | <b>1.7.0.0</b>        | 0.7.0.0           | 0.7.0.0          |

@@ -3,32 +3,38 @@ clear ; cd "$(dirname "${0}")"
 
 #####################################################################
 
-quit() {
-	exit 0;
+KEY_NAME=keyName
+
+getKeys() { # show all keys using 'keys'
+	redis-cli keys "*"
 }
 
-clean() {
-	clear
+scanKeys() { # show all keys using 'scan'
+	redis-cli --scan --pattern "*"
 }
 
-test() { # test mysql connectivity
-	mysql -u root -proot < test.sql
+setValue() {
+	redis-cli set "${KEY_NAME}" 0
 }
 
-createReadOnlyUser() {
-	mysql -u root -proot < createReadOnlyUser.sql
+getValue() {
+	redis-cli get "${KEY_NAME}"
 }
 
-dropReadOnlyUser() {
-	mysql -u root -proot < dropReadOnlyUser.sql
+incValue() {
+	redis-cli incr "${KEY_NAME}"
 }
 
-example() {
+delValue() {
+	redis-cli del "${KEY_NAME}"
+}
+
+example() { # private function call example
 	_privateFunction
 }
 
 function _privateFunction() { # pseudo-private
-	echo 'This is a function call example.'
+	echo "This is a function call example."
 }
 
 ########################## HIC SUNT DRACONES ##########################
@@ -49,6 +55,14 @@ function _main() {
 	else
 		for COMMAND in "${@}" ; do "${COMMAND}" ; echo ; done
 	fi
+}
+
+clean() {
+	clear
+}
+
+quit() {
+	exit 0;
 }
 
 _main "${@}"
