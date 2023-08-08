@@ -16,7 +16,7 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 		build(items, columns, actions, links) {
 			const table = io.github.crisstanza.Creator.html('table', { border: this.options.border ? 1 : 0 });
 			if (this.options.class) {
-				table.classList.add(this.options.class);
+				this.options.class.split(/\s+/).forEach((className) => table.classList.add(className));
 			}
 			if (this.options.headers) {
 				if (items.length > 0) {
