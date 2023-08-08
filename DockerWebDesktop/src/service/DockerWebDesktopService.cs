@@ -517,7 +517,7 @@ namespace service
 						Version = this.fileSystemUtils.FolderName(version),
 						Ports = this.stringUtils.defaultArray(this.fileSystemUtils.GetLinesFromFile(PortsFile(version), true)),
 						Volumes = this.stringUtils.defaultArray(this.fileSystemUtils.GetLinesFromFile(VolumesFile(version), true)),
-						Envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(version), true),
+						Envs = this.stringUtils.defaultArray(this.fileSystemUtils.GetLinesFromFile(EnvsFile(version), true)),
 						NetworkMode = this.stringUtils.defaultString(this.fileSystemUtils.GetTextFromFile(NetworkFile(version), true)),
 						Dockerfile = this.fileSystemUtils.ExistsFile(DockerfileFile(version)),
 						DockerComposeYml = this.fileSystemUtils.ExistsFile(DockerComposeYmlFile(version)),

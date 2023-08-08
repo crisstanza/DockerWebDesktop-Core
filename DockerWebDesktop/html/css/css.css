@@ -1,6 +1,7 @@
 ﻿:root {
 	--border-radius: 3px;
 	--normal-font: 1.1rem;
+	--medium-font: 0.925rem;
 	--small-font: 0.75rem;
 	--font-color: #444;
 }
@@ -223,4 +224,8 @@ button:hover:not([disabled]) { background-color: #E7E7E7; }
 
 div.error {
 	color: red;
+}
+
+table.settings td:nth-child(5) * {
+	font-size: var(--medium-font);
 }

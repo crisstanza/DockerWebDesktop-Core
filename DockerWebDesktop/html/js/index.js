@@ -35,7 +35,13 @@
 		const value = style.getPropertyValue(property).replace(/px/, '')
 		return value ? Number(value) : 0;
 	}
-
+	const formatArray = (array) => {
+		if (array) {
+		return array.join('<br>');
+		} else {
+			return '';
+		}
+	}
 	const getCommandFromButton = (button) => {
 		return button.getAttribute('data-action');
 	};
@@ -119,7 +125,7 @@
 
 	const showSettings = (apiSettingsResponse) => {
 		const options = {
-			border: true, headers: true, class: 'interactive', wrap: {
+			border: true, headers: true, class: 'interactive settings', wrap: {
 				interactions: {
 					all: true, actions: true, links: true
 				}, values: true, headers: true
@@ -129,7 +135,7 @@
 		const table = gridBuilder.build(
 			apiSettingsResponse.Data.Settings,
 			[
-				{ name: 'Name' }, { name: 'Version' }, { name: 'Ports' }, { name: 'Volumes' },
+		    { name: 'Name' }, { name: 'Version' }, { name: 'Ports', formatter: formatArray }, { name: 'Volumes', formatter: formatArray }, { name: 'Envs', formatter: formatArray },
 				{ name: 'Scripts', formatter: (value) => value ? 'YES' : '' },
 				{ name: 'NetworkMode' }
 			],
@@ -560,10 +566,10 @@
 		}
 	};
 	const decreaseColumnWidth = (i, table) => {
-		changeColumnWidth(i, table, 0.75);
+		changeColumnWidth(i, table, 0.8);
 	};
 	const increaseColumnWidth = (i, table) => {
-		changeColumnWidth(i, table, 1.25);
+		changeColumnWidth(i, table, 1.2);
 	};
 
 	const ellipsis = (table) => {
