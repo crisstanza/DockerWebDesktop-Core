@@ -226,6 +226,6 @@ div.error {
 	color: red;
 }
 
-table.settings td:nth-child(5) * {
+table.settings td:nth-child(6) * {
 	font-size: var(--medium-font);
 }

@@ -245,18 +245,24 @@ namespace service
 		}
 		public RunTimeUtils.ExecResult ApiImageRun(string repository, string tag, string imageId)
 		{
-			string name = repository.Replace(".local", "");
+			if (this.args.Debug)
+			{
+				Console.WriteLine("ApiImageRun | repository: " + repository + ", tag: " + tag + ", imageId: " + imageId);
+			}
+			(int? hash, string name) = this.HashAndName(repository, "_");
+			name = name.Replace(".local", "");
 			string version = tag.Replace(".local", "");
-			string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(name, version), true);
+			string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(hash, name, version), true);
 			String portsArguments = GetArguments("-p", ports);
 			portsArguments = this.stringUtils.IsBlank(portsArguments) ? "" : portsArguments + " ";
-			string[] volumes = this.fileSystemUtils.GetLinesFromFile(VolumesFile(name, version), true);
+			string[] volumes = this.fileSystemUtils.GetLinesFromFile(VolumesFile(hash, name, version), true) ?? new string[0];
+			volumes = this.AddScripts(volumes, hash, name, version);
 			String volumesArguments = this.GetArguments("-v", volumes);
 			volumesArguments = this.stringUtils.IsBlank(volumesArguments) ? "" : volumesArguments + " ";
-			string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(name, version), true);
+			string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(hash, name, version), true);
 			String envsArguments = GetArguments("-e", envs);
 			envsArguments = this.stringUtils.IsBlank(envsArguments) ? "" : envsArguments + " ";
-			String network = this.fileSystemUtils.GetTextFromFile(NetworkFile(name, version), true);
+			String network = this.fileSystemUtils.GetTextFromFile(NetworkFile(hash, name, version), true);
 			String networkArgument = this.GetArgument("--network", network);
 			string arguments = "run -d -t " + envsArguments + portsArguments + volumesArguments + networkArgument + imageId;
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
@@ -508,12 +514,15 @@ namespace service
 			List<Setting> settings = new List<Setting>();
 			foreach (String folder in folders)
 			{
+				string folderName = this.fileSystemUtils.FolderName(folder);
+				(int? hash, string name) = this.HashAndName(folderName);
 				string[] versions = this.fileSystemUtils.ListFolders(folder);
 				foreach (String version in versions)
 				{
 					Setting image = new Setting()
 					{
-						Name = this.fileSystemUtils.FolderName(folder),
+						Hash = hash,
+						Name = name,
 						Version = this.fileSystemUtils.FolderName(version),
 						Ports = this.stringUtils.defaultArray(this.fileSystemUtils.GetLinesFromFile(PortsFile(version), true)),
 						Volumes = this.stringUtils.defaultArray(this.fileSystemUtils.GetLinesFromFile(VolumesFile(version), true)),
@@ -528,27 +537,23 @@ namespace service
 			}
 			return settings;
 		}
-		public RunTimeUtils.ExecResult ApiSettingRun(string name, string version)
+		public RunTimeUtils.ExecResult ApiSettingRun(int? hash, string name, string version)
 		{
-			string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(name, version), true);
+			if (this.args.Debug)
+			{
+				Console.WriteLine("ApiSettingRun | hash: " + hash + ", name: " + name + ", version: " + version);
+			}
+			string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(hash, name, version), true);
 			String portsArguments = this.GetArguments("-p", ports);
 			portsArguments = this.stringUtils.IsBlank(portsArguments) ? "" : portsArguments + " ";
-			string[] volumes = this.fileSystemUtils.GetLinesFromFile(VolumesFile(name, version), true);
-			string scripts = this.ScriptsFolder(name, version);
-			if (base.fileSystemUtils.ExistsFolder(scripts))
-			{
-				if (volumes == null)
-				{
-					volumes = new string[0];
-				}
-				volumes = volumes.Append(scripts + ":" + SCRIPTS_FOLDER_MNT).ToArray();
-			}
+			string[] volumes = this.fileSystemUtils.GetLinesFromFile(VolumesFile(hash, name, version), true) ?? new string[0];
+			volumes = this.AddScripts(volumes, hash, name, version);
 			String volumesArguments = this.GetArguments("-v", volumes);
 			volumesArguments = this.stringUtils.IsBlank(volumesArguments) ? "" : volumesArguments + " ";
-			string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(name, version), true);
+			string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(hash, name, version), true);
 			String envsArguments = this.GetArguments("-e", envs);
 			envsArguments = this.stringUtils.IsBlank(envsArguments) ? "" : envsArguments + " ";
-			String network = this.fileSystemUtils.GetTextFromFile(NetworkFile(name, version), true);
+			String network = this.fileSystemUtils.GetTextFromFile(NetworkFile(hash, name, version), true);
 			String networkArgument = this.GetArgument("--network", network);
 			string arguments = "run -d -t " + envsArguments + portsArguments + volumesArguments + networkArgument + name + ":" + version;
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
@@ -557,21 +562,21 @@ namespace service
 		#endregion
 
 		#region api build dockerfile
-		public RunTimeUtils.ExecResult ApiBuildDockerfile(string name, string version)
+		public RunTimeUtils.ExecResult ApiBuildDockerfile(int? hash, string name, string version)
 		{
-			string dockerfileFile = DOCKERFILE_FILE; //  DockerfileFile(name, version);
-			string arguments = "build -t " + name + ".local:" + version + ".local -f " + dockerfileFile + " .";
-			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments, HomePath(name, version));
+			string dockerfileFile = DOCKERFILE_FILE;
+			string arguments = "build -t " + this.ImageName(hash, name, version) + " -f " + dockerfileFile + " .";
+			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments, HomePath(hash, name, version));
 			return execResult;
 		}
 		#endregion
 
 		#region api deploy docker compose yml
-		public RunTimeUtils.ExecResult ApiDeployDockerComposeYml(string name, string version)
+		public RunTimeUtils.ExecResult ApiDeployDockerComposeYml(int? hash, string name, string version)
 		{
-			string dockerComposeYmlFile = DOCKER_COMPOSE_FILE; // DockerComposeYmlFile(name, version);
+			string dockerComposeYmlFile = DOCKER_COMPOSE_FILE;
 			string arguments = "stack deploy -c " + dockerComposeYmlFile + " " + StackName(name, version);
-			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments, HomePath(name, version));
+			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments, HomePath(hash, name, version));
 			return execResult;
 		}
 		#endregion
@@ -787,23 +792,34 @@ namespace service
 		}
 		#endregion
 
-		#region files
-		private string HomePath(string name, string version)
+		#region files name/version
+		private string HomePath(int? hash, string name, string version)
 		{
-			return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar;
+			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar;
 		}
-		private string PortsFile(string name, string version)
+		private string EnvsFile(int? hash, string name, string version)
 		{
-			return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + PORTS_FILE;
+			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + ENVS_FILE;
 		}
-		private string VolumesFile(string name, string version)
+		private string NetworkFile(int? hash, string name, string version)
 		{
-			return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + VOLUMES_FILE;
+			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + NETWORK_FILE;
 		}
-		private string ScriptsFolder(string name, string version)
+		private string PortsFile(int? hash, string name, string version)
 		{
-			return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + SCRIPTS_FOLDER + Path.DirectorySeparatorChar;
+			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + PORTS_FILE;
 		}
+		private string VolumesFile(int? hash, string name, string version)
+		{
+			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + VOLUMES_FILE;
+		}
+		private string ScriptsFolder(int? hash, string name, string version)
+		{
+			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + SCRIPTS_FOLDER + Path.DirectorySeparatorChar;
+		}
+		#endregion
+
+		#region files version
 		private string ScriptsFolder(string version)
 		{
 			return version + Path.DirectorySeparatorChar + SCRIPTS_FOLDER + Path.DirectorySeparatorChar;
@@ -815,14 +831,6 @@ namespace service
 		private string VolumesFile(string version)
 		{
 			return version + Path.DirectorySeparatorChar + VOLUMES_FILE;
-		}
-		private string EnvsFile(string name, string version)
-		{
-			return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + ENVS_FILE;
-		}
-		private string NetworkFile(string name, string version)
-		{
-			return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + NETWORK_FILE;
 		}
 		private string NetworkFile(string version)
 		{
@@ -836,22 +844,28 @@ namespace service
 		{
 			return version + Path.DirectorySeparatorChar + DOCKERFILE_FILE;
 		}
-		private string DockerfileFile(string name, string version)
-		{
-			return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + DOCKERFILE_FILE;
-		}
-
 		private string DockerComposeYmlFile(string version)
 		{
 			return version + Path.DirectorySeparatorChar + "docker-compose.yml";
 		}
-		private string DockerComposeYmlFile(string name, string version)
-		{
-			return this.args.SettingsHome + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + DOCKER_COMPOSE_FILE;
-		}
 		#endregion
 
 		#region names
+		private (int? hash, string name) HashAndName(string folder, string sep = "#")
+		{
+			string[] parts = folder.Split(sep);
+			int? hash = parts.Length > 1 ? Convert.ToInt32(parts[0]) : null;
+			string name = parts.Length > 1 ? parts[1] : parts[0];
+			return (hash, name);
+		}
+		private string HashPart(int? hash, string sep = "#")
+		{
+			return hash == null ? "" : hash + sep;
+		}
+		private string ImageName(int? hash, string name, string version)
+		{
+			return this.HashPart(hash, "_") + (name + ".local:" + version + ".local");
+		}
 		private string StackName(string name, string version)
 		{
 			return (name + "_" + version).Replace('.', '-');
@@ -864,6 +878,15 @@ namespace service
 		#endregion
 
 		#region arguments
+		private string[] AddScripts(string[] volumes, int? hash, string name, string version)
+		{
+			string scripts = this.ScriptsFolder(hash, name, version);
+			if (base.fileSystemUtils.ExistsFolder(scripts))
+			{
+				volumes = volumes.Append(scripts + ":" + SCRIPTS_FOLDER_MNT).ToArray();
+			}
+			return volumes;
+		}
 		private string GetArguments(string name, string[] values)
 		{
 			StringBuilder arguments = new StringBuilder();

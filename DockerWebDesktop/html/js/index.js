@@ -1,4 +1,6 @@
 ﻿(function () {
+	let RESIZE_DEBOUNCE = 500;
+	let RESIZE_TIMER = null;
 	let REAL_IP = null;
 	const resetOutput = () => {
 		outputStatus.innerHTML = '?';
@@ -135,7 +137,8 @@
 		const table = gridBuilder.build(
 			apiSettingsResponse.Data.Settings,
 			[
-		    { name: 'Name' }, { name: 'Version' }, { name: 'Ports', formatter: formatArray }, { name: 'Volumes', formatter: formatArray }, { name: 'Envs', formatter: formatArray },
+				{ name: '#', key: 'Hash' }, { name: 'Name' }, { name: 'Version' },
+				{ name: 'Ports', formatter: formatArray }, { name: 'Volumes', formatter: formatArray }, { name: 'Envs', formatter: formatArray },
 				{ name: 'Scripts', formatter: (value) => value ? 'YES' : '' },
 				{ name: 'NetworkMode' }
 			],
@@ -214,17 +217,17 @@
 	const settingRun = (event, setting) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/setting/run', { name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		fetcher.get('/api/setting/run', { hash: setting.Hash, name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
-	const buildDockerfile = (event, image) => {
+	const buildDockerfile = (event, setting) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/build-dockerfile', { name: image.Name, version: image.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		fetcher.get('/api/build-dockerfile', { hash: setting.Hash, name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
-	const deployDockerComposeYml = (event, image) => {
+	const deployDockerComposeYml = (event, setting) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/deploy-docker-compose-yml', { name: image.Name, version: image.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		fetcher.get('/api/deploy-docker-compose-yml', { hash: setting.Hash, name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const showStackServices = (services) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small', wrap: { values: true }, headerHandler: headerHandler });
@@ -536,7 +539,11 @@
 	};
 
 	const window_Resize = (event) => {
-		initGui(0);
+		if (RESIZE_TIMER) {
+			clearTimeout(RESIZE_TIMER);
+			RESIZE_TIMER = null;
+		}
+		RESIZE_TIMER = setTimeout(initGui, RESIZE_DEBOUNCE);
 	}
 
 	const headerHandler = (event, th, i) => {
@@ -612,7 +619,7 @@
 		});
 	}
 
-	const initGui = (delay) => {
+	const initGui = (delay = 0) => {
 		setTimeout(() => {
 			loadSettings();
 			loadImages();
