@@ -44,6 +44,9 @@
 			return '';
 		}
 	}
+	const formatImageId = (value) => {
+		return value.replace('sha256:', '<img title="SHA-256" src="img/sha256.png" /> ');
+	}
 	const getCommandFromButton = (button) => {
 		return button.getAttribute('data-action');
 	};
@@ -53,7 +56,6 @@
 		window.open(command);
 	};
 
-	// dockerd
 	const btDockerd_Click = (event) => {
 		const button = event.target;
 		if (button.classList.contains('pressed')) {
@@ -88,9 +90,7 @@
 		showDockerAndSwarmDStatus(false, null);
 	};
 	const dockerdStopError = (exc) => { outputStatus.innerHTML = exc; };
-	// /dockerd
 
-	// swarm
 	const btSwarm_Click = (event) => {
 		const button = event.target;
 		if (button.classList.contains('pressed')) {
@@ -123,7 +123,6 @@
 		}
 	};
 	const swarmLeaveError = (exc) => { outputStatus.innerHTML = exc; };
-	// /swarm
 
 	const showSettings = (apiSettingsResponse) => {
 		const options = {
@@ -170,7 +169,7 @@
 		const table = gridBuilder.build(
 			apiImagesResponse.Data.Images,
 			[
-				{ name: 'Repository' }, { name: 'Tag' }, { name: 'ImageId' }, { name: 'Created' }, { name: 'Size' }
+				{ name: 'Repository' }, { name: 'Tag' }, { name: 'ImageId', formatter: formatImageId, titleFormatter: (value) => value }, { name: 'Created' }, { name: 'Size' }
 			],
 			[
 				{ label: 'run', handler: imageRun, enabled: (image) => image.Tag != '<none>' },
@@ -599,7 +598,7 @@
 						const paddingLeft = propertyValue(style, 'padding-left');
 						const paddingRight = propertyValue(style, 'padding-right');
 						const newWidth = (headerWidths[i] - paddingLeft - paddingRight) + 'px';
-						div.title = div.innerText;
+						div.title = cell.title ? cell.title : div.innerText;
 						div.style.width = newWidth;
 						th.style.width = newWidth;
 					} else {
