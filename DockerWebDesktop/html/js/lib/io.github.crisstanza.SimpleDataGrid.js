@@ -52,8 +52,9 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 					const formatter = column.formatter;
 					const value = item[key];
 					const formattedValue = formatter ? formatter(value) : this.#escapeHtml(value);
+					let td;
 					if (this.options.wrap?.values) {
-						const td = io.github.crisstanza.Creator.html('td', { class: className }, tr);
+						td = io.github.crisstanza.Creator.html('td', { class: className }, tr);
 						if (formattedValue instanceof Node) {
 							io.github.crisstanza.Creator.html('div', {}, td, null, formattedValue);
 						} else {
@@ -61,9 +62,16 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 						}
 					} else {
 						if (formattedValue instanceof Node) {
-							io.github.crisstanza.Creator.html('td', { class: className }, tr, null, formattedValue);
+							td = io.github.crisstanza.Creator.html('td', { class: className }, tr, null, formattedValue);
 						} else {
-							io.github.crisstanza.Creator.html('td', { class: className }, tr, formattedValue);
+							td = io.github.crisstanza.Creator.html('td', { class: className }, tr, formattedValue);
+						}
+					}
+					const titleFormatter = column.titleFormatter;
+					if (titleFormatter) {
+						const titleValue = titleFormatter(value);
+						if (titleValue) {
+							td.setAttribute('title', titleValue);
 						}
 					}
 				}
