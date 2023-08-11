@@ -51,7 +51,7 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 					const className = column.class ? column.class : '';
 					const formatter = column.formatter;
 					const value = item[key];
-					const formattedValue = formatter ? formatter(value) : this.#escapeHtml(value);
+					const formattedValue = formatter ? formatter(value, tr) : this.#escapeHtml(value);
 					let td;
 					if (this.options.wrap?.values) {
 						td = io.github.crisstanza.Creator.html('td', { class: className }, tr);

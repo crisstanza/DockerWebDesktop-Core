@@ -39,13 +39,22 @@
 	}
 	const formatArray = (array) => {
 		if (array) {
-		return array.join('<br>');
+			return array.join('<br>');
 		} else {
 			return '';
 		}
 	}
 	const formatImageId = (value) => {
 		return value.replace('sha256:', '<img title="SHA-256" src="img/sha256.png" /> ');
+	}
+	const formatRunning = (value, tr) => {
+		if (value) {
+			tr.classList.add('running');
+			return 'YES';
+		} else {
+			tr.classList.add('not-running');
+			return 'NO';
+		}
 	}
 	const getCommandFromButton = (button) => {
 		return button.getAttribute('data-action');
@@ -216,17 +225,17 @@
 	const settingRun = (event, setting) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/setting/run', { hash: setting.Hash, name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		fetcher.get('/api/setting/run', { hash: setting.Hash ? setting.Hash : '', name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const buildDockerfile = (event, setting) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/build-dockerfile', { hash: setting.Hash, name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		fetcher.get('/api/build-dockerfile', { hash: setting.Hash ? setting.Hash : '', name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const deployDockerComposeYml = (event, setting) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
-		fetcher.get('/api/deploy-docker-compose-yml', { hash: setting.Hash, name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
+		fetcher.get('/api/deploy-docker-compose-yml', { hash: setting.Hash ? setting.Hash : '', name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
 	const showStackServices = (services) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small', wrap: { values: true }, headerHandler: headerHandler });
@@ -325,7 +334,7 @@
 			[
 				{ name: 'ContainerId' },
 				{ name: 'Image' },
-				{ name: 'Running', formatter: (value) => value ? 'YES' : 'NO' },
+				{ name: 'Running', formatter: formatRunning },
 				{ name: "Command" },
 				{ name: "Created" },
 				{ name: "Status" },

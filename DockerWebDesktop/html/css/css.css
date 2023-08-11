@@ -59,6 +59,13 @@ fieldset table {
 	background-color: transparent;
 }
 
+fieldset table tr.running td:not(:last-child) * {
+	color: green;
+}
+fieldset table tr.not-running td:not(:last-child) * {
+	color: indianred;
+}
+
 fieldset table.small, fieldset table.small > thead th, fieldset table.small > tfoot td, .output-message div {
 	font-size: var(--small-font);
 }
