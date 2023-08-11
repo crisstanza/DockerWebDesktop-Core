@@ -22,6 +22,8 @@ namespace service
 		private const string NETWORK_FILE = "network";
 		private const string PORTS_FILE = "ports";
 		private const string VOLUMES_FILE = "volumes";
+		private const string EXTRAS_FOLDER = "extras";
+		private const string EXTRAS_FOLDER_MNT = "/mnt/extras/";
 		private const string SCRIPTS_FOLDER = "scripts";
 		private const string SCRIPTS_FOLDER_MNT = "/mnt/scripts/";
 		private const string SCRIPTS_MAIN_SCRIPT = "main.sh";
@@ -257,6 +259,7 @@ namespace service
 			portsArguments = this.stringUtils.IsBlank(portsArguments) ? "" : portsArguments + " ";
 			string[] volumes = this.fileSystemUtils.GetLinesFromFile(VolumesFile(hash, name, version), true) ?? new string[0];
 			volumes = this.AddScripts(volumes, hash, name, version);
+			volumes = this.AddExtras(volumes, hash, name, version);
 			String volumesArguments = this.GetArguments("-v", volumes);
 			volumesArguments = this.stringUtils.IsBlank(volumesArguments) ? "" : volumesArguments + " ";
 			string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(hash, name, version), true);
@@ -317,7 +320,7 @@ namespace service
 				{
 					instance.NetworkSetting = LoadInstanceNetworkSetting(instance.ContainerId);
 					RunTimeUtils.ExecResult result = base.runTimeUtils.Exec("docker", "exec -it " + instance.ContainerId + " /bin/sh -c \"if [[ -f " + SCRIPTS_FOLDER_MNT + SCRIPTS_MAIN_SCRIPT + " ]] ; then echo 1 ; else echo 0 ; fi\"");
-					instance.Scripts = base.booleanUtils.FromInt(result.Output);
+					instance.Scripts = base.booleanUtils.FromInt(result.Output, false);
 				}
 			}
 			return new ApiInstances()
@@ -334,7 +337,8 @@ namespace service
 				JsonElement first = json[0];
 				List<int> ports = new List<int>();
 				{
-					JsonElement hostConfigPortBindings = first.GetProperty("HostConfig").GetProperty("PortBindings");
+					JsonElement hostConfig = first.GetProperty("HostConfig");
+					JsonElement hostConfigPortBindings = hostConfig.GetProperty("PortBindings");
 					JsonElement.ObjectEnumerator iPortBindings = hostConfigPortBindings.EnumerateObject();
 					while (iPortBindings.MoveNext())
 					{
@@ -343,11 +347,14 @@ namespace service
 				}
 				if (ports.Count == 0)
 				{
-					JsonElement configExposedPorts = first.GetProperty("Config").GetProperty("ExposedPorts");
-					JsonElement.ObjectEnumerator iExposedPorts = configExposedPorts.EnumerateObject();
-					while (iExposedPorts.MoveNext())
+					JsonElement config = first.GetProperty("Config");
+					if (config.TryGetProperty("ExposedPorts", out JsonElement configExposedPorts))
 					{
-						ports.Add(this.ParsePortSlashProtocol(iExposedPorts.Current.Name));
+						JsonElement.ObjectEnumerator iExposedPorts = configExposedPorts.EnumerateObject();
+						while (iExposedPorts.MoveNext())
+						{
+							ports.Add(this.ParsePortSlashProtocol(iExposedPorts.Current.Name));
+						}
 					}
 				}
 				string bridgeIp = null;
@@ -530,7 +537,8 @@ namespace service
 						NetworkMode = this.stringUtils.defaultString(this.fileSystemUtils.GetTextFromFile(NetworkFile(version), true)),
 						Dockerfile = this.fileSystemUtils.ExistsFile(DockerfileFile(version)),
 						DockerComposeYml = this.fileSystemUtils.ExistsFile(DockerComposeYmlFile(version)),
-						Scripts = this.fileSystemUtils.ExistsFolder(ScriptsFolder(version))
+						Scripts = this.fileSystemUtils.ExistsFolder(ScriptsFolder(version)),
+						Extras = this.fileSystemUtils.ExistsFolder(ExtrasFolder(version))
 					};
 					settings.Add(image);
 				}
@@ -548,6 +556,7 @@ namespace service
 			portsArguments = this.stringUtils.IsBlank(portsArguments) ? "" : portsArguments + " ";
 			string[] volumes = this.fileSystemUtils.GetLinesFromFile(VolumesFile(hash, name, version), true) ?? new string[0];
 			volumes = this.AddScripts(volumes, hash, name, version);
+			volumes = this.AddExtras(volumes, hash, name, version);
 			String volumesArguments = this.GetArguments("-v", volumes);
 			volumesArguments = this.stringUtils.IsBlank(volumesArguments) ? "" : volumesArguments + " ";
 			string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(hash, name, version), true);
@@ -813,6 +822,10 @@ namespace service
 		{
 			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + VOLUMES_FILE;
 		}
+		private string ExtrasFolder(int? hash, string name, string version)
+		{
+			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + EXTRAS_FOLDER + Path.DirectorySeparatorChar;
+		}
 		private string ScriptsFolder(int? hash, string name, string version)
 		{
 			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + SCRIPTS_FOLDER + Path.DirectorySeparatorChar;
@@ -820,6 +833,10 @@ namespace service
 		#endregion
 
 		#region files version
+		private string ExtrasFolder(string version)
+		{
+			return version + Path.DirectorySeparatorChar + EXTRAS_FOLDER + Path.DirectorySeparatorChar;
+		}
 		private string ScriptsFolder(string version)
 		{
 			return version + Path.DirectorySeparatorChar + SCRIPTS_FOLDER + Path.DirectorySeparatorChar;
@@ -878,6 +895,15 @@ namespace service
 		#endregion
 
 		#region arguments
+		private string[] AddExtras(string[] volumes, int? hash, string name, string version)
+		{
+			string extras = this.ExtrasFolder(hash, name, version);
+			if (base.fileSystemUtils.ExistsFolder(extras))
+			{
+				volumes = volumes.Append(extras + ":" + EXTRAS_FOLDER_MNT).ToArray();
+			}
+			return volumes;
+		}
 		private string[] AddScripts(string[] volumes, int? hash, string name, string version)
 		{
 			string scripts = this.ScriptsFolder(hash, name, version);
