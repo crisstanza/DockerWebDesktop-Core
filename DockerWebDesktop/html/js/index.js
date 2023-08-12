@@ -333,7 +333,7 @@
 			apiInstancesResponse.Data.Instances,
 			[
 				{ name: 'ContainerId' },
-				{ name: 'Image' },
+				{ name: 'Image', formatter: formatImageId, titleFormatter: (value) => value },
 				{ name: 'Running', formatter: formatRunning },
 				{ name: "Command" },
 				{ name: "Created" },
