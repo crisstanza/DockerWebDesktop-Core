@@ -20,6 +20,7 @@ namespace service
 		private const string DOCKERD_SOCK_FILE = "/var/run/docker.sock";
 		private const string ENVS_FILE = "envs";
 		private const string NETWORK_FILE = "network";
+		private const string TEST_FILE = "test";
 		private const string PORTS_FILE = "ports";
 		private const string VOLUMES_FILE = "volumes";
 		private const string EXTRAS_FOLDER = "extras";
@@ -538,7 +539,8 @@ namespace service
 						Dockerfile = this.fileSystemUtils.ExistsFile(DockerfileFile(version)),
 						DockerComposeYml = this.fileSystemUtils.ExistsFile(DockerComposeYmlFile(version)),
 						Scripts = this.fileSystemUtils.ExistsFolder(ScriptsFolder(version)),
-						Extras = this.fileSystemUtils.ExistsFolder(ExtrasFolder(version))
+						Extras = this.fileSystemUtils.ExistsFolder(ExtrasFolder(version)),
+						Test = this.stringUtils.defaultString(this.fileSystemUtils.GetTextFromFile(TestFile(version), true))
 					};
 					settings.Add(image);
 				}
@@ -848,6 +850,10 @@ namespace service
 		private string VolumesFile(string version)
 		{
 			return version + Path.DirectorySeparatorChar + VOLUMES_FILE;
+		}
+		private string TestFile(string version)
+		{
+			return version + Path.DirectorySeparatorChar + TEST_FILE;
 		}
 		private string NetworkFile(string version)
 		{

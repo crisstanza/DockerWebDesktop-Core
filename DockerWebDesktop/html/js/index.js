@@ -147,7 +147,8 @@
 			[
 				{ name: '#', key: 'Hash' }, { name: 'Name' }, { name: 'Version' },
 				{ name: 'Ports', formatter: formatArray }, { name: 'Volumes', formatter: formatArray }, { name: 'Envs', formatter: formatArray },
-				{ name: 'Scripts', formatter: (value) => value ? 'YES' : '' }, { name: 'Extras', formatter: (value) => value ? 'YES' : '' },
+				{ name: 'Scripts', formatter: (value) => value ? 'YES' : '' },
+				{ name: 'Extras', formatter: (value) => value ? 'YES' : '', titleFormatter: (value) => value },
 				{ name: 'NetworkMode' }
 			],
 			[
@@ -156,18 +157,27 @@
 				{ label: 'deploy docker-compose.yml', handler: deployDockerComposeYml, enabled: (setting) => setting.DockerComposeYml }
 			],
 			[
-				{ label: 'test IP', handler: settingTest }, { label: 'test localhost', handler: settingTestLocalhost }
+				{ label: 'test IP', handler: settingTest }, { label: 'test localhost', handler: settingTestLocalhost },
+				{ label: 'test custom', handler: settingTestCustom, enabled: (setting) => setting.Test }
 			]
 		);
 		ellipsis(table);
 	};
+	const getPort = (setting) => {
+		return setting.Ports[0].split(':')[0];
+	}
 	const settingTest = (event, setting) => {
 		event.preventDefault();
-		window.open(`//${REAL_IP}:${setting.Ports[0].split(':')[0]}`);
+		window.open(`//${REAL_IP}:${getPort(setting)}`);
 	};
 	const settingTestLocalhost = (event, setting) => {
 		event.preventDefault();
-		window.open(`//localhost:${setting.Ports[0].split(':')[0]}`);
+		window.open(`//localhost:${getPort(setting)}`);
+	};
+	const settingTestCustom = (event, setting) => {
+		event.preventDefault();
+		const url = setting.Test.replace('${IP}', REAL_IP).replace('${PORT}', getPort(setting));
+		window.open(url);
 	};
 	const showSettingsError = (exc) => {
 		io.github.crisstanza.Creator.html('span', {}, outputSettings, exc);
