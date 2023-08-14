@@ -7,7 +7,7 @@
     <RootNamespace></RootNamespace>
     <Authors>Cris Stanza</Authors>
     <Company>Cris Stanza</Company>
-    <Version>1.8.5.0</Version>
+    <Version>1.8.6.0</Version>
     <Description>https://github.com/crisstanza/DockerWebDesktop-Core/</Description>
   </PropertyGroup>
 
@@ -62,16 +62,16 @@
     <None Update="SETTINGS\1#mysql\5.7.42\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\1#mysql\5.7.42\scripts\createReadOnlyUser.sql">
+    <None Update="SETTINGS\1#mysql\5.7.42\mnt\scripts\createReadOnlyUser.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\1#mysql\5.7.42\scripts\dropReadOnlyUser.sql">
+    <None Update="SETTINGS\1#mysql\5.7.42\mnt\scripts\dropReadOnlyUser.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\1#mysql\5.7.42\scripts\main.sh">
+    <None Update="SETTINGS\1#mysql\5.7.42\mnt\scripts\main.sh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\1#mysql\5.7.42\scripts\test.sql">
+    <None Update="SETTINGS\1#mysql\5.7.42\mnt\scripts\test.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SETTINGS\1#mysql\8.0.33\envs">
@@ -92,10 +92,10 @@
     <None Update="SETTINGS\2#mysql\5.7\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\2#mysql\5.7\scripts\main.sh">
+    <None Update="SETTINGS\2#mysql\5.7\mnt\scripts\main.sh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\2#mysql\5.7\scripts\test.sql">
+    <None Update="SETTINGS\2#mysql\5.7\mnt\scripts\test.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SETTINGS\arangodb\3.8.8\envs">
@@ -236,7 +236,7 @@
     <None Update="SETTINGS\redis\6.0-alpine\ports">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SETTINGS\redis\6.0-alpine\scripts\main.sh">
+    <None Update="SETTINGS\redis\6.0-alpine\mnt\scripts\main.sh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

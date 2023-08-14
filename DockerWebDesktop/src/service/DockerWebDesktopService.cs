@@ -23,9 +23,8 @@ namespace service
 		private const string TEST_FILE = "test";
 		private const string PORTS_FILE = "ports";
 		private const string VOLUMES_FILE = "volumes";
-		private const string EXTRAS_FOLDER = "extras";
-		private const string EXTRAS_FOLDER_MNT = "/mnt/extras/";
-		private const string SCRIPTS_FOLDER = "scripts";
+		private const string MNT_FOLDER = "mnt";
+		private const string MNT_FOLDER_MNT = "/mnt/";
 		private const string SCRIPTS_FOLDER_MNT = "/mnt/scripts/";
 		private const string SCRIPTS_MAIN_SCRIPT = "main.sh";
 		private const string DOCKERFILE_FILE = "Dockerfile";
@@ -259,8 +258,7 @@ namespace service
 			String portsArguments = GetArguments("-p", ports);
 			portsArguments = this.stringUtils.IsBlank(portsArguments) ? "" : portsArguments + " ";
 			string[] volumes = this.fileSystemUtils.GetLinesFromFile(VolumesFile(hash, name, version), true) ?? new string[0];
-			volumes = this.AddScripts(volumes, hash, name, version);
-			volumes = this.AddExtras(volumes, hash, name, version);
+			volumes = this.AddMnt(volumes, hash, name, version);
 			String volumesArguments = this.GetArguments("-v", volumes);
 			volumesArguments = this.stringUtils.IsBlank(volumesArguments) ? "" : volumesArguments + " ";
 			string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(hash, name, version), true);
@@ -320,8 +318,14 @@ namespace service
 				if (instance.Running)
 				{
 					instance.NetworkSetting = LoadInstanceNetworkSetting(instance.ContainerId);
-					RunTimeUtils.ExecResult result = base.runTimeUtils.Exec("docker", "exec -it " + instance.ContainerId + " /bin/sh -c \"if [[ -f " + SCRIPTS_FOLDER_MNT + SCRIPTS_MAIN_SCRIPT + " ]] ; then echo 1 ; else echo 0 ; fi\"");
-					instance.Scripts = base.booleanUtils.FromInt(result.Output, false);
+					string mainScript = SCRIPTS_FOLDER_MNT + SCRIPTS_MAIN_SCRIPT;
+					RunTimeUtils.ExecResult result = base.runTimeUtils.Exec("docker", "exec -it " + instance.ContainerId + " /bin/sh -c \"if [ -f " + mainScript + " ] ; then echo 1 ; else echo 0 ; fi\"");
+					string output = result.Output.Trim();
+					if (base.args.Debug)
+					{
+						Console.WriteLine(mainScript + " | " + output);
+					}
+					instance.Scripts = base.booleanUtils.FromInt(output, false);
 				}
 			}
 			return new ApiInstances()
@@ -538,8 +542,6 @@ namespace service
 						NetworkMode = this.stringUtils.defaultString(this.fileSystemUtils.GetTextFromFile(NetworkFile(version), true)),
 						Dockerfile = this.fileSystemUtils.ExistsFile(DockerfileFile(version)),
 						DockerComposeYml = this.fileSystemUtils.ExistsFile(DockerComposeYmlFile(version)),
-						Scripts = this.fileSystemUtils.ExistsFolder(ScriptsFolder(version)),
-						Extras = this.fileSystemUtils.ExistsFolder(ExtrasFolder(version)),
 						Test = this.stringUtils.defaultString(this.fileSystemUtils.GetTextFromFile(TestFile(version), true))
 					};
 					settings.Add(image);
@@ -557,8 +559,7 @@ namespace service
 			String portsArguments = this.GetArguments("-p", ports);
 			portsArguments = this.stringUtils.IsBlank(portsArguments) ? "" : portsArguments + " ";
 			string[] volumes = this.fileSystemUtils.GetLinesFromFile(VolumesFile(hash, name, version), true) ?? new string[0];
-			volumes = this.AddScripts(volumes, hash, name, version);
-			volumes = this.AddExtras(volumes, hash, name, version);
+			volumes = this.AddMnt(volumes, hash, name, version);
 			String volumesArguments = this.GetArguments("-v", volumes);
 			volumesArguments = this.stringUtils.IsBlank(volumesArguments) ? "" : volumesArguments + " ";
 			string[] envs = this.fileSystemUtils.GetLinesFromFile(EnvsFile(hash, name, version), true);
@@ -824,25 +825,13 @@ namespace service
 		{
 			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + VOLUMES_FILE;
 		}
-		private string ExtrasFolder(int? hash, string name, string version)
+		private string MntFolder(int? hash, string name, string version)
 		{
-			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + EXTRAS_FOLDER + Path.DirectorySeparatorChar;
-		}
-		private string ScriptsFolder(int? hash, string name, string version)
-		{
-			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + SCRIPTS_FOLDER + Path.DirectorySeparatorChar;
+			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + MNT_FOLDER + Path.DirectorySeparatorChar;
 		}
 		#endregion
 
 		#region files version
-		private string ExtrasFolder(string version)
-		{
-			return version + Path.DirectorySeparatorChar + EXTRAS_FOLDER + Path.DirectorySeparatorChar;
-		}
-		private string ScriptsFolder(string version)
-		{
-			return version + Path.DirectorySeparatorChar + SCRIPTS_FOLDER + Path.DirectorySeparatorChar;
-		}
 		private string PortsFile(string version)
 		{
 			return version + Path.DirectorySeparatorChar + PORTS_FILE;
@@ -901,21 +890,18 @@ namespace service
 		#endregion
 
 		#region arguments
-		private string[] AddExtras(string[] volumes, int? hash, string name, string version)
+		private string[] AddMnt(string[] volumes, int? hash, string name, string version)
 		{
-			string extras = this.ExtrasFolder(hash, name, version);
-			if (base.fileSystemUtils.ExistsFolder(extras))
+			string mnt = this.MntFolder(hash, name, version);
+			if (base.fileSystemUtils.ExistsFolder(mnt))
 			{
-				volumes = volumes.Append(extras + ":" + EXTRAS_FOLDER_MNT).ToArray();
-			}
-			return volumes;
-		}
-		private string[] AddScripts(string[] volumes, int? hash, string name, string version)
-		{
-			string scripts = this.ScriptsFolder(hash, name, version);
-			if (base.fileSystemUtils.ExistsFolder(scripts))
-			{
-				volumes = volumes.Append(scripts + ":" + SCRIPTS_FOLDER_MNT).ToArray();
+				string[] subFolders = base.fileSystemUtils.ListFolders(mnt);
+				foreach (string subFolder in subFolders)
+				{
+					DirectoryInfo subFolderInfo = new DirectoryInfo(subFolder);
+					string subFolderSlash = subFolderInfo.Name + Path.DirectorySeparatorChar;
+					volumes = volumes.Append(mnt + subFolderSlash + ":" + MNT_FOLDER_MNT + subFolderSlash).ToArray();
+				}
 			}
 			return volumes;
 		}

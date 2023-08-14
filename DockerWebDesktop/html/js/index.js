@@ -147,8 +147,6 @@
 			[
 				{ name: '#', key: 'Hash' }, { name: 'Name' }, { name: 'Version' },
 				{ name: 'Ports', formatter: formatArray }, { name: 'Volumes', formatter: formatArray }, { name: 'Envs', formatter: formatArray },
-				{ name: 'Scripts', formatter: (value) => value ? 'YES' : '' },
-				{ name: 'Extras', formatter: (value) => value ? 'YES' : '', titleFormatter: (value) => value },
 				{ name: 'NetworkMode' }
 			],
 			[

@@ -11,8 +11,6 @@
 		public string NetworkMode { get; set; }
 		public bool Dockerfile { get; set; }
 		public bool DockerComposeYml { get; set; }
-		public bool Scripts { get; set; }
-		public bool Extras { get; set; }
 		public string Test { get; set; }
 	}
 }
