@@ -141,6 +141,15 @@ Another examples:
 	git config user.name "Cris Stanza"
 
 
+### HTTPS:
+
+Installed an ASP.NET Core HTTPS development certificate.
+
+To trust the certificate run `dotnet dev-certs https --trust` (Windows and macOS only).
+
+Learn about HTTPS: https://aka.ms/dotnet-https
+
+
 ### Links:
 
 	https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04
