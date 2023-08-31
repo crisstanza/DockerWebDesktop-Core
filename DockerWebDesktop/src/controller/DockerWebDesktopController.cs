@@ -28,10 +28,10 @@ namespace controller
 			extras.Add("Check for updates interval", this.args.CheckForUpdatesInterval + " minutes");
 			extras.Add("Settings home", this.args.SettingsHome);
 			Dictionary<string, string> dependencies = new Dictionary<string, string>()
-		    {
-			  { "CommandLiner-Core", CommandLinerCore.Version() },
-			  { "CSharpUtils-Core", CSharpUtilsCore.Version() }
-		    };
+			{
+				{ "CommandLiner-Core", CommandLinerCore.Version() },
+				{ "CSharpUtils-Core", CSharpUtilsCore.Version() }
+			};
 			base.server.Start(this, DockerWebDesktop.Version(), dependencies, extras);
 		}
 		public HttpListenerUtils.OutputBody Stop()
