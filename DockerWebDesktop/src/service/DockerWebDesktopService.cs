@@ -266,7 +266,7 @@ namespace service
 			envsArguments = this.stringUtils.IsBlank(envsArguments) ? "" : envsArguments + " ";
 			String network = this.fileSystemUtils.GetTextFromFile(NetworkFile(hash, name, version), true);
 			String networkArgument = this.GetArgument("--network", network);
-			string arguments = "run -d -t " + envsArguments + portsArguments + volumesArguments + networkArgument + imageId;
+			string arguments = "run -d -t " + envsArguments + portsArguments + volumesArguments + networkArgument + " --name " + this.Name(hash, name, version) + " " + imageId;
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
 			return execResult;
 		}
@@ -567,7 +567,7 @@ namespace service
 			envsArguments = this.stringUtils.IsBlank(envsArguments) ? "" : envsArguments + " ";
 			String network = this.fileSystemUtils.GetTextFromFile(NetworkFile(hash, name, version), true);
 			String networkArgument = this.GetArgument("--network", network);
-			string arguments = "run -d -t " + envsArguments + portsArguments + volumesArguments + networkArgument + name + ":" + version;
+			string arguments = "run -d -t " + envsArguments + portsArguments + volumesArguments + networkArgument + " --name " + this.Name(hash, name, version) + " " + name + ":" + version;
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments);
 			return execResult;
 		}
@@ -828,6 +828,10 @@ namespace service
 		private string MntFolder(int? hash, string name, string version)
 		{
 			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + MNT_FOLDER + Path.DirectorySeparatorChar;
+		}
+		private string Name(int? hash, string name, string version)
+		{
+			return this.HashPart(hash, "_") + name + "_" + version;
 		}
 		#endregion
 
