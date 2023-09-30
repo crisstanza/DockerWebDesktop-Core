@@ -162,7 +162,7 @@
 		ellipsis(table);
 	};
 	const getPort = (setting) => {
-		return setting.Ports[0].split(':')[0];
+		return setting.Ports[0] ? setting.Ports[0].split(':')[0] : '';
 	}
 	const settingTest = (event, setting) => {
 		event.preventDefault();
