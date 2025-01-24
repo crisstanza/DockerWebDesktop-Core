@@ -45,6 +45,10 @@ Install:
 	wsl --set-default-version 2
 	wsl --install -d Ubuntu-22.04
 
+or:
+
+	wsl --install -d Ubuntu-24.04
+
 Restart your machine and, after that, create your Ubuntu user.
 
 Check your version (inside Ubuntu):
@@ -86,6 +90,9 @@ Ubuntu 22.04:
 
 	sudo apt update ; sudo apt install -y dotnet-sdk-7.0
 
+.NET 8:
+
+	sudo apt update ; sudo apt install -y dotnet-sdk-8.0
 
 ## Install Docker on Ubuntu:
 

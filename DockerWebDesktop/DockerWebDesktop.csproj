@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
-    <TargetFramework>netcoreapp7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace></RootNamespace>
     <Authors>Cris Stanza</Authors>
     <Company>Cris Stanza</Company>

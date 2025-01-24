@@ -5,6 +5,10 @@ clear ; cd "$(dirname "${0}")"
 
 KEY_NAME=keyName
 
+flushAll() { # remove all keys from all databases
+	redis-cli flushall
+}
+
 getKeys() { # show all keys using 'keys'
 	redis-cli keys "*"
 }
@@ -61,7 +65,7 @@ clean() {
 	clear
 }
 
-quit() {
+q() {
 	exit 0;
 }
 
