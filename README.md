@@ -47,6 +47,9 @@ Install:
 
 or:
 
+	wsl.exe --install --no-distribution
+	// restart windows
+	wsl --set-default-version 2
 	wsl --install -d Ubuntu-24.04
 
 Restart your machine and, after that, create your Ubuntu user.
@@ -111,6 +114,11 @@ Ubuntu 22.04:
 
 	docker system prune --volumes -f 
 	sudo rm /var/lib/docker/volumes/metadata.db
+
+
+### No ingress netowork?
+
+	sudo docker network create --ingress --driver overlay ingress
 
 
 ## Usage example:

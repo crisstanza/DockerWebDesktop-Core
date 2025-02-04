@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31829.152
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DockerWebDesktop", "DockerWebDesktop\DockerWebDesktop.csproj", "{C70E2D70-F794-47A9-96FC-12B96B515CC5}"
 EndProject
@@ -11,7 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandLiner-Core", "..\Com
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A742C9E1-A093-4726-902E-D2799664C8F4}"
 	ProjectSection(SolutionItems) = preProject
+		SCRIPTS\bash.bash = SCRIPTS\bash.bash
 		README.md = README.md
+		SCRIPTS\Shutdown-WSL.bat = SCRIPTS\Shutdown-WSL.bat
+		SCRIPTS\Start-Ubuntu-And-Run.bat = SCRIPTS\Start-Ubuntu-And-Run.bat
 	EndProjectSection
 EndProject
 Global

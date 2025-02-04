@@ -7,9 +7,20 @@
     <RootNamespace></RootNamespace>
     <Authors>Cris Stanza</Authors>
     <Company>Cris Stanza</Company>
-    <Version>1.8.7.1</Version>
+    <Version>1.8.8.0</Version>
     <Description>https://github.com/crisstanza/DockerWebDesktop-Core/</Description>
+    <PackageProjectUrl>https://github.com/crisstanza/DockerWebDesktop-Core/</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/crisstanza/DockerWebDesktop-Core/</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\CommandLiner-Core\CommandLiner-Core.csproj" />

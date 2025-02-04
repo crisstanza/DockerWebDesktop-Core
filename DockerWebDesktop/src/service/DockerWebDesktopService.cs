@@ -607,19 +607,17 @@ namespace service
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", "stack ls");
 			if (execResult.ExitCode == 0)
 			{
-				StringReader reader = new StringReader(execResult.Output);
-				string headers = reader.ReadLine();
-				int nameIndex = headers.IndexOf("NAME");
-				int servicesIndex = headers.IndexOf("SERVICES");
-				int orchestratorIndex = headers.IndexOf("ORCHESTRATOR");
-				while (reader.Peek() > -1)
+				FixedWidthColumnReader reader = new FixedWidthColumnReader(execResult.Output);
+				// reader.Headers("NAME", "SERVICES", "ORCHESTRATOR");
+				reader.Headers("NAME", "SERVICES");
+				while (reader.HasLines())
 				{
-					string line = reader.ReadLine();
+					FixedWidthColumnReader.Line line = reader.NextLine();
 					Stack stack = new Stack()
 					{
-						Name = line.Substring(nameIndex, servicesIndex - nameIndex).Trim(),
-						ServicesCount = Int32.Parse(line.Substring(servicesIndex, orchestratorIndex - servicesIndex).Trim()),
-						Orchestrator = line.Substring(orchestratorIndex).Trim(),
+						Name = line.NextValue(),
+						ServicesCount = line.NextValueAsInt(),
+						//Orchestrator = line.NextValue()
 					};
 					stack.Tasks = LoadStackTasks(stack.Name);
 					stack.Services = LoadStackServices(stack.Name);
