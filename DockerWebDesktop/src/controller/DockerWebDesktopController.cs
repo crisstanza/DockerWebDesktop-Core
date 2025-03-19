@@ -80,6 +80,13 @@ namespace controller
 		}
 		#endregion
 
+		#region api daemon.json
+		public HttpListenerUtils.OutputBody ApiDaemonJson()
+		{
+			return base.httpListenerUtils.DefaultJsonOutputBody(this.service.ApiDaemonJson());
+		}
+		#endregion
+
 		#region api dockerd
 		public HttpListenerUtils.OutputBody ApiDockerD(string command)
 		{
