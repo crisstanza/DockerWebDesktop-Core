@@ -18,6 +18,7 @@ namespace service
 	{
 		private const string DOCKERD_PID_FILE = "/var/run/docker.pid";
 		private const string DOCKERD_SOCK_FILE = "/var/run/docker.sock";
+		private const string DAEMON_JSON_FILE = "/etc/docker/daemon.json";
 		private const string ENVS_FILE = "envs";
 		private const string NETWORK_FILE = "network";
 		private const string TEST_FILE = "test";
@@ -29,7 +30,7 @@ namespace service
 		private const string SCRIPTS_MAIN_SCRIPT = "main.sh";
 		private const string DOCKERFILE_FILE = "Dockerfile";
 		private const string DOCKER_COMPOSE_FILE = "docker-compose.yml";
-		private const string START_UBUNTU_ON_WINDOWS_COMMAND = "wsl -d Ubuntu-22.04 -u root";
+		private const string START_UBUNTU_ON_WINDOWS_COMMAND = "wsl -d Ubuntu-24.04 -u root";
 		private const string LINE_COMMENT = "#";
 
 		private Version latestVersion;
@@ -144,6 +145,13 @@ namespace service
 		}
 		#endregion
 
+		#region api daemon.json
+		public string ApiDaemonJson()
+		{
+			return base.fileSystemUtils.GetTextFromFile(DAEMON_JSON_FILE, true);
+		}
+		#endregion
+
 		#region api dockerd
 		public RunTimeUtils.ExecResult ApiDockerD(string command)
 		{
@@ -253,6 +261,11 @@ namespace service
 			}
 			(int? hash, string name) = this.HashAndName(repository, "_");
 			name = name.Replace(".local", "");
+			int index = name.LastIndexOf('/');
+			if (index > -1)
+			{
+				name = name.Substring(index);
+			}
 			string version = tag.Replace(".local", "");
 			string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(hash, name, version), true);
 			String portsArguments = GetArguments("-p", ports);
