@@ -260,11 +260,19 @@ namespace service
 				Console.WriteLine("ApiImageRun | repository: " + repository + ", tag: " + tag + ", imageId: " + imageId);
 			}
 			(int? hash, string name) = this.HashAndName(repository, "_");
-			name = name.Replace(".local", "");
-			int index = name.LastIndexOf('/');
-			if (index > -1)
+			if (this.args.Debug)
 			{
-				name = name.Substring(index);
+				Console.WriteLine("ApiImageRun | hash: " + hash + ", name: " + name);
+			}
+			name = name.Replace(".local", "");
+			//int index = name.LastIndexOf('/');
+			//if (index > -1)
+			//{
+			//	name = name.Substring(index);
+			//}
+			if (this.args.Debug)
+			{
+				Console.WriteLine("ApiImageRun | final | hash: " + hash + ", name: " + name);
 			}
 			string version = tag.Replace(".local", "");
 			string[] ports = this.fileSystemUtils.GetLinesFromFile(PortsFile(hash, name, version), true);
@@ -599,6 +607,10 @@ namespace service
 		#region api deploy docker compose yml
 		public RunTimeUtils.ExecResult ApiDeployDockerComposeYml(int? hash, string name, string version)
 		{
+			if (this.args.Debug)
+			{
+				Console.WriteLine("ApiDeployDockerComposeYml | hash: " + hash + ", name: " + name + ", version: " + version);
+			}
 			string dockerComposeYmlFile = DOCKER_COMPOSE_FILE;
 			string arguments = "stack deploy -c " + dockerComposeYmlFile + " " + StackName(name, version);
 			RunTimeUtils.ExecResult execResult = base.runTimeUtils.Exec("docker", arguments, HomePath(hash, name, version));
@@ -818,31 +830,35 @@ namespace service
 		#region files name/version
 		private string HomePath(int? hash, string name, string version)
 		{
-			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar;
+			return this.args.SettingsHome + this.HashPart(hash) + this.FolderPart(name) + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar;
 		}
 		private string EnvsFile(int? hash, string name, string version)
 		{
-			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + ENVS_FILE;
+			return this.args.SettingsHome + this.HashPart(hash) + this.FolderPart(name) + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + ENVS_FILE;
 		}
 		private string NetworkFile(int? hash, string name, string version)
 		{
-			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + NETWORK_FILE;
+			return this.args.SettingsHome + this.HashPart(hash) + this.FolderPart(name) + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + NETWORK_FILE;
 		}
 		private string PortsFile(int? hash, string name, string version)
 		{
-			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + PORTS_FILE;
+			return this.args.SettingsHome + this.HashPart(hash) + this.FolderPart(name) + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + PORTS_FILE;
 		}
 		private string VolumesFile(int? hash, string name, string version)
 		{
-			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + VOLUMES_FILE;
+			return this.args.SettingsHome + this.HashPart(hash) + this.FolderPart(name) + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + VOLUMES_FILE;
 		}
 		private string MntFolder(int? hash, string name, string version)
 		{
-			return this.args.SettingsHome + this.HashPart(hash) + name + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + MNT_FOLDER + Path.DirectorySeparatorChar;
+			return this.args.SettingsHome + this.HashPart(hash) + this.FolderPart(name) + Path.DirectorySeparatorChar + version + Path.DirectorySeparatorChar + MNT_FOLDER + Path.DirectorySeparatorChar;
 		}
 		private string Name(int? hash, string name, string version)
 		{
-			return this.HashPart(hash, "_") + name + "_" + version;
+			return this.HashPart(hash, "_") + this.ValidName(name) + "_" + version;
+		}
+		private string ValidName(string name)
+		{
+			return name.Replace("/", "_");
 		}
 		#endregion
 
@@ -883,7 +899,12 @@ namespace service
 			string[] parts = folder.Split(sep);
 			int? hash = parts.Length > 1 ? Convert.ToInt32(parts[0]) : null;
 			string name = parts.Length > 1 ? parts[1] : parts[0];
+			name = name.Replace("+", "/");
 			return (hash, name);
+		}
+		private string FolderPart(string name)
+		{
+			return name.Replace("/", "+");
 		}
 		private string HashPart(int? hash, string sep = "#")
 		{
@@ -895,7 +916,7 @@ namespace service
 		}
 		private string StackName(string name, string version)
 		{
-			return (name + "_" + version).Replace('.', '-');
+			return (this.ValidName(name) + "_" + version).Replace('.', '-');
 		}
 		private int ParsePortSlashProtocol(string name)
 		{

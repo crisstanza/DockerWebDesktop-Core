@@ -7,7 +7,7 @@
     <RootNamespace></RootNamespace>
     <Authors>Cris Stanza</Authors>
     <Company>Cris Stanza</Company>
-    <Version>1.8.8.0</Version>
+    <Version>1.9.0.0</Version>
     <Description>https://github.com/crisstanza/DockerWebDesktop-Core/</Description>
     <PackageProjectUrl>https://github.com/crisstanza/DockerWebDesktop-Core/</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>

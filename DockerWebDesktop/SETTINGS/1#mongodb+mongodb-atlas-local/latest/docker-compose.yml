@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  mongodb-atlas-local:
+    image: mongodb/mongodb-atlas-local:latest
+    ports:
+      - "27017:27017"
+    deploy:
+      restart_policy:
+        condition: none

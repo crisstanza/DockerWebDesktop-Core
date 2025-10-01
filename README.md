@@ -1,4 +1,4 @@
-DockerWebDesktop-Core - 1.8.7.1
+DockerWebDesktop-Core - 1.9.0.0
 ===============================
 
 C# REST service with HTML interface running on Linux to manage Docker containers (_serviço REST em C# com interface HTML rodando​ em Linux para gerenciar containers Docker_).
@@ -7,8 +7,7 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 
 # Demo:
 
-<!-- <img src="https://github.com/crisstanza/DockerWebDesktop-Core/raw/main/DOC/DockerWebDesktop-1.1.1.1.png"><br><br> -->
-<img src="DOC/DockerWebDesktop-1.8.1.1.png"><br><br>
+<img src="DOC/DockerWebDesktop-1.9.0.0.png"><br><br>
 
 # Dependencies:
 
@@ -19,6 +18,7 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 
 | DockerWebDesktop-Core | CommandLiner-Core | CSharpUtils-Core |
 | :-------------------: | :---------------: | :--------------: |
+| <b>1.9.0.0</b>        | 0.7.0.1           | 0.7.1.3          |
 | <b>1.8.7.1</b>        | 0.7.0.1           | 0.7.1.2          |
 | <b>1.8.7.0</b>        | 0.7.0.1           | 0.7.1.2          |
 | <b>1.8.3.0</b>        | 0.7.0.1           | 0.7.1.2          |
@@ -47,7 +47,7 @@ Install:
 
 or:
 
-	wsl.exe --install --no-distribution
+	wsl --install --no-distribution
 	// restart windows
 	wsl --set-default-version 2
 	wsl --install -d Ubuntu-24.04
@@ -127,6 +127,12 @@ Ubuntu 22.04:
 or
 	
 	sudo ./SCRIPTS/bash.bash run
+
+or (for Windows)
+
+	Shutdown-WSL.bat
+	Start-Ubuntu-And-Run.bat
+	Start-Ubuntu-And-Run-In-Background.bat
 
 Another examples:
 
