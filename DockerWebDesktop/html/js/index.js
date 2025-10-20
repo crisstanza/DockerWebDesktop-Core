@@ -1,4 +1,10 @@
 ﻿(function () {
+	const addClass = (element, className) => {
+		element && element.classList.add(className);
+	}
+	const delClass = (element, className) => {
+		element && element.classList.remove(className);
+	}
 	let RESIZE_DEBOUNCE = 500;
 	let RESIZE_TIMER = null;
 	let REAL_IP = null;
@@ -59,10 +65,40 @@
 	const getCommandFromButton = (button) => {
 		return button.getAttribute('data-action');
 	};
-	const bt_Click_Open = (event) => {
+	const btClick_Open = (event) => {
 		const button = event.target;
 		const command = getCommandFromButton(button);
 		window.open(command);
+	};
+
+	const lnEye_Click = (event) => {
+		const target = event.target;
+		const link = target.closest('a');
+		if (link.classList.contains('disabled')) {
+			return;
+		}
+		const container = target.closest('fieldset');
+		const table = container.querySelector('table');
+		const body = table.querySelector('tbody');
+		const head = table.querySelector('thead');
+		const href = link.getAttribute('href');
+		const action = href.endsWith('-hidden') ? 'hide' : 'show';
+		let newHref, newSrc;
+		if (action == 'hide') {
+			addClass(body, 'hidden');
+			addClass(head, 'hidden');
+			newHref = href.replace('-hidden', '-visible');
+			newSrc = 'img/eye-closed.png';
+		} else {
+			delClass(body, 'hidden');
+			delClass(head, 'hidden');
+			newHref = href.replace('-visible', '-hidden');
+			newSrc = 'img/eye-open.png';
+		}
+		setTimeout(() => {
+			link.setAttribute('href', newHref);
+			target.setAttribute('src', newSrc);
+		}, 0)
 	};
 
 	const btDockerd_Click = (event) => {
@@ -133,9 +169,42 @@
 	};
 	const swarmLeaveError = (exc) => { outputStatus.innerHTML = exc; };
 
+	const restoreVisibility = (table, fieldset) => {
+		const className = isVisible(fieldset) ? '' : 'hidden';
+		const body = table.querySelector('tbody');
+		const head = table.querySelector('thead');
+		if (className) {
+			addClass(body, className);
+			addClass(head, className);
+		}
+		const link = fieldset.querySelector('legend a:nth-child(2)');
+		const href = link.getAttribute('href');
+		const img = fieldset.querySelector('img');
+		if (body && head) {
+			if (!className) {
+				link.setAttribute('href', href.replace('-visible', '-hidden'));
+				img.setAttribute('src', 'img/eye-open.png');
+			} else {
+				link.setAttribute('href', href.replace('-hidden', '-visible'));
+				img.setAttribute('src', 'img/eye-closed.png');
+			}
+			delClass(link, 'disabled');
+		} else {
+			link.setAttribute('href', href.replace('-hidden', '-visible'));
+			img.setAttribute('src', 'img/eye-closed.png');
+			addClass(link, 'disabled');
+		}
+	}
+
+	const isVisible = (fieldset) => {
+		const link = fieldset.querySelector('legend a:nth-child(2)');
+		const href = link.getAttribute('href');
+		return href.endsWith('-hidden');
+	};
+
 	const showSettings = (apiSettingsResponse) => {
 		const options = {
-			border: true, headers: true, class: 'interactive settings', wrap: {
+			border: true, headers: true, class: `interactive settings`, wrap: {
 				interactions: {
 					all: true, actions: true, links: true
 				}, values: true, headers: true
@@ -160,6 +229,7 @@
 			]
 		);
 		ellipsis(table);
+		restoreVisibility(table, outputSettings);
 	};
 	const getPort = (setting) => {
 		return setting.Ports[0] ? setting.Ports[0].split(':')[0] : '';
@@ -199,6 +269,7 @@
 			]
 		);
 		ellipsis(table);
+		restoreVisibility(table, outputImages);
 	};
 	const imageHistoryHref = (image) => {
 		return '/api/image/history?imageId=' + image.ImageId;
@@ -206,11 +277,9 @@
 	const imageInspectHref = (image) => {
 		return '/api/image/inspect?imageId=' + image.ImageId;
 	};
-
 	const showImagesError = (exc) => {
 		io.github.crisstanza.Creator.html('span', {}, outputImages, exc);
 	};
-
 	const imageRun = (event, image) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
@@ -230,6 +299,7 @@
 			fetcher.get('/api/image/remove-by-id', { imageId: image.ImageId }, showDefaultResponseStatus, showDefaultExceptionStatus);
 		}
 	};
+
 	const settingRun = (event, setting) => {
 		resetOutput();
 		const fetcher = new io.github.crisstanza.Fetcher();
@@ -245,6 +315,7 @@
 		const fetcher = new io.github.crisstanza.Fetcher();
 		fetcher.get('/api/deploy-docker-compose-yml', { hash: setting.Hash ? setting.Hash : '', name: setting.Name, version: setting.Version }, showDefaultResponseStatus, showDefaultExceptionStatus);
 	};
+
 	const showStackServices = (services) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small', wrap: { values: true }, headerHandler: headerHandler });
 		const grid = gridBuilder.build(
@@ -298,6 +369,7 @@
 		if (needsRefresh) {
 			initGui(5000);
 		}
+		restoreVisibility(table, outputStacks);
 		const subTables = table.querySelectorAll('table');
 		subTables.forEach(subTable => ellipsis(subTable));
 	};
@@ -310,7 +382,6 @@
 		}
 	};
 
-	// nodes
 	const showNodes = (apiNodesResponse) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true }, headerHandler: headerHandler }, outputNodes);
 		const table = gridBuilder.build(
@@ -329,11 +400,11 @@
 			]
 		);
 		ellipsis(table);
+		restoreVisibility(table, outputNodes);
 	};
 	const showNodesError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputNodes, exc); };
 	const nodeInspectHref = (node) => { return '/api/node/inspect?id=' + cleanNodeId(node.Id); };
 	const cleanNodeId = (id) => { return id.endsWith(' *') ? id.substring(0, id.length - 2) : id; };
-	// /nodes
 
 	const showInstances = (apiInstancesResponse) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true }, headerHandler: headerHandler }, outputInstances);
@@ -371,6 +442,7 @@
 			]
 		);
 		ellipsis(table);
+		restoreVisibility(table, outputInstances);
 	};
 	const showInstancesError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputInstances, exc); };
 	const instanceLogsHref = (instance) => { return '/api/instance/logs?containerId=' + instance.ContainerId; };
@@ -448,7 +520,6 @@
 		fetcher.get('/api/status', null, showStatus, showStatusError);
 	};
 
-	// networks
 	const showNetworks = (apiNetworksResponse) => {
 		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true }, headerHandler: headerHandler }, outputNetworks);
 		const table = gridBuilder.build(
@@ -464,6 +535,7 @@
 			]
 		);
 		ellipsis(table);
+		restoreVisibility(table, outputNetworks);
 	};
 	const showNetworksError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputNetworks, exc); };
 	const networkInspectHref = (network) => { return '/api/network/inspect?networkId=' + network.NetworkId; };
@@ -489,6 +561,7 @@
 			]
 		);
 		ellipsis(table);
+		restoreVisibility(table, outputDiskUsages);
 	};
 	const showDiskUsagesError = (exc) => { io.github.crisstanza.Creator.html('span', {}, outputDiskUsages, exc); };
 	const diskUsagePrune = (event, diskUsage) => {
@@ -650,10 +723,12 @@
 
 	const initListeners = () => {
 		const buttons = document.querySelectorAll('button[data-target=_blank]');
-		buttons.forEach((button) => button.addEventListener('click', bt_Click_Open));
+		buttons.forEach((button) => button.addEventListener('click', btClick_Open));
 		btDockerd.addEventListener('click', btDockerd_Click);
 		btSwarm.addEventListener('click', btSwarm_Click);
 		window.addEventListener('resize', window_Resize)
+		const eyes = document.querySelectorAll('fieldset legend a img.eyes');
+		eyes.forEach((eyes) => eyes.addEventListener('click', lnEye_Click));
 	};
 	const init = () => {
 		initGui(100);

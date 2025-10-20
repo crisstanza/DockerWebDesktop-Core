@@ -41,99 +41,101 @@ if (!io.github.crisstanza) io.github.crisstanza = {};
 					}
 				}
 			}
-			const tbody = io.github.crisstanza.Creator.html('tbody', {}, table);
-			for (let i = 0; i < items.length; i++) {
-				const item = items[i];
-				const tr = io.github.crisstanza.Creator.html('tr', {}, tbody);
-				for (let j = 0; j < columns.length; j++) {
-					const column = columns[j];
-					const key = column.key ? column.key : column.name ? column.name : column;
-					const className = column.class ? column.class : '';
-					const formatter = column.formatter;
-					const value = item[key];
-					const formattedValue = formatter ? formatter(value, tr) : this.#escapeHtml(value);
-					let td;
-					if (this.options.wrap?.values) {
-						td = io.github.crisstanza.Creator.html('td', { class: className }, tr);
-						if (formattedValue instanceof Node) {
-							io.github.crisstanza.Creator.html('div', {}, td, null, formattedValue);
-						} else {
-							io.github.crisstanza.Creator.html('div', {}, td, formattedValue);
-						}
-					} else {
-						if (formattedValue instanceof Node) {
-							td = io.github.crisstanza.Creator.html('td', { class: className }, tr, null, formattedValue);
-						} else {
-							td = io.github.crisstanza.Creator.html('td', { class: className }, tr, formattedValue);
-						}
-					}
-					const titleFormatter = column.titleFormatter;
-					if (titleFormatter) {
-						const titleValue = titleFormatter(value);
-						if (titleValue) {
-							td.setAttribute('title', titleValue);
-						}
-					}
-				}
-				if (actions && actions.length || links && links.length) {
-					const td = io.github.crisstanza.Creator.html('td', {}, tr);
-					let containerAll;
-					if (this.options.wrap?.interactions?.all) {
-						const wrapper = io.github.crisstanza.Creator.html('span', {}, td);
-						containerAll = wrapper;
-					} else {
-						containerAll = td;
-					}
-					if (actions && actions.length) {
-						let containerActions;
-						if (this.options.wrap?.interactions?.actions) {
-							const wrapper = io.github.crisstanza.Creator.html('span', {}, containerAll);
-							containerActions = wrapper;
-						} else {
-							containerActions = containerAll;
-						}
-						for (let j = 0; j < actions.length; j++) {
-							const action = actions[j];
-							if (action.lineBreak) {
-								io.github.crisstanza.Creator.html('br', {}, containerActions);
+			if (items.length > 0) {
+				const tbody = io.github.crisstanza.Creator.html('tbody', {}, table);
+				for (let i = 0; i < items.length; i++) {
+					const item = items[i];
+					const tr = io.github.crisstanza.Creator.html('tr', {}, tbody);
+					for (let j = 0; j < columns.length; j++) {
+						const column = columns[j];
+						const key = column.key ? column.key : column.name ? column.name : column;
+						const className = column.class ? column.class : '';
+						const formatter = column.formatter;
+						const value = item[key];
+						const formattedValue = formatter ? formatter(value, tr) : this.#escapeHtml(value);
+						let td;
+						if (this.options.wrap?.values) {
+							td = io.github.crisstanza.Creator.html('td', { class: className }, tr);
+							if (formattedValue instanceof Node) {
+								io.github.crisstanza.Creator.html('div', {}, td, null, formattedValue);
 							} else {
-								const enabledChecker = action.enabled;
-								const button = io.github.crisstanza.Creator.html('button', {}, containerActions, action.label);
-								button.addEventListener('click', function (event) { action.handler(event, item) });
-								if (enabledChecker && !enabledChecker(item)) {
-									button.setAttribute('disabled', 'disabled');
-								}
+								io.github.crisstanza.Creator.html('div', {}, td, formattedValue);
+							}
+						} else {
+							if (formattedValue instanceof Node) {
+								td = io.github.crisstanza.Creator.html('td', { class: className }, tr, null, formattedValue);
+							} else {
+								td = io.github.crisstanza.Creator.html('td', { class: className }, tr, formattedValue);
+							}
+						}
+						const titleFormatter = column.titleFormatter;
+						if (titleFormatter) {
+							const titleValue = titleFormatter(value);
+							if (titleValue) {
+								td.setAttribute('title', titleValue);
 							}
 						}
 					}
-					if (links && links.length) {
-						let containerLinks;
-						if (this.options.wrap?.interactions?.links) {
-							const wrapper = io.github.crisstanza.Creator.html('span', {}, containerAll);
-							containerLinks = wrapper;
+					if (actions && actions.length || links && links.length) {
+						const td = io.github.crisstanza.Creator.html('td', {}, tr);
+						let containerAll;
+						if (this.options.wrap?.interactions?.all) {
+							const wrapper = io.github.crisstanza.Creator.html('span', {}, td);
+							containerAll = wrapper;
 						} else {
-							containerLinks = containerAll;
+							containerAll = td;
 						}
-						for (let j = 0; j < links.length; j++) {
-							const link = links[j];
-							const enabledChecker = link.enabled;
-							const enabled = !(enabledChecker && !enabledChecker(item));
-							const a = io.github.crisstanza.Creator.html('a', {}, containerLinks, link.label);
-							if (enabled) {
-								if (link.href) {
-									a.href = link.href(item);
-								}
-								if (link.target) {
-									a.target = link.target;
-								}
-								if (link.handler) {
-									a.addEventListener('click', function (event) { link.handler(event, item) });
-								}
-								if (link.hover) {
-									a.addEventListener('mouseover', function (event) { link.hover(event, item) });
-								}
+						if (actions && actions.length) {
+							let containerActions;
+							if (this.options.wrap?.interactions?.actions) {
+								const wrapper = io.github.crisstanza.Creator.html('span', {}, containerAll);
+								containerActions = wrapper;
 							} else {
-								a.setAttribute('disabled', 'disabled');
+								containerActions = containerAll;
+							}
+							for (let j = 0; j < actions.length; j++) {
+								const action = actions[j];
+								if (action.lineBreak) {
+									io.github.crisstanza.Creator.html('br', {}, containerActions);
+								} else {
+									const enabledChecker = action.enabled;
+									const button = io.github.crisstanza.Creator.html('button', {}, containerActions, action.label);
+									button.addEventListener('click', function (event) { action.handler(event, item) });
+									if (enabledChecker && !enabledChecker(item)) {
+										button.setAttribute('disabled', 'disabled');
+									}
+								}
+							}
+						}
+						if (links && links.length) {
+							let containerLinks;
+							if (this.options.wrap?.interactions?.links) {
+								const wrapper = io.github.crisstanza.Creator.html('span', {}, containerAll);
+								containerLinks = wrapper;
+							} else {
+								containerLinks = containerAll;
+							}
+							for (let j = 0; j < links.length; j++) {
+								const link = links[j];
+								const enabledChecker = link.enabled;
+								const enabled = !(enabledChecker && !enabledChecker(item));
+								const a = io.github.crisstanza.Creator.html('a', {}, containerLinks, link.label);
+								if (enabled) {
+									if (link.href) {
+										a.href = link.href(item);
+									}
+									if (link.target) {
+										a.target = link.target;
+									}
+									if (link.handler) {
+										a.addEventListener('click', function (event) { link.handler(event, item) });
+									}
+									if (link.hover) {
+										a.addEventListener('mouseover', function (event) { link.hover(event, item) });
+									}
+								} else {
+									a.setAttribute('disabled', 'disabled');
+								}
 							}
 						}
 					}

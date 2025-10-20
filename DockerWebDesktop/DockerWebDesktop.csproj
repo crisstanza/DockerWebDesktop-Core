@@ -7,7 +7,7 @@
     <RootNamespace></RootNamespace>
     <Authors>Cris Stanza</Authors>
     <Company>Cris Stanza</Company>
-    <Version>1.9.0.0</Version>
+    <Version>1.9.0.1</Version>
     <Description>https://github.com/crisstanza/DockerWebDesktop-Core/</Description>
     <PackageProjectUrl>https://github.com/crisstanza/DockerWebDesktop-Core/</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -28,37 +28,43 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="html\css\css.css">
+    <None Update="HTML\css\css.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="html\css\github.css">
+    <None Update="HTML\css\github.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="html\favicon.ico">
+    <None Update="HTML\favicon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="html\img\github.png">
+    <None Update="HTML\img\eye-closed.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="html\img\sha256.png">
+    <None Update="HTML\img\eye-open.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="html\index.html">
+    <None Update="HTML\img\github.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="html\js\index.js">
+    <None Update="HTML\img\sha256.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="html\js\lib\io.github.crisstanza.Creator.js">
+    <None Update="HTML\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="html\js\lib\io.github.crisstanza.SimpleDataGrid.js">
+    <None Update="HTML\js\index.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="html\js\lib\io.github.crisstanza.Autos.js">
+    <None Update="HTML\js\lib\io.github.crisstanza.Creator.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="html\js\lib\io.github.crisstanza.Fetcher.js">
+    <None Update="HTML\js\lib\io.github.crisstanza.SimpleDataGrid.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="HTML\js\lib\io.github.crisstanza.Autos.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="HTML\js\lib\io.github.crisstanza.Fetcher.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SETTINGS\1#mysql\5.7.42\custom-init.sql">
