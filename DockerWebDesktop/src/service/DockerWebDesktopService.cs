@@ -25,8 +25,8 @@ namespace service
 		private const string PORTS_FILE = "ports";
 		private const string VOLUMES_FILE = "volumes";
 		private const string MNT_FOLDER = "mnt";
-		private const string MNT_FOLDER_MNT = "/mnt/";
-		private const string SCRIPTS_FOLDER_MNT = "/mnt/scripts/";
+		private const string MNT_FOLDER_MNT = "/";
+		private const string SCRIPTS_FOLDER_MNT = MNT_FOLDER_MNT +  "scripts/";
 		private const string SCRIPTS_MAIN_SCRIPT = "main.sh";
 		private const string DOCKERFILE_FILE = "Dockerfile";
 		private const string DOCKER_COMPOSE_FILE = "docker-compose.yml";
