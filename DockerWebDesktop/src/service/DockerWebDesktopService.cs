@@ -41,6 +41,10 @@ namespace service
 		}
 
 		#region check for updates
+		public bool IsCheckForUpdatesEnabled()
+		{
+			return base.args.CheckForUpdatesInterval > 0;
+		}
 		public void StartCheckForUpdates()
 		{
 			Thread checkConnectionsThread = new Thread(CheckForUpdates);
@@ -57,7 +61,7 @@ namespace service
 				XmlText version = (XmlText)xml.DocumentElement.SelectSingleNode("//Project/PropertyGroup/Version/text()");
 				this.latestVersion = new Version(version.Data);
 			}
-			if (base.args.CheckForUpdatesInterval > 0)
+			if (this.IsCheckForUpdatesEnabled())
 			{
 				TimeSpan interval = TimeSpan.FromMinutes(base.args.CheckForUpdatesInterval);
 				Thread.Sleep((int)interval.TotalMilliseconds);

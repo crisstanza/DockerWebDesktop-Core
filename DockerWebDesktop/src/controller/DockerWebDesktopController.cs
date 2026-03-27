@@ -25,7 +25,7 @@ namespace controller
 			IPAddress localAddress = base.networkingUtils.GetLocalAddress(IPAddress.Parse(args.SubnetMask));
 			extras.Add("Debug", this.args.Debug.ToString());
 			extras.Add("Local address", localAddress == null ? "could not resolve" : localAddress.ToString());
-			extras.Add("Check for updates interval", this.args.CheckForUpdatesInterval + " minutes");
+			extras.Add("Check for updates interval", this.service.IsCheckForUpdatesEnabled() ? this.args.CheckForUpdatesInterval + " minutes" : "disabled");
 			extras.Add("Settings home", this.args.SettingsHome);
 			Dictionary<string, string> dependencies = new Dictionary<string, string>()
 			{
@@ -52,7 +52,7 @@ namespace controller
 		#region check for updates
 		public void StartCheckForUpdates()
 		{
-			if (base.args.CheckForUpdatesInterval > 0)
+			if (this.service.IsCheckForUpdatesEnabled())
 			{
 				base.service.StartCheckForUpdates();
 			}
