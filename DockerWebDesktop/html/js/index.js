@@ -204,7 +204,7 @@
 
 	const showSettings = (apiSettingsResponse) => {
 		const options = {
-			border: true, headers: true, class: `interactive settings`, wrap: {
+			border: false, headers: true, class: `interactive settings`, wrap: {
 				interactions: {
 					all: true, actions: true, links: true
 				}, values: true, headers: true
@@ -252,7 +252,7 @@
 	};
 
 	const showImages = (apiImagesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true }, headerHandler: headerHandler }, outputImages);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: false, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true }, headerHandler: headerHandler }, outputImages);
 		const table = gridBuilder.build(
 			apiImagesResponse.Data.Images,
 			[
@@ -317,7 +317,7 @@
 	};
 
 	const showStackServices = (services) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small', wrap: { values: true }, headerHandler: headerHandler });
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: false, headers: true, class: 'small', wrap: { values: true }, headerHandler: headerHandler });
 		const grid = gridBuilder.build(
 			services,
 			[
@@ -337,7 +337,7 @@
 			return currentState;
 		};
 		const showStackTasks = (tasks) => {
-			const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'small', wrap: { values: true }, headerHandler: headerHandler });
+			const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: false, headers: true, class: 'small', wrap: { values: true }, headerHandler: headerHandler });
 			const grid = gridBuilder.build(
 				tasks,
 				[
@@ -353,7 +353,7 @@
 			);
 			return grid;
 		};
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', headerHandler: headerHandler }, outputStacks);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: false, headers: true, class: 'interactive', headerHandler: headerHandler }, outputStacks);
 		const table = gridBuilder.build(
 			apiStacksResponse.Data.Stacks,
 			[
@@ -383,7 +383,7 @@
 	};
 
 	const showNodes = (apiNodesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true }, headerHandler: headerHandler }, outputNodes);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: false, headers: true, class: 'interactive', wrap: { values: true }, headerHandler: headerHandler }, outputNodes);
 		const table = gridBuilder.build(
 			apiNodesResponse.Data.Nodes,
 			[
@@ -407,7 +407,7 @@
 	const cleanNodeId = (id) => { return id.endsWith(' *') ? id.substring(0, id.length - 2) : id; };
 
 	const showInstances = (apiInstancesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true }, headerHandler: headerHandler }, outputInstances);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: false, headers: true, class: 'interactive', wrap: { interactions: { all: true, actions: true, links: true }, values: true }, headerHandler: headerHandler }, outputInstances);
 		const table = gridBuilder.build(
 			apiInstancesResponse.Data.Instances,
 			[
@@ -521,7 +521,7 @@
 	};
 
 	const showNetworks = (apiNetworksResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true }, headerHandler: headerHandler }, outputNetworks);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: false, headers: true, class: 'interactive', wrap: { values: true }, headerHandler: headerHandler }, outputNetworks);
 		const table = gridBuilder.build(
 			apiNetworksResponse.Data.Networks,
 			[
@@ -550,7 +550,7 @@
 
 	// disk usage
 	const showDiskUsages = (apiDiskUsagesResponse) => {
-		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: true, headers: true, class: 'interactive', wrap: { values: true }, headerHandler: headerHandler }, outputDiskUsages);
+		const gridBuilder = new io.github.crisstanza.SimpleDataGrid({ border: false, headers: true, class: 'interactive', wrap: { values: true }, headerHandler: headerHandler }, outputDiskUsages);
 		const table = gridBuilder.build(
 			apiDiskUsagesResponse.Data.DiskUsages,
 			[

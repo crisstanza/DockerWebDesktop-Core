@@ -87,113 +87,117 @@ fieldset {
         background-color: transparent;
     }
 
-        fieldset table tr.running td:not(:last-child) * {
-            color: green;
+        fieldset table, fieldset table td, fieldset table th {
+            border: 1px solid gray;
         }
 
-        fieldset table tr.not-running td:not(:last-child) * {
-            color: indianred;
-        }
-
-        fieldset table.small, fieldset table.small > thead th, fieldset table.small > tfoot td, .output-message div {
-            font-size: var(--small-font);
-        }
-
-        fieldset table > thead th, fieldset table > thead th * {
-            background-color: beige;
-            font-size: var(--small-font);
-        }
-
-        fieldset table.interactive > thead th:not(:last-child) {
-            background-color: beige;
-            font-size: var(--small-font);
-        }
-
-        fieldset table > tfoot {
-            background-color: antiquewhite;
-        }
-
-        fieldset table.interactive > tbody > tr > td:last-child {
-            text-align: center;
-        }
-
-        fieldset table > tbody > tr > td.parent {
-            padding: 1px;
-        }
-
-        fieldset table > tbody > tr:nth-child(odd) {
-            background-color: #f2f2f277;
-        }
-
-        fieldset table > tbody > tr:nth-child(even) {
-            background-color: #C9C9C977;
-        }
-
-        fieldset table > tbody > tr:hover {
-            background-color: #71a37c44;
-        }
-
-        fieldset table > tbody > tr > td {
-            padding: 3px 2px 1px 2px;
-            overflow-wrap: anywhere;
-        }
-
-        fieldset table > thead {
-            transition: display 0.2s, opacity 0.2s;
-        }
-
-        fieldset table > tbody {
-            transition: display 0.1s, opacity 0.1s;
-        }
-
-        fieldset table > thead, fieldset table > tbody {
-            transition-behavior: allow-discrete;
-        }
-
-            fieldset table > tbody > tr > td > div {
-                width: 0;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+            fieldset table tr.running td:not(:last-child) * {
+                color: green;
             }
 
-                fieldset table > tbody > tr > td > div > img {
-                    width: 24px;
-                    height: 16px;
-                }
+            fieldset table tr.not-running td:not(:last-child) * {
+                color: indianred;
+            }
 
-                fieldset table > tbody > tr > td > div.panel {
-                    text-align: right;
-                    font-size: var(--small-font);
-                    margin-top: 4px;
-                }
+            fieldset table.small, fieldset table.small > thead th, fieldset table.small > tfoot td, .output-message div {
+                font-size: var(--small-font);
+            }
 
-            fieldset table > thead th {
+            fieldset table > thead th, fieldset table > thead th * {
+                background-color: beige;
+                font-size: var(--small-font);
+            }
+
+            fieldset table.interactive > thead th:not(:last-child) {
+                background-color: beige;
+                font-size: var(--small-font);
+            }
+
+            fieldset table > tfoot {
+                background-color: antiquewhite;
+            }
+
+            fieldset table.interactive > tbody > tr > td:last-child {
+                text-align: center;
+            }
+
+            fieldset table > tbody > tr > td.parent {
+                padding: 1px;
+            }
+
+            fieldset table > tbody > tr:nth-child(odd) {
+                background-color: #f2f2f277;
+            }
+
+            fieldset table > tbody > tr:nth-child(even) {
+                background-color: #C9C9C977;
+            }
+
+            fieldset table > tbody > tr:hover {
+                background-color: #71a37c44;
+            }
+
+            fieldset table > tbody > tr > td {
                 padding: 3px 2px 1px 2px;
-                overflow-wrap: normal;
+                overflow-wrap: anywhere;
             }
 
-        fieldset table > tfoot td {
-            padding: 3px 2px 1px 2px;
-            font-size: var(--small-font);
-        }
-
-        fieldset table td button, fieldset table td a {
-            margin: 0px 2px 0px 2px;
-        }
-
-            fieldset table td a:not(:first-child) {
-                padding-left: 1px;
+            fieldset table > thead {
+                transition: display 0.2s, opacity 0.2s;
             }
 
-        fieldset table td a {
-            padding-right: 2px;
-            font-size: var(--small-font);
-        }
+            fieldset table > tbody {
+                transition: display 0.1s, opacity 0.1s;
+            }
 
-        fieldset table td button {
-            padding: 0 6px 0 6px;
-        }
+            fieldset table > thead, fieldset table > tbody {
+                transition-behavior: allow-discrete;
+            }
+
+                fieldset table > tbody > tr > td > div {
+                    width: 0;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                    fieldset table > tbody > tr > td > div > img {
+                        width: 24px;
+                        height: 16px;
+                    }
+
+                    fieldset table > tbody > tr > td > div.panel {
+                        text-align: right;
+                        font-size: var(--small-font);
+                        margin-top: 4px;
+                    }
+
+                fieldset table > thead th {
+                    padding: 3px 2px 1px 2px;
+                    overflow-wrap: normal;
+                }
+
+            fieldset table > tfoot td {
+                padding: 3px 2px 1px 2px;
+                font-size: var(--small-font);
+            }
+
+            fieldset table td button, fieldset table td a {
+                margin: 0px 2px 0px 2px;
+            }
+
+                fieldset table td a:not(:first-child) {
+                    padding-left: 1px;
+                }
+
+            fieldset table td a {
+                padding-right: 2px;
+                font-size: var(--small-font);
+            }
+
+            fieldset table td button {
+                padding: 0 6px 0 6px;
+            }
 
 a {
     color: brown;

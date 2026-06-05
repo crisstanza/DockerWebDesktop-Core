@@ -1,6 +1,6 @@
-# DockerWebDesktop-Core - 1.9.0.1
+# DockerWebDesktop-Core - 1.9.0.2
 
-C# REST service with HTML interface running on Linux to manage Docker containers (_serviço REST em C# com interface HTML rodando​ em Linux para gerenciar containers Docker_).
+C# open source REST service with HTML interface running on Linux to manage Docker containers (_serviço REST open source em C# com interface HTML rodando​ em Linux para gerenciar containers Docker_).
 
 <br>
 
@@ -17,6 +17,7 @@ C# REST service with HTML interface running on Linux to manage Docker containers
 
 | DockerWebDesktop-Core | CommandLiner-Core | CSharpUtils-Core |
 | :-------------------: | :---------------: | :--------------: |
+|    <b>1.9.0.2</b>     |      0.7.0.1      |     0.7.1.3      |
 |    <b>1.9.0.1</b>     |      0.7.0.1      |     0.7.1.3      |
 |    <b>1.8.7.1</b>     |      0.7.0.1      |     0.7.1.2      |
 |    <b>1.8.7.0</b>     |      0.7.0.1      |     0.7.1.2      |
@@ -60,8 +61,19 @@ If you want to reboot Ubuntu:
 
     wsl --shutdown
 
+
+Stuck WSL? Try one of these:
+
+    taskkill /F /im wslservice.exe
+
+or
+
+    tasklist /svc /fi "imagename eq svchost.exe" | findstr LxssManager
+
+
 Other commands:
-wsl --unregister Ubuntu
+
+    wsl --unregister Ubuntu
 
 ## Install .NET Core on Ubuntu:
 
